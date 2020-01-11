@@ -14,7 +14,7 @@ if [[ ! -d "$FOLDER" ]] ; then
   git clone $URL $FOLDER
 fi
 
-cp -r $DATA_FILE $FOLDER/
+cp -r $DATA_FOLDER $FOLDER/
 
 cd $FOLDER
 git pull
@@ -22,6 +22,6 @@ git pull
 # commit and push
 git config user.name "\'$USER\'"
 git config user.email "\'$EMAIl\'"
-git add $DATA_FILE
+git add $DATA_FOLDER
 git commit -m "update data @ `date +%Y-%m-%d +%H`]"
 git push --force "https://${GH_TOKEN}@github.com/vietvudanh/vietlott-data.git" HEAD:master
