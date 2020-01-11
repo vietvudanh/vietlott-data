@@ -23,5 +23,5 @@ git pull
 git config user.name "\'$USER\'"
 git config user.email "\'$EMAIl\'"
 git add $DATA_FOLDER
-git commit -m "update data @ `date +%Y-%m-%d +%H`]"
+git commit -m "update data @ `date +%Y-%m-%d\ %H`"
 git push --force "https://${GH_TOKEN}@github.com/vietvudanh/vietlott-data.git" HEAD:master
