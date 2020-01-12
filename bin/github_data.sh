@@ -8,7 +8,7 @@ USER="Viet VU"
 EMAIl="vietvudanh@gmail.com"
 
 # generate data file
-python keno.py
+python keno.py $1
 
 if [[ ! -d "$FOLDER" ]] ; then
   git clone $URL $FOLDER

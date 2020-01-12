@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
+import logging
 import datetime
+import pytz
 import itertools
 import json
 import pathlib
@@ -10,16 +12,22 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 from bs4 import BeautifulSoup
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(filename)s::%(lineno)s %(message)s')
+
 date_fmt = '%d/%m/%Y'
+zone = 'Asia/Bangkok'  # +0700
 if len(sys.argv) > 1:
     run_date = datetime.datetime.strptime(sys.argv[1], '%Y%m%d')
 else:
-    run_date = datetime.datetime.now()
+    run_date = datetime.datetime.now(pytz.timezone(zone))
+logging.info(run_date)
 
 current_date = run_date.strftime(date_fmt)
 
 name = "Keno"
 url = 'https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameKenoCompareWebPart,Vietlott.PlugIn.WebParts.ashx'
+page_to_run = 34
+num_thread = 5
 headers = {
     "Host": "vietlott.vn",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:73.0) Gecko/20100101 Firefox/73.0",
@@ -79,12 +87,12 @@ def fetch(indexes):
             res = session.post(url, json=p, headers=headers)
 
             if not res.ok:
-                print(p)
+                logging.info(p)
                 continue
 
             result = process_result(res.json(), i)
             results.append(result)
-        print(f'task {len(indexes)} done')
+        logging.info(f'task {len(indexes)} done')
         return results
 
 
@@ -101,7 +109,7 @@ def process_result(res_json, page):
         td_a = tds[0].find_all('a')
         row['date'] = td_a[0].text
         if row['date'] != current_date:
-            print('wrong date instance', row['date'])
+            logging.info('wrong date instance %s', row['date'])
             continue
 
         row['id'] = td_a[1].text
@@ -128,12 +136,11 @@ def chunks_iter(data, n):
 
 
 def run(index_to):
-    num_thread = 2
     pool = ThreadPoolExecutor(num_thread)
     page_per_task = int(index_to / num_thread)
     tasks = chunks_iter(range(1, index_to), page_per_task)
 
-    print(f'there are {page_per_task} tasks')
+    logging.info(f'there are {page_per_task} tasks')
 
     results = pool.map(fetch, tasks)
 
@@ -145,6 +152,7 @@ def run(index_to):
     ]
 
     p = pathlib.Path('data') / 'keno' / f"{run_date.strftime('%Y%m%d')}.jsonl"
+    logging.info(f'writting to {p}')
     with open(str(p), 'w') as f:
         for r in results:
             f.write(json.dumps(r))
@@ -152,12 +160,12 @@ def run(index_to):
 
 
 def main():
-    run(16)  # roll every 10 min from 6:00 to 21:55 => 16 pages
+    run(page_to_run)  # roll every 10 min from 6:00 to 21:55 => 16 pages
 
 
 def main1():
     res = requests.post(url, json=params, headers=headers)
-    print(res.json())
+    logging.info(res.json())
 
 
 if __name__ == '__main__':
