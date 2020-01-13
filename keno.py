@@ -19,7 +19,7 @@ zone = 'Asia/Bangkok'  # +0700
 if len(sys.argv) > 1:
     run_date = datetime.datetime.strptime(sys.argv[1], '%Y%m%d')
 else:
-    run_date = datetime.datetime.now(pytz.timezone(zone))
+    run_date = datetime.datetime.now(pytz.timezone(zone)) - datetime.timedelta(days=1)
 logging.info(run_date)
 
 current_date = run_date.strftime(date_fmt)
@@ -29,53 +29,53 @@ url = 'https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameKenoCompareWebPa
 page_to_run = 34
 num_thread = 5
 headers = {
-    "Host": "vietlott.vn",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:73.0) Gecko/20100101 Firefox/73.0",
-    "Accept": "*/*",
-    "Accept-Language": "en-US,en;q=0.5",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Content-Type": "text/plain; charset=utf-8",
-    "X-AjaxPro-Method": "ServerSideDrawResult",
-    "Content-Length": "706",
-    "Origin": "https://vietlott.vn",
-    "Connection": "keep-alive",
-    "Referer": "https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno"
-}
+        "Host": "vietlott.vn",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:73.0) Gecko/20100101 Firefox/73.0",
+        "Accept": "*/*",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Content-Type": "text/plain; charset=utf-8",
+        "X-AjaxPro-Method": "ServerSideDrawResult",
+        "Content-Length": "706",
+        "Origin": "https://vietlott.vn",
+        "Connection": "keep-alive",
+        "Referer": "https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno"
+        }
 params = {
-    "DrawDate": "",
-    "DrawId": "",
-    "GameDrawId": "",
-    "GameId": "6",
-    "ORenderInfo": {
-        "ExtraParam1": "",
-        "ExtraParam2": "",
-        "ExtraParam3": "",
-        "FullPageAlias": None,
-        "HttpMediaPathRoot": "https://media.vietlott.vn",
-        "HttpRoot": "http://10.98.20.20",
-        "HttpTempPathRoot": "",
-        "IsPageDesign": False,
-        "MediaPathRoot": "D:\\Portal\\Vietlott\\Media",
-        "OrgPageAlias": None,
-        "PageAlias": None,
-        "PathRoot": "D:\\Portal\\Vietlott\\Frontend\\Web",
-        "RefKey": None,
-        "SiteAlias": "main.vi",
-        "SiteId": "main.frontend.vi",
-        "SiteLang": "vi",
-        "SiteName": "Vietlott",
-        "SiteURL": "",
-        "System": 0,
-        "TempPathRoot": "",
-        "UserSessionId": "",
-        "WebHttpRoot": "http://10.98.20.20",
-        "WebPage": None,
-        "WebPathRoot": "D:\\Portal\\Vietlott\\Frontend\\Web"
-    },
-    "PageIndex": 1,
-    "ProcessType": 0,
-    "number": ""
-}
+        "DrawDate": "",
+        "DrawId": "",
+        "GameDrawId": "",
+        "GameId": "6",
+        "ORenderInfo": {
+            "ExtraParam1": "",
+            "ExtraParam2": "",
+            "ExtraParam3": "",
+            "FullPageAlias": None,
+            "HttpMediaPathRoot": "https://media.vietlott.vn",
+            "HttpRoot": "http://10.98.20.20",
+            "HttpTempPathRoot": "",
+            "IsPageDesign": False,
+            "MediaPathRoot": "D:\\Portal\\Vietlott\\Media",
+            "OrgPageAlias": None,
+            "PageAlias": None,
+            "PathRoot": "D:\\Portal\\Vietlott\\Frontend\\Web",
+            "RefKey": None,
+            "SiteAlias": "main.vi",
+            "SiteId": "main.frontend.vi",
+            "SiteLang": "vi",
+            "SiteName": "Vietlott",
+            "SiteURL": "",
+            "System": 0,
+            "TempPathRoot": "",
+            "UserSessionId": "",
+            "WebHttpRoot": "http://10.98.20.20",
+            "WebPage": None,
+            "WebPathRoot": "D:\\Portal\\Vietlott\\Frontend\\Web"
+            },
+        "PageIndex": 1,
+        "ProcessType": 0,
+        "number": ""
+        }
 
 
 def fetch(indexes):
@@ -145,11 +145,11 @@ def run(index_to):
     results = pool.map(fetch, tasks)
 
     results = [
-        l3
-        for l1 in results
-        for l2 in l1
-        for l3 in l2
-    ]
+            l3
+            for l1 in results
+            for l2 in l1
+            for l3 in l2
+            ]
 
     p = pathlib.Path('data') / 'keno' / f"{run_date.strftime('%Y%m%d')}.jsonl"
     logging.info(f'writting to {p}')
