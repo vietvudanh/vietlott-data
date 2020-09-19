@@ -9,6 +9,7 @@ EMAIl="vietvudanh@gmail.com"
 
 # generate data file
 python keno.py $1
+python power655.py $1
 
 if [[ ! -d "$FOLDER" ]] ; then
   git clone $URL $FOLDER
@@ -24,4 +25,4 @@ git config user.name "\'$USER\'"
 git config user.email "\'$EMAIl\'"
 git add $DATA_FOLDER
 git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`"
-git push --force "https://${GH_TOKEN}@github.com/vietvudanh/vietlott-data.git" HEAD:master
+git push
