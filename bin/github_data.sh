@@ -11,14 +11,14 @@ EMAIl="vietvudanh@gmail.com"
 python keno.py $1
 python power655.py $1
 
-if [[ ! -d "$FOLDER" ]] ; then
-  git clone $URL $FOLDER
-fi
+#if [[ ! -d "$FOLDER" ]] ; then
+#  git clone $URL $FOLDER
+#fi
 
-cp -r $DATA_FOLDER $FOLDER/
+#cp -r $DATA_FOLDER $FOLDER/
 
-cd $FOLDER
-git pull
+#cd $FOLDER
+#git pull
 
 # commit and push
 git config user.name "\'$USER\'"
