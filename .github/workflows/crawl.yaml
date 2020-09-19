@@ -27,4 +27,4 @@ jobs:
       run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - run: ./bin/github_data.sh
+    - run: bash ,/bin/github_data.sh
