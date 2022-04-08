@@ -2,3 +2,5 @@ bs4
 requests
 lxml
 pytz
+pandas
+tabulate

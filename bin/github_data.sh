@@ -8,8 +8,9 @@ USER="Viet VU"
 EMAIl="vietvudanh@gmail.com"
 
 # generate data file
-python keno.py $1
+# python keno.py $1
 python power655.py $1
+python render_readme.py
 
 #if [[ ! -d "$FOLDER" ]] ; then
 #  git clone $URL $FOLDER
@@ -24,5 +25,6 @@ python power655.py $1
 git config user.name "\'$USER\'"
 git config user.email "\'$EMAIl\'"
 git add $DATA_FOLDER
+git add readme.md
 git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`"
 git push

@@ -30,7 +30,7 @@ run_date_str = run_date.strftime(date_fmt)
 name = "Power655"
 url = 'https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.Game655CompareWebPart,Vietlott.PlugIn.WebParts.ashx'
 page_to_run = 1  # roll every 2 days
-num_thread = 5
+num_thread = 20
 headers = {
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:80.0) Gecko/20100101 Firefox/80.0",
     "Accept": "*/*",
@@ -132,7 +132,7 @@ def run(index_to):
 
 
 def main():
-    run(page_to_run)  # roll every 10 min from 6:00 to 21:55, each page 6  => 16 pages
+    run(25)  # roll every 10 min from 6:00 to 21:55, each page 6  => 16 pages
 
 
 def main1():
