@@ -8,22 +8,18 @@ import logging
 import requests
 
 
-def chunks_iter(data, n):
-    """split data"""
-    it = iter(data)
-    while True:
-        chunk = tuple(itertools.islice(it, n))
-        if not chunk:
-            return
-        yield chunk
+
 
 
 def fetch_wrapper(url, headers, org_params, org_body, process_result_fn):
+    """
+    return a fn to fetch data for a set of params and body
+    """
     def fetch(data):
         """
         perform fetching on multiple requests
-        replace: org_params,
-        :param data:
+        replace: org_params, org_body
+        :param data: tuple of (update_params, update_body)
         :return:
         """
 

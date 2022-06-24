@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "vietlott-data"
+version = "0.1.0"
+description = ""
+authors = ["Viet Vu <vietvudanh@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+bs4 = "^0.0.1"
+requests = "bs4"
+pandas = "^1.4.2"
+lxml = "^4.9.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
