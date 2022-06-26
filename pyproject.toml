@@ -11,6 +11,7 @@ bs4 = "^0.0.1"
 requests = "bs4"
 pandas = "^1.4.2"
 lxml = "^4.9.0"
+attrs = "^21.4.0"
 
 [tool.poetry.dev-dependencies]
 

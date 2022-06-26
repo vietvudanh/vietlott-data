@@ -11,4 +11,3 @@ headers = {
 
 # paths
 data_dir = cwd.parent / 'data'
-power655_file = data_dir / 'power655.jsonl'
