@@ -49,7 +49,7 @@ class ProductPower655:
             "RefKey": None,
             "System": 1
         },
-        "Key": "23bbd667",
+        "Key": "8eb9f2bb",
         "GameDrawId": "",
         "ArrayNumbers": [
             ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
@@ -63,10 +63,12 @@ class ProductPower655:
     }
     org_params = {}
 
-    product_config: ProductConfig = get_config(name)
+    product_config: ProductConfig = None
 
-    @classmethod
-    def process_result(cls, params, body, res_json) -> List[Dict]:
+    def __init__(self):
+        self.product_config = get_config(self.name)
+
+    def process_result(self, params, body, res_json) -> List[Dict]:
         """
         process 645/655 result
         :param params:
@@ -94,16 +96,15 @@ class ProductPower655:
             data.append(row)
         return data
 
-    @classmethod
-    def crawl(cls, index_to: int = 1):
+    def crawl(self, index_to: int = 1):
         """
         spawn multiple worker to get data from vietlott
         each worker craw a list of dates
         :param product_config:
         :param index_to: earliest page we want to crawl, default = 1 (1 page)
         """
-        pool = ThreadPoolExecutor(cls.num_thread)
-        page_per_task = math.ceil(index_to / cls.product_config.num_thread)
+        pool = ThreadPoolExecutor(self.num_thread)
+        page_per_task = math.ceil(index_to / self.product_config.num_thread)
         tasks = collections_helper.chunks_iter([
             {
                 'task_id': i,
@@ -116,8 +117,8 @@ class ProductPower655:
         ], page_per_task)
 
         logger.info(f'there are {page_per_task} tasks')
-        fetch_fn = fetch.fetch_wrapper(cls.url, requests_config.headers, cls.org_params, cls.org_body,
-                                       cls.process_result)
+        fetch_fn = fetch.fetch_wrapper(self.url, requests_config.headers, self.org_params, self.org_body,
+                                       self.process_result)
 
         results = pool.map(fetch_fn, tasks)
 
@@ -137,8 +138,8 @@ class ProductPower655:
                     f', records={len(df_crawled)}')
 
         # store data
-        if cls.product_config.raw_path.exists():
-            current_data = pd.read_json(cls.product_config.raw_path, lines=True, dtype=cls.stored_data_dtype)
+        if self.product_config.raw_path.exists():
+            current_data = pd.read_json(self.product_config.raw_path, lines=True, dtype=self.stored_data_dtype)
             logger.info(f'current data min_date={current_data["date"].min()}, max_date={current_data["date"].max()}' +
                         f', records={len(current_data)}')
             df_take = df_crawled[~df_crawled['id'].isin(current_data['id'])]
@@ -152,5 +153,5 @@ class ProductPower655:
 
         logger.info(f'final data min_date={df_final["date"].min()}, max_date={df_final["date"].max()}' +
                     f', records={len(df_final)}')
-        df_final.to_json(cls.product_config.raw_path.absolute(), orient='records', lines=True)
-        logger.info(f"wrote to file {cls.product_config.raw_path.absolute()}")
+        df_final.to_json(self.product_config.raw_path.absolute(), orient='records', lines=True)
+        logger.info(f"wrote to file {self.product_config.raw_path.absolute()}")

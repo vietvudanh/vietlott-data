@@ -28,6 +28,4 @@ LOGGING_CONFIG = {
     }
 }
 
-
-def congig_logging():
-    logging.config.dictConfig(LOGGING_CONFIG)
+logging.config.dictConfig(LOGGING_CONFIG)
