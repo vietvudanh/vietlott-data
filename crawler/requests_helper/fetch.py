@@ -35,7 +35,7 @@ def fetch_wrapper(url, headers, org_params, org_body, process_result_fn):
                 res = session.post(url, json=body, params=params, headers=headers, timeout=10)
 
                 if not res.ok:
-                    logger.error(f'req fail, args={task_data}')
+                    logger.error(f'req fail, args={task_data}, code={res.status_code}, text={res.text[:200]}')
                     continue
 
                 result = process_result_fn(params, body, res.json())

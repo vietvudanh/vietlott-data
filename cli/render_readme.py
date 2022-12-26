@@ -1,8 +1,9 @@
-from io import StringIO
 from datetime import datetime, timedelta
-from traceback import format_tb
-import pandas as pd
+from io import StringIO
 from pathlib import Path
+
+import pandas as pd
+
 
 def read_data(data_dir: Path):
     df_files = [
@@ -14,6 +15,7 @@ def read_data(data_dir: Path):
     df = pd.concat(df_files, axis='rows')
     return df
 
+
 def read_data_str(data_dir: Path):
     string = ""
     for file in data_dir.glob('*.jsonl'):
@@ -21,9 +23,10 @@ def read_data_str(data_dir: Path):
     df = pd.read_json(StringIO(string), lines=True, dtype=object, convert_dates=False)
     return df
 
+
 def main():
-    data_dir = Path('./data/655/')
-    
+    data_dir = Path('../data/655/')
+
     df = read_data_str(data_dir)
     df['date'] = pd.to_datetime(df['date'], format='%d/%m/%Y').dt.date
     df = df.sort_values(by=['date', 'id'], ascending=False)
@@ -35,6 +38,7 @@ def main():
         )
         stats['%'] = (stats['count'] / len(df_explode) * 100).round(2)
         return stats
+
     stats = fn_stats(df)
 
     # stats n months
@@ -62,8 +66,9 @@ def main():
 ## stats 6/55 -90d
 {stats_90d.to_markdown()}
 """
-    with Path('readme.md').open('w') as ofile:
+    with Path('../readme.md').open('w') as ofile:
         ofile.write(output_str)
+
 
 if __name__ == "__main__":
     main()
