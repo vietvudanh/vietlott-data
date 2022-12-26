@@ -12,6 +12,7 @@ import requests
 from bs4 import BeautifulSoup
 
 import utils
+from crawler.collections import chunks_iter
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(filename)s::%(lineno)s %(message)s')
 
@@ -27,8 +28,9 @@ run_date_str = run_date.strftime(date_fmt)
 
 name = "Keno"
 url = 'https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameKenoCompareWebPart,Vietlott.PlugIn.WebParts.ashx'
-page_to_run = 34
+page_to_run = 10
 num_thread = 5
+
 headers = {
     "Host": "vietlott.vn",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:73.0) Gecko/20100101 Firefox/73.0",
@@ -43,41 +45,13 @@ headers = {
     "Referer": "https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno"
 }
 params = {}
-body = {
-    "DrawDate": "",
-    "DrawId": "",
-    "GameDrawId": "",
-    "GameId": "6",
-    "ORenderInfo": {
-        "ExtraParam1": "",
-        "ExtraParam2": "",
-        "ExtraParam3": "",
-        "FullPageAlias": None,
-        "HttpMediaPathRoot": "https://media.vietlott.vn",
-        "HttpRoot": "http://10.98.20.20",
-        "HttpTempPathRoot": "",
-        "IsPageDesign": False,
-        "MediaPathRoot": "D:\\Portal\\Vietlott\\Media",
-        "OrgPageAlias": None,
-        "PageAlias": None,
-        "PathRoot": "D:\\Portal\\Vietlott\\Frontend\\Web",
-        "RefKey": None,
-        "SiteAlias": "main.vi",
-        "SiteId": "main.frontend.vi",
-        "SiteLang": "vi",
-        "SiteName": "Vietlott",
-        "SiteURL": "",
-        "System": 0,
-        "TempPathRoot": "",
-        "UserSessionId": "",
-        "WebHttpRoot": "http://10.98.20.20",
-        "WebPage": None,
-        "WebPathRoot": "D:\\Portal\\Vietlott\\Frontend\\Web"
-    },
-    "PageIndex": 1,
-    "ProcessType": 0,
-    "number": ""
-}
+
+body = {"ORenderInfo": {"SiteId": "main.frontend.vi", "SiteAlias": "main.vi", "UserSessionId": "", "SiteLang": "vi",
+                        "IsPageDesign": False, "ExtraParam1": "", "ExtraParam2": "", "ExtraParam3": "", "SiteURL": "",
+                        "WebPage": None, "SiteName": "Vietlott", "OrgPageAlias": None, "PageAlias": None,
+                        "FullPageAlias": None, "RefKey": None, "System": 1}, "GameId": "6", "GameDrawNo": "",
+        "number": "", "DrawDate": "", "ProcessType": 0, "OddEven": 2, "UpperLower": 2, "PageIndex": 1,
+        "TotalRow": 105499}
 
 
 def process_result(params, body, res_json):
@@ -120,7 +94,7 @@ def process_result(params, body, res_json):
 def run(index_to):
     pool = ThreadPoolExecutor(num_thread)
     page_per_task = int(index_to / num_thread)
-    tasks = utils.chunks_iter([
+    tasks = chunks_iter([
         ({}, {'PageIndex': i})
         for i in range(1, index_to)
     ], page_per_task)
