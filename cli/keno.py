@@ -11,8 +11,8 @@ import pytz
 import requests
 from bs4 import BeautifulSoup
 
-from crawler import collections_helper
 import crawler.requests_helper.fetch
+from crawler import collections_helper
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(filename)s::%(lineno)s %(message)s')
 
@@ -30,53 +30,52 @@ name = "Keno"
 url = 'https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameKenoCompareWebPart,Vietlott.PlugIn.WebParts.ashx'
 page_to_run = 34
 num_thread = 5
+
 headers = {
-    "Host": "vietlott.vn",
-    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:73.0) Gecko/20100101 Firefox/73.0",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/109.0",
     "Accept": "*/*",
     "Accept-Language": "en-US,en;q=0.5",
     "Accept-Encoding": "gzip, deflate, br",
     "Content-Type": "text/plain; charset=utf-8",
     "X-AjaxPro-Method": "ServerSideDrawResult",
-    "Content-Length": "706",
-    "Origin": "https://vietlott.vn",
+    "Content-Length": "437",
+    "Origin": "https//vietlott.vn",
     "Connection": "keep-alive",
-    "Referer": "https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno"
+    "Referer": "https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno",
+    "Cookie": "D1N=52a5f96f7aa3046bdd6976a73f9d7b2e",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-origin",
 }
 params = {}
 body = {
     "DrawDate": "",
-    "DrawId": "",
-    "GameDrawId": "",
+    "GameDrawNo": "",
     "GameId": "6",
-    "ORenderInfo": {
-        "ExtraParam1": "",
-        "ExtraParam2": "",
-        "ExtraParam3": "",
-        "FullPageAlias": None,
-        "HttpMediaPathRoot": "https://media.vietlott.vn",
-        "HttpRoot": "http://10.98.20.20",
-        "HttpTempPathRoot": "",
-        "IsPageDesign": False,
-        "MediaPathRoot": "D:\\Portal\\Vietlott\\Media",
-        "OrgPageAlias": None,
-        "PageAlias": None,
-        "PathRoot": "D:\\Portal\\Vietlott\\Frontend\\Web",
-        "RefKey": None,
-        "SiteAlias": "main.vi",
-        "SiteId": "main.frontend.vi",
-        "SiteLang": "vi",
-        "SiteName": "Vietlott",
-        "SiteURL": "",
-        "System": 0,
-        "TempPathRoot": "",
-        "UserSessionId": "",
-        "WebHttpRoot": "http://10.98.20.20",
-        "WebPage": None,
-        "WebPathRoot": "D:\\Portal\\Vietlott\\Frontend\\Web"
-    },
+    "ORenderInfo":
+        {
+            "ExtraParam1": "",
+            "ExtraParam2": "",
+            "ExtraParam3": "",
+            "FullPageAlias": None,
+            "IsPageDesign": False,
+            "OrgPageAlias": None,
+            "PageAlias": None,
+            "RefKey": None,
+            "SiteAlias": "main.vi",
+            "SiteId": "main.frontend.vi",
+            "SiteLang": "vi",
+            "SiteName": "Vietlott",
+            "SiteURL": "",
+            "System": 1,
+            "UserSessionId": "",
+            "WebPage": None
+        },
+    "OddEven": 2,
     "PageIndex": 1,
     "ProcessType": 0,
+    "TotalRow": 112453,
+    "UpperLower": 2,
     "number": ""
 }
 
@@ -122,8 +121,14 @@ def run(index_to):
     pool = ThreadPoolExecutor(num_thread)
     page_per_task = int(index_to / num_thread)
     tasks = collections_helper.chunks_iter([
-        ({}, {'PageIndex': i})
-        for i in range(1, index_to)
+        {
+            'task_id': i,
+            'task_data': {
+                'params': {},
+                'body': {'PageIndex': i}
+            }
+        }
+        for i in range(0, index_to)
     ], page_per_task)
 
     logging.info(f'there are {page_per_task} tasks')
@@ -152,8 +157,8 @@ def main():
 
 
 def main1():
-    res = requests.post(url, json=params, headers=headers)
-    logging.info(res.json())
+    res = requests.post(url, json=body, headers=headers)
+    logging.info(res.text)
 
 
 if __name__ == '__main__':

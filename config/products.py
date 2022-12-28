@@ -15,6 +15,7 @@ class ProductConfig:
     max_value: int
     size_output: int
     interval: timedelta
+    num_thread: int = 5
 
 
 power655_config = ProductConfig(name='power_655',

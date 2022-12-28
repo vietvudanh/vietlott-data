@@ -37,10 +37,13 @@ def fetch_wrapper(url, headers, org_params, org_body, process_result_fn):
                 if not res.ok:
                     logger.error(f'req fail, args={task_data}, code={res.status_code}, text={res.text[:200]}')
                     continue
-
-                result = process_result_fn(params, body, res.json())
-                results.append(result)
-                logger.info(f"task {task_id} done")
+                try:
+                    result = process_result_fn(params, body, res.json())
+                    results.append(result)
+                    logger.info(f"task {task_id} done")
+                except requests.exceptions.JSONDecodeError as e:
+                    logger.error(f'json decode error, args={task_data}, text={res.text[:200]}')
+                    raise e
             logger.info(f'worker done, tasks={tasks_str}')
             return results
 

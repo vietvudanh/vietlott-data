@@ -26,7 +26,7 @@ run_date_str = run_date.strftime(date_fmt)
 
 def main():
     ProductPower655().crawl(1)  # roll every 10 min from 6:00 to 21:55, each page 6  => 16 pages
-    ProductPower645().crawl(1)  # roll every 10 min from 6:00 to 21:55, each page 6  => 16 pages
+    # ProductPower645().crawl(1)  # roll every 10 min from 6:00 to 21:55, each page 6  => 16 pages
 
 
 if __name__ == '__main__':
