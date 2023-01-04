@@ -6,5 +6,10 @@ headers = {
     "Accept": "*/*",
     "Accept-Language": "en-US,en;q=0.5",
     "Content-Type": "text/plain; charset=utf-8",
-    "X-AjaxPro-Method": "ServerSideDrawResult"
+    "X-AjaxPro-Method": "ServerSideDrawResult",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-origin"
 }
+
+TIMEOUT=5

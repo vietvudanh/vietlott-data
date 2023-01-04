@@ -3,15 +3,13 @@ import math
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from typing import List, Dict, re
+from typing import List, Dict
 
 import pandas as pd
-import requests
 from bs4 import BeautifulSoup
 
 from config.products import ProductConfig, get_config
 from crawler import collections_helper
-
 from crawler.requests_helper import fetch, config as requests_config
 
 logger = logging.getLogger(__name__)
@@ -21,7 +19,6 @@ class ProductPower655:
     name = "power_655"
     url = 'https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.Game655CompareWebPart,Vietlott.PlugIn.WebParts.ashx'
     page_to_run = 1  # roll every 2 days
-    num_thread = 20
 
     stored_data_dtype = {
         'date': str,
@@ -66,20 +63,17 @@ class ProductPower655:
 
     product_config: ProductConfig = None
 
-    def _set_cookie_if_not_exist(self):
-        res = requests.post(self.url, data=self.org_body, params=self.org_params)
-        cookie = re.search(r'document.cookie="(.*?)"', res.text).group(1)
-        requests_config.headers["Cookie"] = cookie
-
     def __init__(self):
         self.product_config = get_config(self.name)
+        self.headers = requests_config.headers
 
-    def process_result(self, params, body, res_json) -> List[Dict]:
+    def process_result(self, params, body, res_json, task_data) -> List[Dict]:
         """
         process 645/655 result
         :param params:
         :param body:
         :param res_json:
+        :param task_data:
         :return: list of dict data {date, id, result, page, process_time}
         """
         soup = BeautifulSoup(res_json.get('value', {}).get('HtmlContent'), 'lxml')
@@ -102,24 +96,23 @@ class ProductPower655:
             data.append(row)
         return data
 
-    def crawl(self, index_to: int = 1):
+    def crawl(self, run_date_str: str, index_to: int = 1):
         """
         spawn multiple worker to get data from vietlott
         each worker craw a list of dates
         :param product_config:
         :param index_to: earliest page we want to crawl, default = 1 (1 page)
         """
-        if requests_config.headers.get("Cookie") is None:
-            self._set_cookie_if_not_exist()
 
-        pool = ThreadPoolExecutor(self.num_thread)
+        pool = ThreadPoolExecutor(self.product_config.num_thread)
         page_per_task = math.ceil(index_to / self.product_config.num_thread)
         tasks = collections_helper.chunks_iter([
             {
                 'task_id': i,
                 'task_data': {
                     'params': {},
-                    'body': {'PageIndex': i}
+                    'body': {'PageIndex': i},
+                    'run_date_str': run_date_str,
                 }
             }
             for i in range(0, index_to)
@@ -127,7 +120,8 @@ class ProductPower655:
 
         logger.info(f'there are {page_per_task} tasks')
         fetch_fn = fetch.fetch_wrapper(self.url,
-                                       requests_config.headers, self.org_params, self.org_body,
+                                       requests_config.headers,
+                                       self.org_params, self.org_body,
                                        self.process_result)
 
         results = pool.map(fetch_fn, tasks)
