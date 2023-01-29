@@ -1,7 +1,7 @@
 from datetime import date
 from typing import List
 
-from config.products import get_config
+from vietlott.config.products import get_config
 from model.strategy.base import BaseStrategy
 from model.dataset import load_dataset, gen_random_list
 

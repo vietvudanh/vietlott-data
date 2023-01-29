@@ -1,7 +1,7 @@
 import argparse
 
-from crawler.logger import congig_logging
-from crawler.products import power655
+from vietlott.crawler.logger import congig_logging
+from vietlott.crawler.products import power655
 
 parser = argparse.ArgumentParser('vietlott app')
 parser.add_argument('--product', type=lambda x: x if x in {'power655'} else None, help='product to crawl')

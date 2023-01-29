@@ -6,9 +6,9 @@ import sys
 
 import pytz
 
-import crawler.logger
-from crawler.products.power655 import ProductPower655
-from crawler.products.power645 import ProductPower645
+import vietlott.crawler.logger
+from vietlott.crawler.products.power655 import ProductPower655
+from vietlott.crawler.products.power645 import ProductPower645
 
 logger = logging.getLogger(__name__)
 

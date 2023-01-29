@@ -3,7 +3,7 @@ from typing import List
 import numpy as np
 import pandas as pd
 
-from config.products import get_config
+from vietlott.config.products import get_config
 
 
 def load_dataset(product_name: str):

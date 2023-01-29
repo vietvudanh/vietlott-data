@@ -1,12 +1,10 @@
-#!/usr/bin/env python3
-
 import datetime
 import logging
 import sys
 
 import pytz
 
-from crawler.products.keno import Keno
+from vietlott.crawler.products.keno import Keno
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +21,7 @@ run_date_str = run_date.strftime(date_fmt)
 
 
 def main():
-    Keno().crawl(run_date_str, 1)  # roll every 10 min from 6:00 to 21:55, each page 6  => 16 pages
+    Keno().crawl(run_date_str, 16)  # roll every 10 min from 6:00 to 21:55, each page 6  => 16 pages
 
 
 if __name__ == '__main__':

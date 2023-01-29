@@ -6,7 +6,7 @@ import requests
 from cli.power655 import logger
 
 print(sys.path)
-from crawler.requests_helper import fetch
+from vietlott.crawler.requests_helper import fetch
 
 url = 'https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.Game655CompareWebPart,Vietlott.PlugIn.WebParts.ashx'
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:80.0) Gecko/20100101 Firefox/80.0',
