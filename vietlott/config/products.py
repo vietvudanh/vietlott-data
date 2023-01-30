@@ -3,8 +3,9 @@ from datetime import timedelta
 from pathlib import Path
 
 cwd = Path(__file__).parent
+project_root = Path(__file__).parent.parent
 
-data_dir = cwd.parent / "data"
+data_dir = project_root.parent / "data"
 
 
 @attr.define
@@ -47,6 +48,7 @@ keno_config = ProductConfig(
     interval=timedelta(days=2),
     use_cookies=False,
     default_index_to=6,
+    num_thread=20
 )
 
 product_config_map = {

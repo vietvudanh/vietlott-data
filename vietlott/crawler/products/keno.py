@@ -1,10 +1,13 @@
 import logging
 from typing import List, Dict
 
+import pendulum
 from bs4 import BeautifulSoup
 
 from vietlott.crawler.products.power655 import ProductPower655
 from vietlott.crawler.schema.requests import Keno
+
+logger = logging.getLogger(__name__)
 
 
 class ProductKeno(ProductPower655):
@@ -24,7 +27,21 @@ class ProductKeno(ProductPower655):
         number="",
     )
 
-    def process_result(self, params, body, res_json, task_data) -> List[Dict]:
+    def process_result(self, params, body: dict, res_json: dict, task_data: dict) -> List[Dict]:
+        """process result for keno
+
+        Args:
+            params (dict): _description_
+            body (dict): _description_
+            res_json (dict): _description_
+            task_data (dict): contains keys
+                run_date_str: 
+                    date to run (only get this date)
+
+
+        Returns:
+            List[Dict]: _description_
+        """
         soup = BeautifulSoup(res_json.get("value", {}).get("HtmlContent"), "lxml")
         run_date_str = task_data["run_date_str"]
         data = []
@@ -36,10 +53,13 @@ class ProductKeno(ProductPower655):
 
             #
             td_a = tds[0].find_all("a")
-            row["date"] = td_a[0].text
-            if row["date"] != run_date_str:
-                logging.info("wrong date instance %s != %s", row["date"], run_date_str)
-                continue
+            row["date"] = pendulum.from_format(
+                td_a[0].text, "DD/MM/YYYY"
+            ).to_date_string()
+
+            # if row["date"] != run_date_str:
+            #     logger.error("wrong date instance %s != %s", row["date"], run_date_str)
+            #     continue
 
             row["id"] = td_a[1].text
 

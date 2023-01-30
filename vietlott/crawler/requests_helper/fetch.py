@@ -10,7 +10,7 @@ import requests
 
 from vietlott.crawler.requests_helper.config import TIMEOUT
 
-logger = logging.getLogger("__name__")
+logger = logging.getLogger(__name__)
 
 
 def fetch_wrapper(
@@ -37,14 +37,20 @@ def fetch_wrapper(
         with requests.session() as session:
             if use_cookies:
                 res = session.post(
-                    url, json=org_body.copy(), params={}, headers=headers, timeout=TIMEOUT
+                    url,
+                    json=org_body.copy(),
+                    params={},
+                    headers=headers,
+                    timeout=TIMEOUT,
                 )
                 try:
                     res.json()
                 except JSONDecodeError:
                     # not json then it contains cookies
                     try:
-                        cookie = re.search(r'document.cookie="(.*?)"', res.text).group(1)
+                        cookie = re.search(r'document.cookie="(.*?)"', res.text).group(
+                            1
+                        )
                     except Exception as e:
                         logger.error(
                             f"cannot get cookie from {res.text[:200]}, request={res.request}"

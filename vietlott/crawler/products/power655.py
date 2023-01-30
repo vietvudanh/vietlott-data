@@ -83,7 +83,6 @@ class ProductPower655(BaseProduct):
             tds = tr.find_all("td")
             row = {}
 
-            #
             row["date"] = datetime.strptime(tds[0].text, "%d/%m/%Y").strftime(
                 "%Y-%m-%d"
             )
@@ -101,16 +100,22 @@ class ProductPower655(BaseProduct):
             data.append(row)
         return data
 
-    def crawl(self, run_date_str: str, index_to: int = 1):
+    def crawl(self, run_date_str: str, index_from: int=0, index_to: int = 1):
         """
         spawn multiple worker to get data from vietlott
         each worker craw a list of dates
+
+        crawl from [index_from, index_to)
         :param product_config:
+        :param index_from: latest page we want to crawl, default = 0 (1 page)
         :param index_to: earliest page we want to crawl, default = 1 (1 page)
+            if null then using default index_to in product's config
         """
+        if index_to is None:
+            index_to = self.product_config.default_index_to
 
         pool = ThreadPoolExecutor(self.product_config.num_thread)
-        page_per_task = math.ceil(index_to / self.product_config.num_thread)
+        page_per_task = math.ceil((index_to - index_from) / self.product_config.num_thread)
         tasks = collections_helper.chunks_iter(
             [
                 {
@@ -121,7 +126,7 @@ class ProductPower655(BaseProduct):
                         "run_date_str": run_date_str,
                     },
                 }
-                for i in range(0, index_to)
+                for i in range(index_from, index_to)
             ],
             page_per_task,
         )
@@ -148,7 +153,7 @@ class ProductPower655(BaseProduct):
         list_data = []
         for date, date_items in date_dict.items():
             list_data += date_items
-        print(list_data)
+        
         df_crawled = pd.DataFrame(list_data)
         logger.info(
             f'crawled data min_date={df_crawled["date"].min()}, max_date={df_crawled["date"].max()}'
