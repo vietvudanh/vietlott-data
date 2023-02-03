@@ -13,6 +13,8 @@ poetry run python cli.py keno
 poetry run python cli.py power_655
 poetry run python cli.py power_645
 
+poetry run python render_readme.py
+
 #if [[ ! -d "$FOLDER" ]] ; then
 #  git clone $URL $FOLDER
 #fi
