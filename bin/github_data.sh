@@ -9,9 +9,9 @@ EMAIl="vietvudanh@gmail.com"
 
 # generate data file
 # python keno.py $1
-python cli.py keno
-python cli.py power_655
-python cli.py power_645
+poetry run python cli.py keno
+poetry run python cli.py power_655
+poetry run python cli.py power_645
 
 #if [[ ! -d "$FOLDER" ]] ; then
 #  git clone $URL $FOLDER
