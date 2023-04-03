@@ -1,3 +1,4 @@
+from datetime import date
 from typing import List
 
 import numpy as np
@@ -9,7 +10,11 @@ from vietlott.config.products import get_config
 def load_dataset(product_name: str):
     """load dataset from given product_name"""
     p_config = get_config(product_name)
-    return pd.read_json(p_config.raw_path, lines=True)
+    df = pd.read_json(p_config.raw_path, lines=True, dtype={
+        'date' : date,
+    })
+
+    return df
 
 
 def gen_random_list(min_val: int, max_val: int, size: int) -> List[int]:

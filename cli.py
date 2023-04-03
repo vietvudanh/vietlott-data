@@ -1,12 +1,20 @@
+import importlib
+
 import click
 import pendulum
 
-import vietlott.crawler.logger
 from vietlott.config.products import product_config_map
 from vietlott.crawler.products import BaseProduct, ProductPower655, ProductPower645, ProductKeno
+from vietlott.model.backtest.base import Backtest
+from vietlott.model.strategy.base import BaseStrategy
 
 
-@click.command()
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
 @click.pass_context
 @click.argument('product')
 @click.option('--run-date', default=pendulum.now(tz='Asia/Ho_Chi_Minh').to_date_string())
@@ -33,5 +41,14 @@ def crawl(ctx, product, run_date, index_from, index_to):
     )
 
 
+@cli.command()
+@click.argument('product')
+@click.argument('strategy')
+def backtest(product, strategy):
+    """backtest a product with a strategy"""
+    strategy: BaseStrategy = getattr(importlib.import_module("vietlott.model.strategy"), strategy)
+    Backtest(product, strategy).backtest()
+
+
 if __name__ == "__main__":
-    crawl()
+    cli()
