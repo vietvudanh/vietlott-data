@@ -1,8 +1,11 @@
-from io import StringIO
 from datetime import datetime, timedelta
-from traceback import format_tb
-import pandas as pd
+from io import StringIO
 from pathlib import Path
+
+import pandas as pd
+
+from vietlott.model.strategy.random import RandomModel
+
 
 def read_data(data_dir: Path):
     df_files = [
@@ -14,12 +17,14 @@ def read_data(data_dir: Path):
     df = pd.concat(df_files, axis='rows')
     return df
 
+
 def read_data_str(data_dir: Path):
     string = ""
     for file in data_dir.glob('*.jsonl'):
         string += file.open('r').read()
     df = pd.read_json(StringIO(string), lines=True, dtype=object, convert_dates=False)
     return df
+
 
 def main():
     df = pd.read_json('./data/power655.jsonl', lines=True, dtype=object, convert_dates=False)
@@ -33,6 +38,7 @@ def main():
         )
         stats['%'] = (stats['count'] / len(df_explode) * 100).round(2)
         return stats
+
     stats = fn_stats(df)
 
     # stats n months
@@ -41,7 +47,23 @@ def main():
     stats_60d = fn_stats(df[df['date'] >= (datetime.now().date() - timedelta(days=60))])
     stats_90d = fn_stats(df[df['date'] >= (datetime.now().date() - timedelta(days=90))])
 
+    # predictions
+    ticket_per_days = 10
+    random_model = RandomModel(df, ticket_per_days)
+    random_model.backtest()
+    random_model.evaluate()
+    df_random_correct = random_model.df_backtest[
+        random_model.df_backtest['correct_num'] >= 5
+        ][['date', 'result', 'predicted']]
+
     output_str = f"""#Vietlot data
+## Predictions (just for testing, not a financial advice)
+Thes are backtest results for the strategies I have developed
+### random
+predicted: {ticket_per_days} / day ({ticket_per_days} tickets perday)
+predicted corrected:
+{df_random_correct.to_markdown()} 
+
 ## raw details 6/55
 {df.head(10).to_markdown(index=False)}
 ## stats 6/55 all time
@@ -57,6 +79,7 @@ def main():
 """
     with Path('readme.md').open('w') as ofile:
         ofile.write(output_str)
+
 
 if __name__ == "__main__":
     main()
