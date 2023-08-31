@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="PY-232.8660.197">
+    <data-source name="Hive Metastore" uuid="ba9ade8a-8a6b-4384-af3f-72932ba33aee">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="HIVE" exact-version="0" />
+      <schema-mapping />
+    </data-source>
+  </component>
+</project>
