@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aa2cca6-624d-45b4-b258-d50e9b6c9afb" name="Changes" comment="update">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/crawl.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/crawl.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/power645.jsonl" beforeDir="false" afterPath="$PROJECT_DIR$/data/power645.jsonl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/vietlott/crawler/products/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/power655.py" beforeDir="false" afterPath="$PROJECT_DIR$/vietlott/crawler/products/power655.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/requests_helper/fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/vietlott/crawler/requests_helper/fetch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/tests/test_crawler/test_fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/vietlott/tests/test_crawler/test_fetch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render_readme.py" beforeDir="false" afterPath="$PROJECT_DIR$/render_readme.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +102,7 @@
       <option name="presentableId" value="Default" />
       <updated>1693461548475</updated>
       <workItem from="1693461549660" duration="3449000" />
-      <workItem from="1693553708708" duration="6541000" />
+      <workItem from="1693553708708" duration="6826000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <option name="closed" value="true" />
@@ -149,7 +144,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693574820635</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="update">
+      <option name="closed" value="true" />
+      <created>1693577653612</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1693577653612</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

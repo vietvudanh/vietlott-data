@@ -48,7 +48,7 @@ def main():
     stats_90d = fn_stats(df[df['date'] >= (datetime.now().date() - timedelta(days=90))])
 
     # predictions
-    ticket_per_days = 10
+    ticket_per_days = 20
     random_model = RandomModel(df, ticket_per_days)
     random_model.backtest()
     random_model.evaluate()
@@ -58,9 +58,9 @@ def main():
 
     output_str = f"""#Vietlot data
 ## Predictions (just for testing, not a financial advice)
-Thes are backtest results for the strategies I have developed
+These are backtest results for the strategies I have developed
 ### random
-predicted: {ticket_per_days} / day ({ticket_per_days} tickets perday)
+predicted: {ticket_per_days} / day ({ticket_per_days} tickets perday or {10000 * ticket_per_days:,d} vnd)
 predicted corrected:
 {df_random_correct.to_markdown()} 
 
