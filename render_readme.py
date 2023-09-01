@@ -52,8 +52,8 @@ def main():
     random_model = RandomModel(df, ticket_per_days)
     random_model.backtest()
     random_model.evaluate()
-    df_random_correct = random_model.df_backtest[
-        random_model.df_backtest['correct_num'] >= 5
+    df_random_correct = random_model.df_backtest_evaluate[
+        random_model.df_backtest_evaluate['correct_num'] >= 5
         ][['date', 'result', 'predicted']]
 
     output_str = f"""#Vietlot data
