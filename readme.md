@@ -2,11 +2,10 @@
 ## Predictions (just for testing, not a financial advice)
 Thes are backtest results for the strategies I have developed
 ### random
-predicted: 20 / day (20 tickets perday or 200,000 vnd)
+predicted: 10 / day (10 tickets perday)
 predicted corrected:
-|      | date       | result                      | predicted               |
-|-----:|:-----------|:----------------------------|:------------------------|
-| 7949 | 2021-01-09 | [10, 19, 24, 29, 46, 48, 5] | [5, 46, 29, 10, 24, 13] | 
+| date   | result   | predicted   |
+|--------|----------|-------------| 
 
 ## raw details 6/55
 | date       |    id | result                       |   page | process_time               |
