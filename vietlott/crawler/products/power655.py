@@ -63,8 +63,6 @@ class ProductPower655(BaseProduct):
 
     def __init__(self):
         super(ProductPower655, self).__init__()
-        self.product_config = get_config(self.name)
-        self.headers = requests_config.headers
 
     def process_result(self, params, body, res_json, task_data) -> List[Dict]:
         """
@@ -108,7 +106,7 @@ class ProductPower655(BaseProduct):
         crawl from [index_from, index_to)
         :param product_config:
         :param index_from: latest page we want to crawl, default = 0 (1 page)
-        :param index_to: earliest page we want to crawl, default = 1 (1 page)
+        :param index_to: the earliest page we want to crawl, default = 1 (1 page)
             if null then using default index_to in product's config
         """
         if index_to is None:
@@ -138,7 +136,7 @@ class ProductPower655(BaseProduct):
             self.org_params,
             cattrs.unstructure(self.org_body),
             self.process_result,
-            self.product_config.use_cookies,
+            self.cookies
         )
 
         results = pool.map(fetch_fn, tasks)

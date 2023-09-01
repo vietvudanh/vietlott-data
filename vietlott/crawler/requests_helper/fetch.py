@@ -1,10 +1,9 @@
 """
 fetch data utilities
 """
-from json import JSONDecodeError
 import logging
 import re
-from typing import Callable, Optional
+from typing import Callable, Optional, Tuple
 
 import requests
 
@@ -13,13 +12,20 @@ from vietlott.crawler.requests_helper.config import TIMEOUT
 logger = logging.getLogger(__name__)
 
 
+def get_vietlott_cookie() -> Tuple[str, dict]:
+    res = requests.get('https://vietlott.vn/ajaxpro/')
+    cookie = re.search(r'document.cookie="(.*?)"', res.text).group(1)
+    cookies = {cookie.split("=")[0]: cookie.split("=")[1]}
+    return cookie, cookies
+
+
 def fetch_wrapper(
-    url: str,
-    headers: Optional[dict],
-    org_params: Optional[dict],
-    org_body: dict,
-    process_result_fn: Callable,
-    use_cookies: bool = True,
+        url: str,
+        headers: Optional[dict],
+        org_params: Optional[dict],
+        org_body: dict,
+        process_result_fn: Callable,
+        cookies: dict
 ):
     """
     return a fn to fetch data for a set of params and body
@@ -35,29 +41,6 @@ def fetch_wrapper(
         tasks_str = ",".join(str(t["task_id"]) for t in tasks)
         logger.info(f"worker start, tasks={tasks_str}")
         _headers = headers.copy()
-        if use_cookies:
-            res = requests.post(
-                url,
-                json=org_body.copy(),
-                params={},
-                headers=_headers,
-                timeout=TIMEOUT,
-            )
-            try:
-                res.json()
-            except JSONDecodeError:
-                # not json then it contains cookies
-                try:
-                    cookie = re.search(r'document.cookie="(.*?)"', res.text).group(1)
-                    _headers['Cookie'] = cookie
-                except Exception as e:
-                    logger.error(f"cannot get cookie from {res.text[:200]}, request={res.request}")
-                    # raise Exception(f"cannot get cookie from {res.text[:200]}")
-                cookies = {cookie.split("=")[0]: cookie.split("=")[1]}
-            else:
-                cookies = None
-        else:
-            cookies = None
 
         results = []
         for task in tasks:
