@@ -1,8 +1,8 @@
 #Vietlot data
 ## Predictions (just for testing, not a financial advice)
-Thes are backtest results for the strategies I have developed
+These are backtest results for the strategies I have developed
 ### random
-predicted: 10 / day (10 tickets perday)
+predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
 | date   | result   | predicted   |
 |--------|----------|-------------| 
