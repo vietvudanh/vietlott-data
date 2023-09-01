@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aa2cca6-624d-45b4-b258-d50e9b6c9afb" name="Changes" comment="update">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vietlott.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vietlott.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pdm.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pdm.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/requests_helper/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/vietlott/crawler/requests_helper/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/requests_helper/fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/vietlott/crawler/requests_helper/fetch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/tests/test_crawler/test_fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/vietlott/tests/test_crawler/test_fetch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/model/strategy/random.py" beforeDir="false" afterPath="$PROJECT_DIR$/vietlott/model/strategy/random.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +85,7 @@
       <option name="presentableId" value="Default" />
       <updated>1693461548475</updated>
       <workItem from="1693461549660" duration="3449000" />
-      <workItem from="1693553708708" duration="1984000" />
+      <workItem from="1693553708708" duration="2652000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <option name="closed" value="true" />
@@ -102,7 +95,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693462743499</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="update">
+      <option name="closed" value="true" />
+      <created>1693555756576</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1693555756576</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -114,7 +115,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/vietlott$power655__1_.coverage" NAME="power655 Coverage Results" MODIFIED="1672275759946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cli" />
-    <SUITE FILE_PATH="coverage/vietlott$.coverage" NAME=" Coverage Results" MODIFIED="1693555736653" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vietlott/tests/test_crawler" />
+    <SUITE FILE_PATH="coverage/vietlott$.coverage" NAME=" Coverage Results" MODIFIED="1693555747141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vietlott/tests/test_crawler" />
     <SUITE FILE_PATH="coverage/vietlott_data$config.coverage" NAME="config Coverage Results" MODIFIED="1693462680666" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vietlott/crawler/requests_helper" />
     <SUITE FILE_PATH="coverage/vietlott$power655.coverage" NAME="power655 Coverage Results" MODIFIED="1672623042338" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cli" />
     <SUITE FILE_PATH="coverage/vietlott$utils.coverage" NAME="utils Coverage Results" MODIFIED="1600511012443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
