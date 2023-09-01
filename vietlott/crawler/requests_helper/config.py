@@ -12,7 +12,7 @@ cwd = Path(__file__).parent
 #     "Sec-Fetch-Site": "same-origin"
 # }
 
-headers = headers = {
+headers = {
     "Host": "vietlott.vn",
     "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/117.0",
     "Accept": "*/*",
@@ -24,7 +24,7 @@ headers = headers = {
     "Origin": "https://vietlott.vn",
     "Connection": "keep-alive",
     "Referer": "https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-655",
-    "Cookie": "D1N=7b695249404db5f5d9fe24138282d3e4",
+    # "Cookie": "D1N=4ba207a670090cbab6b026f2d64e4d5b",
     "Sec-Fetch-Dest": "empty",
     "Sec-Fetch-Mode": "cors",
     "Sec-Fetch-Site": "same-origin",

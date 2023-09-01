@@ -21,5 +21,7 @@ readme = "README.md"
 license = {text = "MIT"}
 
 [project.optional-dependencies]
-dev = ["pytest"]
+dev = [
+    "pytest>=7.4.0",
+]
 
