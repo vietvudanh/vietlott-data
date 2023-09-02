@@ -3,7 +3,7 @@ from datetime import timedelta
 from pathlib import Path
 
 cwd = Path(__file__).parent
-project_root = Path(__file__).parent.parent
+project_root = Path(__file__).parent.parent.parent
 
 data_dir = project_root.parent / "data"
 
@@ -19,6 +19,7 @@ class ProductConfig:
     num_thread: int = 10
     use_cookies: bool = True
     default_index_to: int = 1
+    page_size: int = 6
 
 
 power655_config = ProductConfig(
@@ -47,8 +48,9 @@ keno_config = ProductConfig(
     size_output=6,
     interval=timedelta(days=2),
     use_cookies=True,
-    default_index_to=6,
-    num_thread=20
+    default_index_to=24,
+    num_thread=20,
+    page_size=6,
 )
 
 product_config_map = {

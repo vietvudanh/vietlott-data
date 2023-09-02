@@ -9,9 +9,9 @@ EMAIl="vietvudanh@gmail.com"
 
 # generate data file
 # python keno.py $1
-python cli.py keno
-python cli.py power_655
-python cli.py power_645
+python src/cli/crawl.py keno
+python src/cli/crawl.py power_655
+python src/cli/crawl.py power_645
 
 python render_readme.py
 

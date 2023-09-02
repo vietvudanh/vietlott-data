@@ -5,13 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aa2cca6-624d-45b4-b258-d50e9b6c9afb" name="Changes" comment="update">
-      <change beforePath="$PROJECT_DIR$/.github/workflows/crawl.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/crawl.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cli/missing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vietlott/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/vietlott/tests/test_crawler/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vietlott.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vietlott.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/github_data.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/github_data.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cli.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cli/crawl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/keno.jsonl" beforeDir="false" afterPath="$PROJECT_DIR$/data/keno.jsonl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/power655.jsonl" beforeDir="false" afterPath="$PROJECT_DIR$/data/power655.jsonl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements-dev.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/tests/test_crawler/test_fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/vietlott/tests/test_crawler/test_fetch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pdm.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pdm.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render_readme.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/render_readme.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/config/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/config/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/config/products.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cli/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/cli/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/cli/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/collections_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/collections_helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/keno.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/keno.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/power645.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/power645.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/power655.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/power655.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/requests_helper/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/config/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/requests_helper/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/requests_helper/fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/fetch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/schema/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/schema/requests.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/schema/requests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/crawler/schema/response.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/schema/response.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/model/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/model/strategy/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/schema/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/model/strategy/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/model/strategy/base.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/model/strategy/not_repeat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/model/strategy/not_repeat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/model/strategy/random.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/model/strategy/random.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/model/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/tests/test_crawler/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/model/strategy/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/tests/test_crawler/test_fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/tests/test_crawler/test_fetch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vietlott/tests/test_crawler/test_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/tests/test_crawler/test_schema.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +91,13 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python tests.Python tests for test_fetch.test_power_655">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+      <recent name="$PROJECT_DIR$/src/vietlott/cli" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python tests.Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_645">
     <configuration name="cli power_655" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="vietlott" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -83,7 +121,7 @@
           <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
         </ENTRIES>
       </EXTENSION>
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/cli.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/vietlott/cli/crawl.py" />
       <option name="PARAMETERS" value="power_655" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -92,46 +130,46 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for test_fetch.test_power_645" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_645" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="vietlott" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/vietlott/tests/test_crawler" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/vietlott/tests/test_crawler" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_fetch.test_power_645&quot;" />
+      <option name="_new_target" value="&quot;src.vietlott.tests.test_crawler.test_fetch.test_power_645&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
-    <configuration name="Python tests for test_fetch.test_power_655" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+    <configuration name="Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_655" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
       <module name="vietlott" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/vietlott/tests/test_crawler" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/vietlott/tests/test_crawler" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
-      <option name="_new_target" value="&quot;test_fetch.test_power_655&quot;" />
+      <option name="_new_target" value="&quot;src.vietlott.tests.test_crawler.test_fetch.test_power_655&quot;" />
       <option name="_new_targetType" value="&quot;PYTHON&quot;" />
       <method v="2" />
     </configuration>
     <list>
       <item itemvalue="Python.cli power_655" />
-      <item itemvalue="Python tests.Python tests for test_fetch.test_power_645" />
-      <item itemvalue="Python tests.Python tests for test_fetch.test_power_655" />
+      <item itemvalue="Python tests.Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_645" />
+      <item itemvalue="Python tests.Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_655" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python tests.Python tests for test_fetch.test_power_655" />
+        <item itemvalue="Python tests.Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_645" />
+        <item itemvalue="Python tests.Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_655" />
         <item itemvalue="Python.cli power_655" />
-        <item itemvalue="Python tests.Python tests for test_fetch.test_power_645" />
       </list>
     </recent_temporary>
   </component>
@@ -145,7 +183,7 @@
       <updated>1693461548475</updated>
       <workItem from="1693461549660" duration="3449000" />
       <workItem from="1693553708708" duration="7806000" />
-      <workItem from="1693662729108" duration="1673000" />
+      <workItem from="1693662729108" duration="6878000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <option name="closed" value="true" />
@@ -203,7 +241,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693577924881</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="update">
+      <option name="closed" value="true" />
+      <created>1693664415208</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1693664415208</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -213,9 +259,20 @@
     <MESSAGE value="update" />
     <option name="LAST_COMMIT_MESSAGE" value="update" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/vietlott/crawler/logger.py</url>
+          <line>16</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/vietlott$power655__1_.coverage" NAME="power655 Coverage Results" MODIFIED="1672275759946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cli" />
-    <SUITE FILE_PATH="coverage/vietlott$.coverage" NAME=" Coverage Results" MODIFIED="1693664304117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vietlott/tests/test_crawler" />
+    <SUITE FILE_PATH="coverage/vietlott$.coverage" NAME=" Coverage Results" MODIFIED="1693665017886" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/vietlott/tests/test_crawler" />
     <SUITE FILE_PATH="coverage/vietlott$power655.coverage" NAME="power655 Coverage Results" MODIFIED="1672623042338" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cli" />
     <SUITE FILE_PATH="coverage/vietlott$utils.coverage" NAME="utils Coverage Results" MODIFIED="1600511012443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/vietlott$keno__1_.coverage" NAME="keno Coverage Results" MODIFIED="1672150181938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cli" />

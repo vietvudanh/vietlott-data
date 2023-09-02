@@ -1,21 +1,19 @@
-import logging
 import math
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from typing import Optional, List, Dict
-import cattrs
 
+import cattrs
 import pandas as pd
 from bs4 import BeautifulSoup
+from loguru import logger
 
-from vietlott.config.products import ProductConfig, get_config
+from vietlott.config.products import ProductConfig
 from vietlott.crawler import collections_helper
-from vietlott.crawler.requests_helper import fetch, config as requests_config
 from vietlott.crawler.products.base import BaseProduct
+from vietlott.crawler.requests_helper import config as requests_config, fetch
 from vietlott.crawler.schema.requests import RequestPower655, ORenderInfoCls
-
-logger = logging.getLogger(__name__)
 
 
 class ProductPower655(BaseProduct):
@@ -98,7 +96,7 @@ class ProductPower655(BaseProduct):
             data.append(row)
         return data
 
-    def crawl(self, run_date_str: str, index_from: int=0, index_to: int = 1):
+    def crawl(self, run_date_str: str, index_from: int = 0, index_to: int = 1):
         """
         spawn multiple worker to get data from vietlott
         each worker craw a list of dates
@@ -151,7 +149,7 @@ class ProductPower655(BaseProduct):
         list_data = []
         for date, date_items in date_dict.items():
             list_data += date_items
-        
+
         df_crawled = pd.DataFrame(list_data)
         logger.info(
             f'crawled data min_date={df_crawled["date"].min()}, max_date={df_crawled["date"].max()}'
@@ -171,7 +169,7 @@ class ProductPower655(BaseProduct):
             df_final = pd.concat([current_data, df_take], axis="rows")
         else:
             df_final = df_crawled
-        df_final = df_final.sort_values(by="date")
+        df_final = df_final.sort_values(by=["date", "id"])
 
         logger.info(
             f'final data min_date={df_final["date"].min()}, max_date={df_final["date"].max()}'

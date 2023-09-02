@@ -25,5 +25,5 @@ class BaseProduct:
     def process_result(self, params, body, res_json, task_data):
         pass
 
-    def crawl(self, run_date_str, index_to):
+    def crawl(self, run_date_str, index_from, index_to):
         pass

@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from vietlott.crawler.products.power655 import ProductPower655
 from vietlott.crawler.schema.requests import Keno
 
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 
 class ProductKeno(ProductPower655):

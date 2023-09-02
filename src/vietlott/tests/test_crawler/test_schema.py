@@ -1,6 +1,4 @@
-from vietlott.crawler.products.power655 import ProductPower655
 import cattrs
-import json
 
 from vietlott.crawler.schema.requests import RequestPower655, ORenderInfoCls
 

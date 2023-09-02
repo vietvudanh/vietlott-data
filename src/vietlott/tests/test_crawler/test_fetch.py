@@ -7,7 +7,7 @@ from vietlott.crawler.requests_helper.fetch import fetch_wrapper, get_vietlott_c
 
 
 def test_power_655():
-    def _fn(parms, body, parsed_json, task_data):
+    def _fn(params, body, parsed_json, task_data):
         return parsed_json
 
     vietlott_cookie, cookies = get_vietlott_cookie()
@@ -27,7 +27,7 @@ def test_power_655():
 
 
 def test_power_645():
-    def _fn(parms, body, parsed_json, task_data):
+    def _fn(params, body, parsed_json, task_data):
         return parsed_json
 
     vietlott_cookie, cookies = get_vietlott_cookie()

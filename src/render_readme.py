@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pandas as pd
 
+from vietlott.config.products import get_config
 from vietlott.model.strategy.random import RandomModel
 
 
@@ -27,7 +28,7 @@ def read_data_str(data_dir: Path):
 
 
 def main():
-    df = pd.read_json('./data/power655.jsonl', lines=True, dtype=object, convert_dates=False)
+    df = pd.read_json(get_config('power_655').raw_path, lines=True, dtype=object, convert_dates=False)
     df['date'] = pd.to_datetime(df['date']).dt.date
     df = df.sort_values(by=['date', 'id'], ascending=False)
 
@@ -77,7 +78,7 @@ predicted corrected:
 ## stats 6/55 -90d
 {stats_90d.to_markdown()}
 """
-    with Path('readme.md').open('w') as ofile:
+    with Path('../readme.md').open('w') as ofile:
         ofile.write(output_str)
 
 

@@ -9,7 +9,7 @@ import requests
 
 from vietlott.crawler.requests_helper.config import TIMEOUT
 
-logger = logging.getLogger(__name__)
+from loguru import logger
 
 
 def get_vietlott_cookie() -> Tuple[str, dict]:

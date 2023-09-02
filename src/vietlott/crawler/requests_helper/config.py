@@ -31,4 +31,4 @@ headers = {
     "TE": "trailers"
 }
 
-TIMEOUT=5
+TIMEOUT=10
