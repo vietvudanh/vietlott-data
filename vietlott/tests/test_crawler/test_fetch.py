@@ -17,7 +17,7 @@ def test_power_655():
         ProductPower655.org_params,
         cattrs.unstructure(ProductPower655.org_body),
         _fn,
-        True,
+        cookies,
     )
     resp = fn_fetch(
         [{"task_id": "1", "task_data": {"params": {}, "body": {"PageIndex": 1}}}]
