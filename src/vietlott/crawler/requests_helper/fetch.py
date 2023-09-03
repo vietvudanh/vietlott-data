@@ -39,7 +39,7 @@ def fetch_wrapper(
         :return:
         """
         tasks_str = ",".join(str(t["task_id"]) for t in tasks)
-        logger.info(f"worker start, tasks={tasks_str}")
+        logger.debug(f"worker start, tasks_ids={tasks_str}")
         _headers = headers.copy()
 
         results = []
@@ -68,13 +68,13 @@ def fetch_wrapper(
             try:
                 result = process_result_fn(params, body, res.json(), task_data)
                 results.append(result)
-                logger.info(f"task {task_id} done")
+                logger.debug(f"task {task_id} done")
             except requests.exceptions.JSONDecodeError as e:
                 logger.error(
                     f"json decode error, args={task_data}, text={res.text[:200]}, headers={headers}, cookies={cookies}, body={body}, params={params}"
                 )
                 raise e
-        logger.info(f"worker done, tasks={tasks_str}")
+        logger.debug(f"worker done, tasks={tasks_str}")
         return results
 
     return fetch

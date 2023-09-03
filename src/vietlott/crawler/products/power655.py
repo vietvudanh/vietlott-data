@@ -110,6 +110,9 @@ class ProductPower655(BaseProduct):
         if index_to is None:
             index_to = self.product_config.default_index_to
 
+        if index_to == index_from:
+            index_to += 1
+
         pool = ThreadPoolExecutor(self.product_config.num_thread)
         page_per_task = math.ceil((index_to - index_from) / self.product_config.num_thread)
         tasks = collections_helper.chunks_iter(
@@ -122,12 +125,12 @@ class ProductPower655(BaseProduct):
                         "run_date_str": run_date_str,
                     },
                 }
-                for i in range(index_from, index_to)
+                for i in range(index_from, index_to+1)
             ],
             page_per_task,
         )
 
-        logger.info(f"there are {page_per_task} tasks")
+        logger.info(f"there are {index_to - index_from} pages, from {index_from}->{index_to}, {page_per_task} page per task")
         fetch_fn = fetch.fetch_wrapper(
             self.url,
             requests_config.headers,
@@ -152,7 +155,8 @@ class ProductPower655(BaseProduct):
 
         df_crawled = pd.DataFrame(list_data)
         logger.info(
-            f'crawled data min_date={df_crawled["date"].min()}, max_date={df_crawled["date"].max()}'
+            f'crawled data date: min={df_crawled["date"].min()}, max={df_crawled["date"].max()}'
+            + f' id min={df_crawled["id"].min()}, max={df_crawled["id"].max()}'
             + f", records={len(df_crawled)}"
         )
 
@@ -162,7 +166,8 @@ class ProductPower655(BaseProduct):
                 self.product_config.raw_path, lines=True, dtype=self.stored_data_dtype
             )
             logger.info(
-                f'current data min_date={current_data["date"].min()}, max_date={current_data["date"].max()}'
+                f'current data date min={current_data["date"].min()}, max={current_data["date"].max()}'
+                + f' id min={current_data["id"].min()}, max={current_data["id"].max()}'
                 + f", records={len(current_data)}"
             )
             df_take = df_crawled[~df_crawled["id"].isin(current_data["id"])]

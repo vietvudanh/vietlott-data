@@ -5,45 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7aa2cca6-624d-45b4-b258-d50e9b6c9afb" name="Changes" comment="update">
-      <change afterPath="$PROJECT_DIR$/src/cli/missing.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/vietlott/tests/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/vietlott/tests/test_crawler/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vietlott.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vietlott.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/github_data.sh" beforeDir="false" afterPath="$PROJECT_DIR$/bin/github_data.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cli.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cli/crawl.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/keno.jsonl" beforeDir="false" afterPath="$PROJECT_DIR$/data/keno.jsonl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/power655.jsonl" beforeDir="false" afterPath="$PROJECT_DIR$/data/power655.jsonl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pdm.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pdm.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/render_readme.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/render_readme.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/config/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/config/products.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/config/products.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cli/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/cli/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/cli/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/collections_helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/collections_helper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/logger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/keno.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/keno.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/power645.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/power645.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/products/power655.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/power655.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/requests_helper/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/config/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/requests_helper/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/requests_helper/fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/fetch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/schema/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/schema/requests.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/schema/requests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/crawler/schema/response.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/schema/response.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/model/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/model/strategy/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/schema/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/model/strategy/base.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/model/strategy/base.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/model/strategy/not_repeat.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/model/strategy/not_repeat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/model/strategy/random.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/model/strategy/random.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/tests/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/model/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/tests/test_crawler/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/model/strategy/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/tests/test_crawler/test_fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/tests/test_crawler/test_fetch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vietlott/tests/test_crawler/test_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/tests/test_crawler/test_schema.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cli/missing.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cli/missing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/vietlott/crawler/products/power655.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/power655.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/fetch.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -183,7 +149,7 @@
       <updated>1693461548475</updated>
       <workItem from="1693461549660" duration="3449000" />
       <workItem from="1693553708708" duration="7806000" />
-      <workItem from="1693662729108" duration="6878000" />
+      <workItem from="1693662729108" duration="14328000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <option name="closed" value="true" />
@@ -249,7 +215,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693664415208</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="update">
+      <option name="closed" value="true" />
+      <created>1693669790485</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1693669790485</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
