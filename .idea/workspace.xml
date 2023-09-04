@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7aa2cca6-624d-45b4-b258-d50e9b6c9afb" name="Changes" comment="update">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/keno.jsonl" beforeDir="false" afterPath="$PROJECT_DIR$/data/keno.jsonl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cli/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/cli/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cli/crawl.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/cli/crawl.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cli/missing.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/cli/missing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/config.py" afterDir="false" />
-    </list>
+    <list default="true" id="7aa2cca6-624d-45b4-b258-d50e9b6c9afb" name="Changes" comment="update" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -187,7 +179,7 @@
       <updated>1693461548475</updated>
       <workItem from="1693461549660" duration="3449000" />
       <workItem from="1693553708708" duration="7806000" />
-      <workItem from="1693662729108" duration="27076000" />
+      <workItem from="1693662729108" duration="27267000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <option name="closed" value="true" />
@@ -269,7 +261,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693728153952</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="update">
+      <option name="closed" value="true" />
+      <created>1693808277612</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1693808277612</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
