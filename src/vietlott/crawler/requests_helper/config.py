@@ -1,4 +1,5 @@
-from pathlib import  Path
+from pathlib import Path
+
 cwd = Path(__file__).parent
 
 # headers = {
@@ -31,4 +32,4 @@ headers = {
     "TE": "trailers"
 }
 
-TIMEOUT=10
+TIMEOUT = 20

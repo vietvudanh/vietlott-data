@@ -7,9 +7,11 @@
     <list default="true" id="7aa2cca6-624d-45b4-b258-d50e9b6c9afb" name="Changes" comment="update">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/keno.jsonl" beforeDir="false" afterPath="$PROJECT_DIR$/data/keno.jsonl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/cli/missing.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/cli/missing.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vietlott/crawler/products/power655.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/products/power655.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/fetch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/fetch.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cli/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/cli/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cli/crawl.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/cli/crawl.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cli/missing.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/cli/missing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vietlott/crawler/requests_helper/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,17 +61,19 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/vietlott" />
       <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/src/vietlott/cli" />
     </key>
   </component>
-  <component name="RunManager" selected="Python tests.Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_645">
-    <configuration name="cli power_655" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.missing keno">
+    <configuration name="cli keno" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="vietlott" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="LOGURU_LEVEL" value="INFO" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -88,7 +92,40 @@
         </ENTRIES>
       </EXTENSION>
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/vietlott/cli/crawl.py" />
-      <option name="PARAMETERS" value="power_655" />
+      <option name="PARAMETERS" value="keno" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="missing keno" type="PythonConfigurationType" factoryName="Python">
+      <module name="vietlott" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="LOGURU_LEVEL" value="INFO" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/vietlott/cli/missing.py" />
+      <option name="PARAMETERS" value="keno" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -127,15 +164,16 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.cli power_655" />
+      <item itemvalue="Python.missing keno" />
+      <item itemvalue="Python.cli keno" />
       <item itemvalue="Python tests.Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_645" />
       <item itemvalue="Python tests.Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_655" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.cli keno" />
         <item itemvalue="Python tests.Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_645" />
         <item itemvalue="Python tests.Python tests for src.vietlott.tests.test_crawler.test_fetch.test_power_655" />
-        <item itemvalue="Python.cli power_655" />
       </list>
     </recent_temporary>
   </component>
@@ -149,7 +187,7 @@
       <updated>1693461548475</updated>
       <workItem from="1693461549660" duration="3449000" />
       <workItem from="1693553708708" duration="7806000" />
-      <workItem from="1693662729108" duration="14328000" />
+      <workItem from="1693662729108" duration="27076000" />
     </task>
     <task id="LOCAL-00001" summary="update">
       <option name="closed" value="true" />
@@ -223,7 +261,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693669790485</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="update">
+      <option name="closed" value="true" />
+      <created>1693728153952</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1693728153952</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,6 +294,7 @@
     <SUITE FILE_PATH="coverage/vietlott$power655__1_.coverage" NAME="power655 Coverage Results" MODIFIED="1672275759946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cli" />
     <SUITE FILE_PATH="coverage/vietlott$.coverage" NAME=" Coverage Results" MODIFIED="1693665017886" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/vietlott/tests/test_crawler" />
     <SUITE FILE_PATH="coverage/vietlott$power655.coverage" NAME="power655 Coverage Results" MODIFIED="1672623042338" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cli" />
+    <SUITE FILE_PATH="coverage/vietlott$missing_keno.coverage" NAME="missing keno Coverage Results" MODIFIED="1693792076516" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/vietlott$utils.coverage" NAME="utils Coverage Results" MODIFIED="1600511012443" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/vietlott$keno__1_.coverage" NAME="keno Coverage Results" MODIFIED="1672150181938" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cli" />
     <SUITE FILE_PATH="coverage/vietlott$keno.coverage" NAME="keno Coverage Results" MODIFIED="1672992920344" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cli" />
@@ -255,7 +302,7 @@
     <SUITE FILE_PATH="coverage/vietlott$sam.coverage" NAME="sam Coverage Results" MODIFIED="1600510003901" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/vietlott$sth.coverage" NAME="sth Coverage Results" MODIFIED="1672450476232" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
     <SUITE FILE_PATH="coverage/vietlott_data$config.coverage" NAME="config Coverage Results" MODIFIED="1693462680666" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vietlott/crawler/requests_helper" />
-    <SUITE FILE_PATH="coverage/vietlott$cli.coverage" NAME="cli power_655 Coverage Results" MODIFIED="1693663753659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/vietlott$cli.coverage" NAME="cli keno Coverage Results" MODIFIED="1693791872898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/vietlott$fetch.coverage" NAME="fetch Coverage Results" MODIFIED="1672622694598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/" />
     <SUITE FILE_PATH="coverage/vietlott_data$.coverage" NAME=" Coverage Results" MODIFIED="1693462686841" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/vietlott/tests/test_crawler" />
   </component>

@@ -1,9 +1,16 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]  # list of folders that contain the packages (["."] by default)
+
 [project]
-name = "vietlot-data"
-version = "0.1.0"
+name = "vietlott-data"
+version = "0.1.1"
 description = ""
 authors = [
-    {name = "Viet Vu", email = "vietvudanh@gmail.com"},
+    { name = "Viet Vu", email = "vietvudanh@gmail.com" },
 ]
 dependencies = [
     "bs4>=0.0.1",
@@ -20,10 +27,14 @@ dependencies = [
 ]
 requires-python = ">=3.11"
 readme = "README.md"
-license = {text = "MIT"}
+license = { text = "MIT" }
+
 
 [project.optional-dependencies]
 dev = [
     "pytest>=7.4.0",
 ]
 
+[project.scripts]
+vietlott-crawl = "vietlott.cli.crawl:crawl"
+vietlott-missing = "vietlott.cli.crawl:detect_missing_data"
