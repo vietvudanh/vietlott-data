@@ -38,3 +38,6 @@ dev = [
 [project.scripts]
 vietlott-crawl = "vietlott.cli.crawl:crawl"
 vietlott-missing = "vietlott.cli.crawl:detect_missing_data"
+
+[tool.ruff]
+line-length = 120
