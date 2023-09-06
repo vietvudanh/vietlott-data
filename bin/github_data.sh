@@ -10,6 +10,8 @@ EMAIl="vietvudanh@gmail.com"
 # generate data file
 echo "pwd $(pwd)"
 
+export PYTHONPATH="src"
+
 python src/vietlott/cli/crawl.py keno
 python src/vietlott/cli/crawl.py power_655
 python src/vietlott/cli/crawl.py power_645
