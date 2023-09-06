@@ -14,7 +14,7 @@ python src/vietlott/cli/crawl.py keno
 python src/vietlott/cli/crawl.py power_655
 python src/vietlott/cli/crawl.py power_645
 
-python render_readme.py
+python src/render_readme.py
 
 #if [[ ! -d "$FOLDER" ]] ; then
 #  git clone $URL $FOLDER
