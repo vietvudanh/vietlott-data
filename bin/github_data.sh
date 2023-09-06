@@ -9,11 +9,10 @@ EMAIl="vietvudanh@gmail.com"
 
 # generate data file
 echo "pwd $(pwd)"
-ls -lah .
 
-python src/cli/crawl.py keno
-python src/cli/crawl.py power_655
-python src/cli/crawl.py power_645
+python src/vietlott/cli/crawl.py keno
+python src/vietlott/cli/crawl.py power_655
+python src/vietlott/cli/crawl.py power_645
 
 python render_readme.py
 
