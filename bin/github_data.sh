@@ -8,7 +8,8 @@ USER="Viet VU"
 EMAIl="vietvudanh@gmail.com"
 
 # generate data file
-# python keno.py $1
+echo "pwd $(pwd)"
+
 python src/cli/crawl.py keno
 python src/cli/crawl.py power_655
 python src/cli/crawl.py power_645
