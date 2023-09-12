@@ -81,6 +81,7 @@ predicted corrected:
 """
     path_output = Path('../readme.md')
     with path_output.open('w') as ofile:
+        logger.info(f'cwd: {Path.cwd()}')
         logger.info(f'writing to {path_output.absolute()}')
         ofile.write(output_str)
 
