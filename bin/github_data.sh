@@ -11,6 +11,7 @@ EMAIl="vietvudanh@gmail.com"
 echo "pwd $(pwd)"
 
 export PYTHONPATH="src"
+export LOGURU_LEVEL="INFO"
 
 python src/vietlott/cli/crawl.py keno
 python src/vietlott/cli/crawl.py power_655
