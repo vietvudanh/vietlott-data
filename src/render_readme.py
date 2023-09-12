@@ -79,8 +79,9 @@ predicted corrected:
 ## stats 6/55 -90d
 {stats_90d.to_markdown()}
 """
-    with Path('../readme.md').open('w') as ofile:
-        logger.info(f'writing to {ofile.absolute()}')
+    path_output = Path('../readme.md')
+    with path_output.open('w') as ofile:
+        logger.info(f'writing to {path_output.absolute()}')
         ofile.write(output_str)
 
 
