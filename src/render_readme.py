@@ -79,7 +79,7 @@ predicted corrected:
 ## stats 6/55 -90d
 {stats_90d.to_markdown()}
 """
-    path_output = Path('../readme.md')
+    path_output = Path('./readme.md')
     with path_output.open('w') as ofile:
         logger.info(f'cwd: {Path.cwd()}')
         logger.info(f'writing to {path_output.absolute()}')
