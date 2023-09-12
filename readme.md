@@ -1,12 +1,11 @@
-#Vietlot data
+# Vietlot data
 ## Predictions (just for testing, not a financial advice)
 These are backtest results for the strategies I have developed
 ### random
 predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
-|      | date       | result                      | predicted               |
-|-----:|:-----------|:----------------------------|:------------------------|
-| 9382 | 2020-08-01 | [13, 18, 29, 30, 40, 47, 4] | [4, 13, 40, 18, 27, 30] | 
+| date   | result   | predicted   |
+|--------|----------|-------------| 
 
 ## raw details 6/55
 | date       |    id | result                       |   page | process_time               |
