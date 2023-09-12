@@ -30,6 +30,7 @@ python src/render_readme.py
 # commit and push
 git config user.name "\'$USER\'"
 git config user.email "\'$EMAIl\'"
+git status
 git add $DATA_FOLDER
 git add readme.md
 git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`"
