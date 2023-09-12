@@ -58,7 +58,7 @@ def main():
         random_model.df_backtest_evaluate['correct_num'] >= 5
         ][['date', 'result', 'predicted']]
 
-    output_str = f"""#Vietlot data
+    output_str = f"""# Vietlot data
 ## Predictions (just for testing, not a financial advice)
 These are backtest results for the strategies I have developed
 ### random
