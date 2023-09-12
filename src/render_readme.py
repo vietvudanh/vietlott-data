@@ -3,6 +3,7 @@ from io import StringIO
 from pathlib import Path
 
 import pandas as pd
+from loguru import logger
 
 from vietlott.config.products import get_config
 from vietlott.model.strategy.random import RandomModel
@@ -79,6 +80,7 @@ predicted corrected:
 {stats_90d.to_markdown()}
 """
     with Path('../readme.md').open('w') as ofile:
+        logger.info(f'writing to {ofile.absolute()}')
         ofile.write(output_str)
 
 
