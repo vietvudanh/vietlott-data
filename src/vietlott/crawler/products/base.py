@@ -21,6 +21,8 @@ class BaseProduct:
         if self.product_config.use_cookies:
             self.vietlott_cookie, self.cookies = get_vietlott_cookie()
             self.headers.update({'Cookie': self.vietlott_cookie})
+        else:
+            self.vietlott_cookie, self.cookies = None, None
 
     def process_result(self, params, body, res_json, task_data):
         pass

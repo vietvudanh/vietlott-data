@@ -29,7 +29,7 @@ power655_config = ProductConfig(
     max_value=55,
     size_output=6,
     interval=timedelta(days=2),
-    use_cookies=True,
+    use_cookies=False,
 )
 power645_config = ProductConfig(
     name="power_645",
@@ -38,7 +38,7 @@ power645_config = ProductConfig(
     max_value=45,
     size_output=6,
     interval=timedelta(days=2),
-    use_cookies=True,
+    use_cookies=False,
 )
 keno_config = ProductConfig(
     name="keno",
@@ -47,10 +47,10 @@ keno_config = ProductConfig(
     max_value=45,
     size_output=6,
     interval=timedelta(days=2),
-    use_cookies=True,
     default_index_to=24,
     num_thread=20,
     page_size=6,
+    use_cookies=False,
 )
 
 product_config_map = {
