@@ -4,9 +4,10 @@ These are backtest results for the strategies I have developed
 ### random
 predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
-|       | date       | result                    | predicted              |
-|------:|:-----------|:--------------------------|:-----------------------|
-| 10752 | 2020-09-22 | [5, 8, 15, 18, 36, 45, 6] | [8, 36, 6, 45, 15, 25] | 
+|      | date       | result                       | predicted               |
+|-----:|:-----------|:-----------------------------|:------------------------|
+|   96 | 2024-03-23 | [3, 10, 13, 30, 40, 52, 4]   | [13, 40, 30, 4, 3, 28]  |
+| 2324 | 2023-07-01 | [13, 33, 36, 38, 45, 50, 25] | [2, 13, 38, 33, 45, 50] | 
 
 ## raw details 6/55
 | date       |    id | result                       |   page | process_time               |
@@ -137,17 +138,44 @@ predicted corrected:
 |       19 |       6 | 2.26 |     |       39 |       3 | 1.13 |     |          |         |      |
 |       20 |       6 | 2.26 |     |       40 |       5 | 1.88 |     |          |         |      |
 
-#Install
+# Install
+ 
+## via pip
 
-## 
+```shell
+pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.2
+```
 
 ## cli
 project provides two cli
 
 ### crawl
 ```shell
+Usage: vietlott-crawl [OPTIONS] PRODUCT
+
+  crawl a product with a given run date or from/to index page :param ctx:
+  :param product: :param run_date: :param index_from: :param index_to:
+  :return:
+
+Options:
+  --run-date TEXT
+  --index_from INTEGER  page index from run since we crawl by pagination the
+                        pages
+  --index_to INTEGER    page index from run since we crawl by pagination the
+                        pages
+  --help                Show this message and exit.
 ```
 
-### Missing
+### Backfill missing data
 
+```shell
+Usage: vietlott-missing [OPTIONS] PRODUCT
+
+  detect_missing_data and run if needed :param ctx: context :param product:
+  product to run :param limit: number of pages to run :return:
+
+Options:
+  --limit INTEGER
+  --help           Show this message and exit.
+```
 
