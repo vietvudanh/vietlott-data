@@ -1,28 +1,17 @@
-# Vietlott data
-
-Project to crawl data from [Vietlott](https://vietlott.vn) daily.
-Current support products:
-- [x] [Power 6/45](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645)
-- [x] [Power 6/55](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655)
-- [x] [Keno](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno)
-- [ ] [Max 3D](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d)
-- [ ] [Max 3D Pro](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro)
-- [ ] [Bingo](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18)
-
-Data are stored in [/data](https://github.com/vietvudanh/vietlott-data/tree/master/data) folder in jsonl format.
-
+# Vietlot data
 ## Predictions (just for testing, not a financial advice)
 These are backtest results for the strategies I have developed
 ### random
 predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
-| date   | result   | predicted   |
-|--------|----------|-------------| 
+|       | date       | result                    | predicted              |
+|------:|:-----------|:--------------------------|:-----------------------|
+| 10752 | 2020-09-22 | [5, 8, 15, 18, 36, 45, 6] | [8, 36, 6, 45, 15, 25] | 
 
 ## raw details 6/55
 | date       |    id | result                       |   page | process_time               |
 |:-----------|------:|:-----------------------------|-------:|:---------------------------|
-| 2024-04-02 | 01016 | [1, 12, 18, 20, 51, 52, 37]  |      0 | 2024-04-03T01:51:47.642083 |
+| 2024-04-02 | 01016 | [1, 12, 18, 20, 51, 52, 37]  |      0 | 2024-04-03 01:51:47.642083 |
 | 2024-03-30 | 01015 | [14, 17, 27, 38, 54, 55, 23] |      0 | 2024-03-31 01:55:34.015736 |
 | 2024-03-28 | 01014 | [1, 7, 18, 26, 38, 49, 21]   |      0 | 2024-03-29 01:49:59.328787 |
 | 2024-03-26 | 01013 | [1, 8, 13, 16, 38, 44, 47]   |      0 | 2024-03-27 01:50:40.849831 |
@@ -147,3 +136,18 @@ predicted corrected:
 |       18 |       7 | 2.63 |     |       38 |      11 | 4.14 |     |          |         |      |
 |       19 |       6 | 2.26 |     |       39 |       3 | 1.13 |     |          |         |      |
 |       20 |       6 | 2.26 |     |       40 |       5 | 1.88 |     |          |         |      |
+
+#Install
+
+## 
+
+## cli
+project provides two cli
+
+### crawl
+```shell
+```
+
+### Missing
+
+
