@@ -1,3 +1,4 @@
+# /usr/bin/env python
 from datetime import datetime, timedelta
 from io import StringIO
 from pathlib import Path
@@ -8,6 +9,21 @@ from loguru import logger
 from vietlott.config.products import get_config
 from vietlott.model.strategy.random import RandomModel
 
+include_install_section = """#Install
+
+## 
+
+## cli
+project provides two cli
+
+### crawl
+```shell
+```
+
+### Missing
+
+"""
+
 
 def _balance_long_df(df_: pd.DataFrame, n_splits: int = 20):
     """convert long dataframe to multiple columns"""
@@ -15,7 +31,6 @@ def _balance_long_df(df_: pd.DataFrame, n_splits: int = 20):
     df_["result"] = df_["result"].astype(str)
     df_["count"] = df_["count"].astype(str)
 
-    split = 20
     final = None
 
     for i in range(len(df_) // n_splits + 1):
@@ -32,7 +47,7 @@ def _balance_long_df(df_: pd.DataFrame, n_splits: int = 20):
                 ],
                 axis="columns",
             )
-    final = final.fillna('')
+    final = final.fillna("")
 
     return final
 
@@ -69,7 +84,7 @@ def main():
     stats = _balance_long_df(fn_stats(df))
 
     # stats n months
-    stats_15d = _balance_long_df(fn_stats(df[df["date"] >= (datetime.now().date() - timedelta(days=15))]))
+    # stats_15d = _balance_long_df(fn_stats(df[df["date"] >= (datetime.now().date() - timedelta(days=15))]))
     stats_30d = _balance_long_df(fn_stats(df[df["date"] >= (datetime.now().date() - timedelta(days=30))]))
     stats_60d = _balance_long_df(fn_stats(df[df["date"] >= (datetime.now().date() - timedelta(days=60))]))
     stats_90d = _balance_long_df(fn_stats(df[df["date"] >= (datetime.now().date() - timedelta(days=90))]))
@@ -103,6 +118,8 @@ predicted corrected:
 {stats_60d.to_markdown(index=False)}
 ## stats 6/55 -90d
 {stats_90d.to_markdown(index=False)}
+
+{include_install_section}
 """
     path_output = Path("./readme.md")
     with path_output.open("w") as ofile:

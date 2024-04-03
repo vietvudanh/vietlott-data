@@ -53,9 +53,7 @@ keno_config = ProductConfig(
     use_cookies=False,
 )
 
-product_config_map = {
-    c.name: c for c in [power645_config, power655_config, keno_config]
-}
+product_config_map = {c.name: c for c in [power645_config, power655_config, keno_config]}
 
 
 def get_config(name: str) -> ProductConfig:

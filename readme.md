@@ -1,4 +1,16 @@
-# Vietlot data
+# Vietlott data
+
+Project to crawl data from [Vietlott](https://vietlott.vn) daily.
+Current support products:
+- [x] [Power 6/45](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645)
+- [x] [Power 6/55](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655)
+- [x] [Keno](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno)
+- [ ] [Max 3D](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d)
+- [ ] [Max 3D Pro](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro)
+- [ ] [Bingo](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18)
+
+Data are stored in [/data](https://github.com/vietvudanh/vietlott-data/tree/master/data) folder in jsonl format.
+
 ## Predictions (just for testing, not a financial advice)
 These are backtest results for the strategies I have developed
 ### random

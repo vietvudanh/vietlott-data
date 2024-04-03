@@ -1,7 +1,7 @@
 """
 fetch data utilities
 """
-import logging
+
 import re
 from typing import Callable, Optional, Tuple
 
@@ -13,19 +13,22 @@ from loguru import logger
 
 
 def get_vietlott_cookie() -> Tuple[str, dict]:
-    res = requests.get('https://vietlott.vn/ajaxpro/')
-    cookie = re.search(r'document.cookie="(.*?)"', res.text).group(1)
+    res = requests.get("https://vietlott.vn/ajaxpro/")
+    match = re.search(r'document.cookie="(.*?)"', res.text)
+    if match is None:
+        raise ValueError(f"cookie is None, text={res.text}")
+    cookie = match.group(1)
     cookies = {cookie.split("=")[0]: cookie.split("=")[1]}
     return cookie, cookies
 
 
 def fetch_wrapper(
-        url: str,
-        headers: Optional[dict],
-        org_params: Optional[dict],
-        org_body: dict,
-        process_result_fn: Callable,
-        cookies: dict
+    url: str,
+    headers: Optional[dict],
+    org_params: Optional[dict],
+    org_body: dict,
+    process_result_fn: Callable,
+    cookies: dict,
 ):
     """
     return a fn to fetch data for a set of params and body

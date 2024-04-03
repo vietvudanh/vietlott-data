@@ -7,7 +7,7 @@ def find_diff(d1, d2, path=""):
     diffs = []
     for k in d1:
         if k in d2:
-            if type(d1[k]) is dict:
+            if isinstance(d1[k], dict):
                 find_diff(d1[k], d2[k], "%s -> %s" % (path, k) if path else k)
             if d1[k] != d2[k]:
                 result = [
@@ -15,7 +15,7 @@ def find_diff(d1, d2, path=""):
                     " - %s : %s" % (k, d1[k]),
                     " + %s : %s" % (k, d2[k]),
                 ]
-                print('DIFF', "\n".join(result))
+                print("DIFF", "\n".join(result))
                 diffs.append(result)
         else:
             msg = "%s%s as key not in d2\n" % ("%s: " % path if path else "", k)

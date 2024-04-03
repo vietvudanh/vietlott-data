@@ -29,7 +29,7 @@ headers = {
     "Sec-Fetch-Dest": "empty",
     "Sec-Fetch-Mode": "cors",
     "Sec-Fetch-Site": "same-origin",
-    "TE": "trailers"
+    "TE": "trailers",
 }
 
 TIMEOUT = 20

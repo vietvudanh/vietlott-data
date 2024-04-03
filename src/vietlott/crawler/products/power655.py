@@ -79,17 +79,11 @@ class ProductPower655(BaseProduct):
             tds = tr.find_all("td")
             row = {}
 
-            row["date"] = datetime.strptime(tds[0].text, "%d/%m/%Y").strftime(
-                "%Y-%m-%d"
-            )
+            row["date"] = datetime.strptime(tds[0].text, "%d/%m/%Y").strftime("%Y-%m-%d")
             row["id"] = tds[1].text
 
             # last number of special
-            row["result"] = [
-                int(span.text)
-                for span in tds[2].find_all("span")
-                if span.text.strip() != "|"
-            ]
+            row["result"] = [int(span.text) for span in tds[2].find_all("span") if span.text.strip() != "|"]
             row["page"] = body.get("PageIndex", -1)
             row["process_time"] = datetime.now().isoformat()
 
@@ -125,19 +119,21 @@ class ProductPower655(BaseProduct):
                         "run_date_str": run_date_str,
                     },
                 }
-                for i in range(index_from, index_to+1)
+                for i in range(index_from, index_to + 1)
             ],
             page_per_task,
         )
 
-        logger.info(f"there are {index_to - index_from} pages, from {index_from}->{index_to}, {page_per_task} page per task")
+        logger.info(
+            f"there are {index_to - index_from} pages, from {index_from}->{index_to}, {page_per_task} page per task"
+        )
         fetch_fn = fetch.fetch_wrapper(
             self.url,
             requests_config.headers,
             self.org_params,
             cattrs.unstructure(self.org_body),
             self.process_result,
-            self.cookies
+            self.cookies,
         )
 
         results = pool.map(fetch_fn, tasks)
@@ -152,7 +148,9 @@ class ProductPower655(BaseProduct):
         list_data = []
         for date, date_items in date_dict.items():
             list_data += date_items
-
+        if len(list_data) == 0:
+            logger.info("No results")
+            return
         df_crawled = pd.DataFrame(list_data)
         logger.info(
             f'crawled data date: min={df_crawled["date"].min()}, max={df_crawled["date"].max()}'
@@ -161,15 +159,15 @@ class ProductPower655(BaseProduct):
         )
 
         # store data
+        current_data_count = 0
         if self.product_config.raw_path.exists():
-            current_data = pd.read_json(
-                self.product_config.raw_path, lines=True, dtype=self.stored_data_dtype
-            )
+            current_data = pd.read_json(self.product_config.raw_path, lines=True, dtype=self.stored_data_dtype)
             logger.info(
                 f'current data date min={current_data["date"].min()}, max={current_data["date"].max()}'
                 + f' id min={current_data["id"].min()}, max={current_data["id"].max()}'
                 + f", records={len(current_data)}"
             )
+            current_data_count = len(current_data)
             df_take = df_crawled[~df_crawled["id"].isin(current_data["id"])]
             df_final = pd.concat([current_data, df_take], axis="rows")
         else:
@@ -178,9 +176,7 @@ class ProductPower655(BaseProduct):
 
         logger.info(
             f'final data min_date={df_final["date"].min()}, max_date={df_final["date"].max()}'
-            + f", records={len(df_final)}"
+            + f", records={current_data_count}->{len(df_final)}, diff:{len(df_final)-current_data_count}"
         )
-        df_final.to_json(
-            self.product_config.raw_path.absolute(), orient="records", lines=True
-        )
+        df_final.to_json(self.product_config.raw_path.absolute(), orient="records", lines=True)
         logger.info(f"wrote to file {self.product_config.raw_path.absolute()}")

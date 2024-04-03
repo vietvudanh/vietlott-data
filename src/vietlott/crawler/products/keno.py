@@ -1,4 +1,3 @@
-import logging
 from typing import List, Dict
 
 import pendulum
@@ -6,8 +5,6 @@ from bs4 import BeautifulSoup
 
 from vietlott.crawler.products.power655 import ProductPower655
 from vietlott.crawler.schema.requests import Keno
-
-from loguru import logger
 
 
 class ProductKeno(ProductPower655):
@@ -35,7 +32,7 @@ class ProductKeno(ProductPower655):
             body (dict): _description_
             res_json (dict): _description_
             task_data (dict): contains keys
-                run_date_str: 
+                run_date_str:
                     date to run (only get this date)
 
 
@@ -43,7 +40,7 @@ class ProductKeno(ProductPower655):
             List[Dict]: _description_
         """
         soup = BeautifulSoup(res_json.get("value", {}).get("HtmlContent"), "lxml")
-        run_date_str = task_data["run_date_str"]
+        # run_date_str = task_data["run_date_str"]
         data = []
         for i, tr in enumerate(soup.select("table tr")):
             if i == 0:
@@ -53,9 +50,7 @@ class ProductKeno(ProductPower655):
 
             #
             td_a = tds[0].find_all("a")
-            row["date"] = pendulum.from_format(
-                td_a[0].text, "DD/MM/YYYY"
-            ).to_date_string()
+            row["date"] = pendulum.from_format(td_a[0].text, "DD/MM/YYYY").to_date_string()
 
             # if row["date"] != run_date_str:
             #     logger.error("wrong date instance %s != %s", row["date"], run_date_str)

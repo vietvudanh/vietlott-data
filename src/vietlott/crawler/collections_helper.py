@@ -1,4 +1,5 @@
 """collection utilities"""
+
 import itertools
 
 
