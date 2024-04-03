@@ -9,19 +9,46 @@ from loguru import logger
 from vietlott.config.products import get_config
 from vietlott.model.strategy.random import RandomModel
 
-include_install_section = """#Install
+include_install_section = """# Install
+ 
+## via pip
 
-## 
+```shell
+pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.2
+```
 
 ## cli
 project provides two cli
 
 ### crawl
 ```shell
+Usage: vietlott-crawl [OPTIONS] PRODUCT
+
+  crawl a product with a given run date or from/to index page :param ctx:
+  :param product: :param run_date: :param index_from: :param index_to:
+  :return:
+
+Options:
+  --run-date TEXT
+  --index_from INTEGER  page index from run since we crawl by pagination the
+                        pages
+  --index_to INTEGER    page index from run since we crawl by pagination the
+                        pages
+  --help                Show this message and exit.
 ```
 
-### Missing
+### Backfill missing data
 
+```shell
+Usage: vietlott-missing [OPTIONS] PRODUCT
+
+  detect_missing_data and run if needed :param ctx: context :param product:
+  product to run :param limit: number of pages to run :return:
+
+Options:
+  --limit INTEGER
+  --help           Show this message and exit.
+```
 """
 
 

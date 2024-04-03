@@ -5,26 +5,59 @@ attrs==23.2.0
 beautifulsoup4==4.12.3
     # via bs4
 bs4==0.0.2
+build==1.2.1
 cattrs==23.2.3
 certifi==2024.2.2
     # via requests
 charset-normalizer==3.3.2
     # via requests
 click==8.1.7
+docutils==0.20.1
+    # via readme-renderer
 idna==3.6
     # via requests
+importlib-metadata==7.1.0
+    # via twine
 iniconfig==2.0.0
     # via pytest
+jaraco-classes==3.4.0
+    # via keyring
+jaraco-context==4.3.0
+    # via keyring
+jaraco-functools==4.0.0
+    # via keyring
+keyring==25.1.0
+    # via twine
 loguru==0.7.2
 lxml==5.2.1
+markdown-it-py==3.0.0
+    # via rich
+mdurl==0.1.2
+    # via markdown-it-py
+more-itertools==10.2.0
+    # via
+    #   jaraco-classes
+    #   jaraco-functools
+nh3==0.2.17
+    # via readme-renderer
 numpy==1.26.4
     # via pandas
 packaging==24.0
-    # via pytest
+    # via
+    #   build
+    #   pytest
 pandas==2.2.1
 pendulum==3.0.0
+pkginfo==1.10.0
+    # via twine
 pluggy==1.4.0
     # via pytest
+pygments==2.17.2
+    # via
+    #   readme-renderer
+    #   rich
+pyproject-hooks==1.0.0
+    # via build
 pytest==8.1.1
 python-dateutil==2.9.0.post0
     # via
@@ -33,7 +66,19 @@ python-dateutil==2.9.0.post0
     #   time-machine
 pytz==2024.1
     # via pandas
+readme-renderer==43.0
+    # via twine
 requests==2.31.0
+    # via
+    #   requests-toolbelt
+    #   twine
+requests-toolbelt==1.0.0
+    # via twine
+rfc3986==2.0.0
+    # via twine
+rich==13.7.1
+    # via twine
+ruff==0.3.5
 six==1.16.0
     # via python-dateutil
 soupsieve==2.5
@@ -41,9 +86,14 @@ soupsieve==2.5
 tabulate==0.9.0
 time-machine==2.14.1
     # via pendulum
+twine==5.0.0
 tzdata==2024.1
     # via
     #   pandas
     #   pendulum
 urllib3==2.2.1
-    # via requests
+    # via
+    #   requests
+    #   twine
+zipp==3.18.1
+    # via importlib-metadata

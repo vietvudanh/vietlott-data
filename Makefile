@@ -23,6 +23,14 @@ lint: .venv
 	@echo "Linting..."
 	source $(VENV_DIR)/bin/activate && ruff check . && ruff format .
 
+build: lint tests
+	@echo "Building..."
+	source $(VENV_DIR)/bin/activate && python3 -m build
+
+pypi: build
+	@echo "Publishing..."
+	source $(VENV_DIR)/bin/activate && python3 -m twine upload --repository testpypi dist/*
+
 run-crawl: .venv
 	@echo "Running script..."
 	source $(VENV_DIR)/bin/activate && LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src python src/vietlott/cli/crawl.py keno

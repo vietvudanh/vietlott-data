@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
@@ -7,8 +7,8 @@ where = ["src"]  # list of folders that contain the packages (["."] by default)
 
 [project]
 name = "vietlott-data"
-version = "0.1.1"
-description = ""
+version = "0.1.2"
+description = "crawl & store vietlott data"
 authors = [
     { name = "Viet Vu", email = "vietvudanh@gmail.com" },
 ]
@@ -28,15 +28,22 @@ requires-python = ">=3.11"
 readme = "README.md"
 license = { text = "MIT" }
 
+[project.urls]
+Homepage = "https://github.com/vietvudanh/vietlott-data"
+Issues = "https://github.com/vietvudanh/vietlott-data/issues"
+
 
 [project.optional-dependencies]
 dev = [
     "pytest>=8.1.1",
+    "ruff>=0.3.5",
+    "build>=1.2.1",
+    "twine>=5.0.0",
 ]
 
 [project.scripts]
 vietlott-crawl = "vietlott.cli.crawl:crawl"
-vietlott-missing = "vietlott.cli.crawl:detect_missing_data"
+vietlott-missing = "vietlott.cli.missing:detect_missing_data"
 
 [tool.ruff]
 line-length = 120
