@@ -1,6 +1,6 @@
 # Vietlot data
 ## Predictions (just for testing, not a financial advice)
-These are backtest results for the strategies I have developed
+These are backtest results for the strategies I have tested (just the abstract method at the moment, you can't predict lotery lol)
 ### random
 predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
@@ -151,8 +151,12 @@ project provides two cli
 ```shell
 Usage: vietlott-crawl [OPTIONS] PRODUCT
 
-  crawl a product with a given run date or from/to index page :param ctx:
-  :param product: :param run_date: :param index_from: :param index_to:
+  crawl a product with a given run date or from/to index page 
+  :param ctx:
+  :param product: 
+  :param run_date: 
+  :param index_from: 
+  :param index_to:
   :return:
 
 Options:
