@@ -152,12 +152,6 @@ project provides two cli
 Usage: vietlott-crawl [OPTIONS] PRODUCT
 
   crawl a product with a given run date or from/to index page 
-  :param ctx:
-  :param product: 
-  :param run_date: 
-  :param index_from: 
-  :param index_to:
-  :return:
 
 Options:
   --run-date TEXT
