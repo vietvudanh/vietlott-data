@@ -4,8 +4,9 @@ These are backtest results for the strategies I have tested (just the abstract m
 ### random
 predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
-| date   | result   | predicted   |
-|--------|----------|-------------| 
+|       | date       | result                     | predicted               |
+|------:|:-----------|:---------------------------|:------------------------|
+| 13892 | 2019-12-12 | [1, 9, 15, 42, 49, 50, 48] | [49, 15, 42, 35, 1, 48] | 
 
 ## raw details 6/55
 | date       |    id | result                       |   page | process_time               |
