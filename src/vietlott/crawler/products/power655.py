@@ -33,7 +33,7 @@ class ProductPower655(BaseProduct):
         SiteId="main.frontend.vi",
         SiteAlias="main.vi",
         UserSessionId="",
-        SiteLang="en",
+        SiteLang="vi",
         IsPageDesign=False,
         ExtraParam1="",
         ExtraParam2="",

@@ -3,11 +3,13 @@ import pendulum
 
 from vietlott.config.products import product_config_map
 from vietlott.crawler.products import BaseProduct, ProductPower655, ProductPower645, ProductKeno
+from vietlott.crawler.products.p3d import P3D
 
 _map_class_name = {
     "keno": ProductKeno,
     "power_655": ProductPower655,
     "power_645": ProductPower645,
+    "3d": P3D,
 }
 
 

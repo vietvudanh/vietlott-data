@@ -49,3 +49,13 @@ class Keno:
     TotalRow: int = field(default=10)
     UpperLower: int = field(default=2)
     number: str = field(default="")
+
+@define
+class P3D:
+    CheckMulti: int = field(default=0)
+    GameDrawId: str = field(default="")
+    GameId: str = field(default="5")
+    ORenderInfo: ORenderInfoCls = field(default=ORenderInfoCls())
+    PageIndex: int = field(default=1)
+    number01: str = field(default="123")
+    number02: str = field(default="321")

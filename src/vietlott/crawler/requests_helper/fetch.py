@@ -6,10 +6,9 @@ import re
 from typing import Callable, Optional, Tuple
 
 import requests
+from loguru import logger
 
 from vietlott.crawler.requests_helper.config import TIMEOUT
-
-from loguru import logger
 
 
 def get_vietlott_cookie() -> Tuple[str, dict]:
@@ -23,12 +22,12 @@ def get_vietlott_cookie() -> Tuple[str, dict]:
 
 
 def fetch_wrapper(
-    url: str,
-    headers: Optional[dict],
-    org_params: Optional[dict],
-    org_body: dict,
-    process_result_fn: Callable,
-    cookies: dict,
+        url: str,
+        headers: Optional[dict],
+        org_params: Optional[dict],
+        org_body: dict,
+        process_result_fn: Callable,
+        cookies: Optional[dict],
 ):
     """
     return a fn to fetch data for a set of params and body
