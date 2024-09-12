@@ -5,14 +5,9 @@ import pandas as pd
 import pendulum
 from loguru import logger
 
+from vietlott.config.map_class import map_class_name
 from vietlott.config.products import product_config_map, ProductConfig
-from vietlott.crawler.products import BaseProduct, ProductPower655, ProductPower645, ProductKeno
-
-_map_class_name = {
-    "keno": ProductKeno,
-    "power_655": ProductPower655,
-    "power_645": ProductPower645,
-}
+from vietlott.crawler.products import BaseProduct
 
 
 @click.command()
@@ -49,7 +44,7 @@ def detect_missing_data(ctx, product, limit):
     logger.info("\n" + df_missing_process[["date", "id", "id_next", "diff", "index", "index_next"]].to_markdown())
 
     run_date = pendulum.now(tz="Asia/Ho_Chi_Minh").to_date_string()
-    product_obj: BaseProduct = _map_class_name[product]()
+    product_obj: BaseProduct = map_class_name[product]()
     for row in df_missing_process.itertuples():
         if (row.index - row.index_next) > 50:
             step = 20

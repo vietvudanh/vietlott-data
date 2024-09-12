@@ -1,14 +1,9 @@
 import click
 import pendulum
 
+from vietlott.config.map_class import map_class_name
 from vietlott.config.products import product_config_map
-from vietlott.crawler.products import BaseProduct, ProductPower655, ProductPower645, ProductKeno
-
-_map_class_name = {
-    "keno": ProductKeno,
-    "power_655": ProductPower655,
-    "power_645": ProductPower645,
-}
+from vietlott.crawler.products import BaseProduct
 
 
 @click.command()
@@ -32,7 +27,7 @@ def crawl(ctx, product, run_date, index_from, index_to):
         ctx.exit(1)
     click.echo(f"product={product}")
 
-    product_obj: BaseProduct = _map_class_name[product]()
+    product_obj: BaseProduct = map_class_name[product]()
     product_obj.crawl(
         run_date_str=run_date,
         index_from=index_from,

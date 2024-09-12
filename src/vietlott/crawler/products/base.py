@@ -1,6 +1,7 @@
 from vietlott.config.products import get_config
 from vietlott.crawler.requests_helper import config as requests_config
 from vietlott.crawler.requests_helper.fetch import get_vietlott_cookie
+from vietlott.crawler.schema.requests import ORenderInfoCls
 
 
 class BaseProduct:
@@ -13,6 +14,24 @@ class BaseProduct:
     org_params = None
 
     product_config = None
+
+    orender_info_default = ORenderInfoCls(
+        SiteId="main.frontend.vi",
+        SiteAlias="main.vi",
+        UserSessionId="",
+        SiteLang="vi",
+        IsPageDesign=False,
+        ExtraParam1="",
+        ExtraParam2="",
+        ExtraParam3="",
+        SiteURL="",
+        WebPage=None,
+        SiteName="Vietlott",
+        OrgPageAlias=None,
+        PageAlias=None,
+        RefKey=None,
+        FullPageAlias=None,
+    )
 
     def __init__(self):
         self.product_config = get_config(self.name)
