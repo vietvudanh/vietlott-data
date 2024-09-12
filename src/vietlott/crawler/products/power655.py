@@ -13,7 +13,7 @@ from vietlott.config.products import ProductConfig
 from vietlott.crawler import collections_helper
 from vietlott.crawler.products.base import BaseProduct
 from vietlott.crawler.requests_helper import config as requests_config, fetch
-from vietlott.crawler.schema.requests import RequestPower655, ORenderInfoCls
+from vietlott.crawler.schema.requests import RequestPower655
 
 
 class ProductPower655(BaseProduct):
@@ -29,26 +29,8 @@ class ProductPower655(BaseProduct):
         "process_time": str,
     }
 
-    orender_info_default = ORenderInfoCls(
-        SiteId="main.frontend.vi",
-        SiteAlias="main.vi",
-        UserSessionId="",
-        SiteLang="vi",
-        IsPageDesign=False,
-        ExtraParam1="",
-        ExtraParam2="",
-        ExtraParam3="",
-        SiteURL="",
-        WebPage=None,
-        SiteName="Vietlott",
-        OrgPageAlias=None,
-        PageAlias=None,
-        RefKey=None,
-        FullPageAlias=None,
-    )
-
     org_body = RequestPower655(
-        ORenderInfo=orender_info_default,
+        ORenderInfo=BaseProduct.orender_info_default,
         Key="23bbd667",
         GameDrawId="",
         ArrayNumbers=[["" for _ in range(18)] for _ in range(5)],
@@ -176,7 +158,7 @@ class ProductPower655(BaseProduct):
 
         logger.info(
             f'final data min_date={df_final["date"].min()}, max_date={df_final["date"].max()}'
-            + f", records={current_data_count}->{len(df_final)}, diff:{len(df_final)-current_data_count}"
+            + f", records={current_data_count}->{len(df_final)}, diff:{len(df_final) - current_data_count}"
         )
         df_final.to_json(self.product_config.raw_path.absolute(), orient="records", lines=True)
         logger.info(f"wrote to file {self.product_config.raw_path.absolute()}")

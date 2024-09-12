@@ -3,19 +3,21 @@ from typing import List, Dict
 import pendulum
 from bs4 import BeautifulSoup
 
+from vietlott.crawler.collections_helper import chunks_iter
+from vietlott.crawler.products import BaseProduct
 from vietlott.crawler.products.power655 import ProductPower655
-from vietlott.crawler.schema.requests import P3D
+from vietlott.crawler.schema.requests import RequestP3D
 
 
 class P3D(ProductPower655):
     name = "3d"
     url = "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameMax3DCompareWebPart,Vietlott.PlugIn.WebParts.ashx"
 
-    org_body = P3D(
+    org_body = RequestP3D(
         CheckMulti=0,
         GameDrawId="",
         GameId="5",
-        ORenderInfo=ProductPower655.orender_info_default,
+        ORenderInfo=BaseProduct.orender_info_default,
         PageIndex=1,
         number01="123",
         number02="321"
@@ -61,52 +63,29 @@ class P3D(ProductPower655):
             td_a = tds[0].find_all("a")
             row["id"] = td_a[0].text
 
-            #
             # Find all sections that contain the results
             results = {}
 
-            #
-            # div_result = tr.find('div', class_='tong_day_so_ket_qua text-center')
-            # # Extract special prize (Giải Đặc biệt)
-            # special_prize_spans = div_result.find_all('h5', string='Giải Đặc biệt')[0].find_next('div').find_all('span')
-            # special_prize_numbers = ''.join([span.get_text() for span in special_prize_spans])
-            # results['Giải Đặc biệt'] = [special_prize_numbers[:3], special_prize_numbers[3:]]
-            #
-            # # Extract first prize (Giải Nhất)
-            # first_prize_spans = div_result.find_all('h5', string='Giải Nhất')[0].find_next('div').find_all('span')
-            # first_prize_numbers = [span.get_text() for span in first_prize_spans]
-            # results['Giải Nhất'] = [first_prize_numbers[i:i + 3] for i in range(0, len(first_prize_numbers), 3)]
-            #
-            # # Extract second prize (Giải Nhì)
-            # second_prize_spans = div_result.find_all('h5', string='Giải Nhì')[0].find_next('div').find_all('span')
-            # second_prize_numbers = [span.get_text() for span in second_prize_spans]
-            # results['Giải Nhì'] = [second_prize_numbers[i:i + 3] for i in range(0, len(second_prize_numbers), 3)]
-            #
-            # # Extract third prize (Giải Ba)
-            # third_prize_spans = div_result.find_all('h5', string='Giải ba')[0].find_next('div').find_all('span')
-            # third_prize_numbers = [span.get_text() for span in third_prize_spans]
-            # results['Giải ba'] = [third_prize_numbers[i:i + 3] for i in range(0, len(third_prize_numbers), 3)]
-
-            prizes = {
-                "Giải Đặc biệt": 6,  # 2 sets of 3 numbers, so total 6 spans
-                "Giải Nhất": 12,  # 4 sets of 3 numbers, total 12 spans
-                "Giải Nhì": 18,  # 6 sets of 3 numbers, total 18 spans
-                "Giải ba": 24  # 8 sets of 3 numbers, total 24 spans
-            }
+            prizes = [
+                {"name": "Giải Đặc biệt", "count": 6},
+                {"name": "Giải Nhất", "count": 12},
+                {"name": "Giải Nhì", "count": 18},
+                {"name": "Giải ba", "count": 24},
+            ]
 
             results = {}
 
-            div_result = tr.find('div', class_='tong_day_so_ket_qua text-center')
-            # Loop through each prize and extract corresponding numbers
-            for prize, span_count in prizes.items():
-                prize_header = div_result.find('h5', text=prize)
-                # print(prize_header.find_next('div', class_='row'))
+            div_result = tr.find('div', class_='tong_day_so_ket_qua')
+            all_spans = div_result.find_all('span', class_='bong_tron')
 
-                if prize_header:
-                    spans = prize_header.find_all('span', class_='bong_tron tiny',
-                                                                                 limit=span_count)
-                    numbers = [span.text for span in spans]
-                    results[prize] = numbers
+            # Loop through each prize and extract corresponding numbers
+            cur_idx = 0
+            for prize in prizes:
+                results[prize['name']] = [
+                    "".join(n)
+                    for n in chunks_iter([all_spans[cur_idx + i].get_text() for i in range(prize['count'])], 3)
+                ]
+                cur_idx += prize['count']
             row["result"] = results
 
             #

@@ -73,7 +73,7 @@ p3d_pro_config = ProductConfig(
     max_value=999,
     size_output=6,
     interval=timedelta(days=2),
-    default_index_to=24,
+    default_index_to=1,
     num_thread=20,
     page_size=5,
     use_cookies=False,

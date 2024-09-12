@@ -14,7 +14,7 @@ include_install_section = """# Install
 ## via pip
 
 ```shell
-pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.2
+pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.3
 ```
 
 ## cli

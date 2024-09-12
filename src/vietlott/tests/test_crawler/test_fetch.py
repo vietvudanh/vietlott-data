@@ -1,6 +1,6 @@
 import cattrs
 
-from vietlott.crawler.products.p3d import P3D
+from vietlott.crawler.products.p3d import RequestP3D
 from vietlott.crawler.products.power645 import ProductPower645
 from vietlott.crawler.products.power655 import ProductPower655
 from vietlott.crawler.requests_helper import config as requests_config
@@ -52,10 +52,10 @@ def test_power_3d():
     # vietlott_cookie, cookies = get_vietlott_cookie()
     vietlott_cookie, cookies = None, None
     fn_fetch = fetch_wrapper(
-        P3D.url,
+        RequestP3D.url,
         dict(Cookie=vietlott_cookie, **requests_config.headers),
-        P3D.org_params,
-        cattrs.unstructure(P3D.org_body),
+        RequestP3D.org_params,
+        cattrs.unstructure(RequestP3D.org_body),
         _fn,
         cookies,
     )

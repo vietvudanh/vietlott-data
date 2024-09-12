@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 from attrs import define, field
 
 
@@ -38,7 +39,7 @@ class RequestPower655:
 
 
 @define
-class Keno:
+class RequestKeno:
     DrawDate: str = field(default="")
     GameDrawNo: str = field(default="")
     GameId: str = field(default="")
@@ -50,11 +51,23 @@ class Keno:
     UpperLower: int = field(default=2)
     number: str = field(default="")
 
+
 @define
-class P3D:
+class RequestP3D:
     CheckMulti: int = field(default=0)
     GameDrawId: str = field(default="")
     GameId: str = field(default="5")
+    ORenderInfo: ORenderInfoCls = field(default=ORenderInfoCls())
+    PageIndex: int = field(default=1)
+    number01: str = field(default="123")
+    number02: str = field(default="321")
+
+
+@define
+class RequestP3DPro:
+    CheckMulti: int = field(default=0)
+    GameDrawId: str = field(default="")
+    GameId: str = field(default="7")
     ORenderInfo: ORenderInfoCls = field(default=ORenderInfoCls())
     PageIndex: int = field(default=1)
     number01: str = field(default="123")
