@@ -14,7 +14,7 @@ build==1.2.2
     # via vietlott-data (pyproject.toml)
 cattrs==24.1.1
     # via vietlott-data (pyproject.toml)
-certifi==2024.8.30
+certifi==2024.7.4
     # via requests
 charset-normalizer==3.3.2
     # via requests
