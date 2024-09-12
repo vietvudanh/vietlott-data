@@ -22,7 +22,7 @@ click==8.1.7
     # via vietlott-data (pyproject.toml)
 docutils==0.21.2
     # via readme-renderer
-idna==3.8
+idna==3.7
     # via requests
 importlib-metadata==8.4.0
     # via
