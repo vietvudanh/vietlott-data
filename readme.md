@@ -4,9 +4,10 @@ These are backtest results for the strategies I have tested (just the abstract m
 ### random
 predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
-|       | date       | result                    | predicted              |
-|------:|:-----------|:--------------------------|:-----------------------|
-| 13010 | 2020-06-09 | [1, 3, 8, 22, 42, 48, 44] | [24, 22, 48, 42, 3, 1] | 
+|      | date       | result                      | predicted               |
+|-----:|:-----------|:----------------------------|:------------------------|
+|  964 | 2024-05-21 | [1, 2, 14, 32, 33, 41, 4]   | [14, 41, 2, 32, 4, 17]  |
+| 3652 | 2023-07-08 | [8, 11, 23, 43, 44, 48, 41] | [41, 44, 11, 8, 13, 23] | 
 
 ## raw details 6/55
 | date       |    id | result                       |   page | process_time               |
@@ -142,7 +143,7 @@ predicted corrected:
 ## via pip
 
 ```shell
-pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.2
+pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.3
 ```
 
 ## cli
