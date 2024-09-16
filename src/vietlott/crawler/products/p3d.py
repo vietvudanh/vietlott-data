@@ -42,8 +42,6 @@ class P3D(ProductPower655):
         # run_date_str = task_data["run_date_str"]
         data = []
         for i, tr in enumerate(soup.select("table tr")):
-            if i == 0:
-                continue
             tds = tr.find_all("td")
             row = {}
 

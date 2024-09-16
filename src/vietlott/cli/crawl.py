@@ -15,12 +15,6 @@ from vietlott.crawler.products import BaseProduct
 def crawl(ctx, product, run_date, index_from, index_to):
     """
     crawl a product with a given run date or from/to index page
-    :param ctx:
-    :param product:
-    :param run_date:
-    :param index_from:
-    :param index_to:
-    :return:
     """
     if product not in product_config_map:
         click.echo(f"Error:: Product must in product_map: {list(product_config_map.keys())}", err=True)
