@@ -7,6 +7,7 @@ Data crawling from https://vietlott.vn/, results for products:
 - [Max 3D](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d)
 - [Max 3D Pro](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro)
 
+## Table of content
 - [Vietlot data](#vietlot-data)
   * [Predictions (just for testing, not a financial advice)](#predictions--just-for-testing--not-a-financial-advice-)
     + [random](#random)
@@ -29,9 +30,9 @@ These are backtest results for the strategies I have tested (just the abstract m
 ### random strategy
 predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
-|       | date       | result                     | predicted               |
-|------:|:-----------|:---------------------------|:------------------------|
-| 14105 | 2020-02-11 | [4, 14, 18, 21, 32, 53, 2] | [21, 32, 34, 18, 14, 2] | 
+|      | date       | result                      | predicted               |
+|-----:|:-----------|:----------------------------|:------------------------|
+| 5332 | 2023-01-26 | [8, 15, 18, 20, 33, 41, 14] | [20, 33, 38, 8, 15, 18] | 
 
 ## raw details 6/55 last 10 days
 | date       |    id | result                       |   page | process_time               |
