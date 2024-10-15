@@ -160,6 +160,7 @@ Data crawling from https://vietlott.vn/, results for products:
 - [Max 3D](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d)
 - [Max 3D Pro](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro)
 
+## Table of content
 {include_toc}
 
 ## Predictions (just for testing, not a financial advice)

@@ -26,10 +26,11 @@ lint: .venv
 build: lint tests
 	@echo "Building..."
 	source $(VENV_DIR)/bin/activate && python3 -m build
+	source $(VENV_DIR)/bin/activate && python3 -m bdist_wheel
 
 pypi: build
 	@echo "Publishing..."
-	source $(VENV_DIR)/bin/activate && python3 -m twine upload --repository testpypi dist/*
+	source $(VENV_DIR)/bin/activate && python3 -m twine upload --repository pypi dist/*
 
 run-crawl: .venv
 	@echo "Running script..."
