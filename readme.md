@@ -7,16 +7,31 @@ Data crawling from https://vietlott.vn/, results for products:
 - [Max 3D](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d)
 - [Max 3D Pro](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro)
 
+- [Vietlot data](#vietlot-data)
+  * [Predictions (just for testing, not a financial advice)](#predictions--just-for-testing--not-a-financial-advice-)
+    + [random](#random)
+  * [raw details 6/55](#raw-details-6-55)
+  * [stats 6/55 all time](#stats-6-55-all-time)
+  * [stats 6/55 -15d](#stats-6-55--15d)
+  * [stats 6/55 -30d](#stats-6-55--30d)
+  * [stats 6/55 -60d](#stats-6-55--60d)
+  * [stats 6/55 -90d](#stats-6-55--90d)
+- [Install](#install)
+  * [via pip](#via-pip)
+  * [cli](#cli)
+    + [crawl](#crawl)
+    + [Backfill missing data](#backfill-missing-data)
+
+
 ## Predictions (just for testing, not a financial advice)
 These are backtest results for the strategies I have tested (just the abstract method at the moment, you can't predict lotery lol)
 
 ### random strategy
 predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
-|       | date       | result                       | predicted                |
-|------:|:-----------|:-----------------------------|:-------------------------|
-|  6309 | 2022-10-01 | [14, 15, 16, 22, 23, 29, 20] | [23, 14, 20, 15, 54, 22] |
-| 18428 | 2018-09-20 | [3, 32, 35, 46, 47, 49, 51]  | [10, 51, 35, 32, 3, 46]  | 
+|       | date       | result                     | predicted               |
+|------:|:-----------|:---------------------------|:------------------------|
+| 14105 | 2020-02-11 | [4, 14, 18, 21, 32, 53, 2] | [21, 32, 34, 18, 14, 2] | 
 
 ## raw details 6/55 last 10 days
 | date       |    id | result                       |   page | process_time               |
