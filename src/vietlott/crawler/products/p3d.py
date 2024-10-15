@@ -20,7 +20,7 @@ class P3D(ProductPower655):
         ORenderInfo=BaseProduct.orender_info_default,
         PageIndex=1,
         number01="123",
-        number02="321"
+        number02="321",
     )
 
     def process_result(self, params, body: dict, res_json: dict, task_data: dict) -> List[Dict]:
@@ -51,7 +51,7 @@ class P3D(ProductPower655):
             div_0_text = div_0.get_text()
 
             # Extract the date after "Ngày:"
-            date_str = div_0_text.split('Ngày: ')[1]
+            date_str = div_0_text.split("Ngày: ")[1]
             row["date"] = pendulum.from_format(date_str, "DD/MM/YYYY").to_date_string()
 
             # if row["date"] != run_date_str:
@@ -73,17 +73,17 @@ class P3D(ProductPower655):
 
             results = {}
 
-            div_result = tr.find('div', class_='tong_day_so_ket_qua')
-            all_spans = div_result.find_all('span', class_='bong_tron')
+            div_result = tr.find("div", class_="tong_day_so_ket_qua")
+            all_spans = div_result.find_all("span", class_="bong_tron")
 
             # Loop through each prize and extract corresponding numbers
             cur_idx = 0
             for prize in prizes:
-                results[prize['name']] = [
+                results[prize["name"]] = [
                     "".join(n)
-                    for n in chunks_iter([all_spans[cur_idx + i].get_text() for i in range(prize['count'])], 3)
+                    for n in chunks_iter([all_spans[cur_idx + i].get_text() for i in range(prize["count"])], 3)
                 ]
-                cur_idx += prize['count']
+                cur_idx += prize["count"]
             row["result"] = results
 
             #

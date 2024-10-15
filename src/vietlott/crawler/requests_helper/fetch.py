@@ -22,12 +22,12 @@ def get_vietlott_cookie() -> Tuple[str, dict]:
 
 
 def fetch_wrapper(
-        url: str,
-        headers: Optional[dict],
-        org_params: Optional[dict],
-        org_body: dict,
-        process_result_fn: Callable,
-        cookies: Optional[dict],
+    url: str,
+    headers: Optional[dict],
+    org_params: Optional[dict],
+    org_body: dict,
+    process_result_fn: Callable,
+    cookies: Optional[dict],
 ):
     """
     return a fn to fetch data for a set of params and body

@@ -5,7 +5,9 @@ from vietlott.crawler.schema.requests import RequestP3DPro
 
 class P3DPro(P3D):
     name = "3d_pro"
-    url = "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameMax3DProCompareWebPart,Vietlott.PlugIn.WebParts.ashx"
+    url = (
+        "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameMax3DProCompareWebPart,Vietlott.PlugIn.WebParts.ashx"
+    )
 
     org_body = RequestP3DPro(
         CheckMulti=0,
@@ -14,5 +16,5 @@ class P3DPro(P3D):
         ORenderInfo=BaseProduct.orender_info_default,
         PageIndex=1,
         number01="123",
-        number02="321"
+        number02="321",
     )
