@@ -12,6 +12,21 @@ from pathlib import Path
 from vietlott.config.products import get_config
 from vietlott.model.strategy.random import RandomModel
 
+include_toc = """- [Vietlot data](#vietlot-data)
+  * [Predictions (just for testing, not a financial advice)](#predictions--just-for-testing--not-a-financial-advice-)
+    + [random](#random)
+  * [raw details 6/55](#raw-details-6-55)
+  * [stats 6/55 all time](#stats-6-55-all-time)
+  * [stats 6/55 -15d](#stats-6-55--15d)
+  * [stats 6/55 -30d](#stats-6-55--30d)
+  * [stats 6/55 -60d](#stats-6-55--60d)
+  * [stats 6/55 -90d](#stats-6-55--90d)
+- [Install](#install)
+  * [via pip](#via-pip)
+  * [cli](#cli)
+    + [crawl](#crawl)
+    + [Backfill missing data](#backfill-missing-data)
+"""
 include_how_it_works = """# How project works
 Since there are many people asked, I write this section.
 
@@ -144,6 +159,8 @@ Data crawling from https://vietlott.vn/, results for products:
 - [Keno](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno)
 - [Max 3D](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d)
 - [Max 3D Pro](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro)
+
+{include_toc}
 
 ## Predictions (just for testing, not a financial advice)
 These are backtest results for the strategies I have tested (just the abstract method at the moment, you can't predict lotery lol)
