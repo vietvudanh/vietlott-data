@@ -1,13 +1,24 @@
 # Vietlot data
+
+Data crawling from https://vietlott.vn/, results for products:
+- [6/55](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655)
+- [6/45](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645)
+- [Keno](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno)
+- [Max 3D](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d)
+- [Max 3D Pro](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro)
+
 ## Predictions (just for testing, not a financial advice)
 These are backtest results for the strategies I have tested (just the abstract method at the moment, you can't predict lotery lol)
-### random
+
+### random strategy
 predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
-| date   | result   | predicted   |
-|--------|----------|-------------| 
+|       | date       | result                       | predicted                |
+|------:|:-----------|:-----------------------------|:-------------------------|
+|  6309 | 2022-10-01 | [14, 15, 16, 22, 23, 29, 20] | [23, 14, 20, 15, 54, 22] |
+| 18428 | 2018-09-20 | [3, 32, 35, 46, 47, 49, 51]  | [10, 51, 35, 32, 3, 46]  | 
 
-## raw details 6/55
+## raw details 6/55 last 10 days
 | date       |    id | result                       |   page | process_time               |
 |:-----------|------:|:-----------------------------|-------:|:---------------------------|
 | 2024-10-12 | 01099 | [29, 34, 35, 38, 50, 51, 37] |      0 | 2024-10-12 14:06:38.873281 |
@@ -135,6 +146,16 @@ predicted corrected:
 |       18 |       7 | 2.63 |     |       39 |       7 | 2.63 |     |          |         |      |
 |       20 |       6 | 2.26 |     |       40 |       9 | 3.38 |     |          |         |      |
 |       21 |       5 | 1.88 |     |       41 |       7 | 2.63 |     |          |         |      |
+
+# How project works
+Since there are many people asked, I write this section.
+
+## Schedule
+The project is schedule automatically via Github Actions, run a script, fetch data and auto commit to Github. No server is required, I don't need to do anything.
+Details in [workflow file](https://github.com/vietvudanh/vietlott-data/blob/dffb2bcdfa860a0dfc3f2e22e269e6978d478965/.github/workflows/crawl.yaml#L8)
+
+## How crawling works
+I just inspected network packages sent between browser and server to find out how data is fetched and replicated that in Python code. 
 
 # Install
  
