@@ -30,8 +30,9 @@ These are backtest results for the strategies I have tested (just the abstract m
 ### random strategy
 predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
-| date   | result   | predicted   |
-|--------|----------|-------------| 
+|      | date       | result                       | predicted                |
+|-----:|:-----------|:-----------------------------|:-------------------------|
+| 6161 | 2022-10-20 | [15, 21, 27, 34, 37, 53, 29] | [53, 27, 37, 21, 34, 36] | 
 
 ## raw details 6/55 last 10 days
 | date       |    id | result                       |   page | process_time               |
