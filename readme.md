@@ -32,7 +32,7 @@ predicted: 20 / day (20 tickets perday or 200,000 vnd)
 predicted corrected:
 |       | date       | result                      | predicted               |
 |------:|:-----------|:----------------------------|:------------------------|
-| 17200 | 2019-03-19 | [8, 28, 32, 35, 40, 45, 34] | [8, 32, 28, 40, 34, 29] | 
+| 20012 | 2018-04-24 | [17, 18, 24, 40, 41, 46, 6] | [28, 6, 17, 46, 24, 40] | 
 
 ## raw details 6/55 last 10 days
 | date       |    id | result                       |   page | process_time               |
