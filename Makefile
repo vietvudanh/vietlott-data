@@ -13,9 +13,11 @@ all: venv lint run
 requirements-dev: .venv
 	source $(VENV_DIR)/bin/activate \
  		&& uv pip compile --extra dev pyproject.toml > requirements-dev.txt \
- 		&& uv pip install -r requirements-dev.txt
+ 		&& uv pip install -r requirements-dev.txt \
+   		&& uv pip install -e .
 
-tests:
+.PHONY: test
+test:
 	source $(VENV_DIR)/bin/activate \
 	&& pytest src/vietlott/tests
 
@@ -35,6 +37,7 @@ pypi: build
 run-crawl: .venv
 	@echo "Running script..."
 	source $(VENV_DIR)/bin/activate && LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src python src/vietlott/cli/crawl.py keno
+	source $(VENV_DIR)/bin/activate && LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src python src/vietlott/cli/crawl.py power_655
 
 run-missing: .venv
 	@echo "Running script..."
