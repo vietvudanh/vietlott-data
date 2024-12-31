@@ -165,6 +165,18 @@ def analyze_detailed_patterns(df: pd.DataFrame) -> Dict:
     patterns['average_gaps'] = {num: np.mean(gap_list) if gap_list else float('inf') 
                               for num, gap_list in gaps.items()}
     
+    # 7. Pair Frequency Analysis
+    pair_frequency = {}
+    for result in df['Result']:
+        for i in range(len(result)):
+            for j in range(i + 1, len(result)):
+                pair = (result[i], result[j])
+                pair_frequency[pair] = pair_frequency.get(pair, 0) + 1
+                # Thêm cả chiều ngược lại
+                pair_rev = (result[j], result[i])
+                pair_frequency[pair_rev] = pair_frequency[pair]
+    patterns['pair_frequency'] = pair_frequency
+    
     return patterns
 
 def predict_next_draw_v2(patterns: Dict, num_numbers: int = 6) -> List[int]:
@@ -220,7 +232,7 @@ def predict_next_draw_v2(patterns: Dict, num_numbers: int = 6) -> List[int]:
                 predicted_numbers.append(num)
                 break
     
-    return sorted(predicted_numbers[:num_numbers])
+    return sorted(predicted_numbers)
 
 def print_pattern_insights(patterns: Dict):
     print("\nQuy luật phân tích từ dữ liệu Power 655:")
@@ -248,26 +260,326 @@ def print_pattern_insights(patterns: Dict):
                           key=lambda x: x[1], reverse=True)[:10]:
         print(f"- Số {num}: {freq} lần")
 
-# Main execution
-if __name__ == "__main__":
-    file_path = 'data/power655.jsonl'
-    data = load_data(file_path)
-    patterns = analyze_patterns(data)
-    prediction = predict_next_draw(patterns)
-    next_draw_date = get_next_draw_date(data)
-
-    print(f"Dự đoán cho ngày {next_draw_date}:")
-    print(f"Dãy số: {prediction}")
-
-    file_path_csv = 'power655_results.csv'
-    df = load_data_from_csv(file_path_csv)
-    patterns = analyze_detailed_patterns(df)
-    print_pattern_insights(patterns)
+def test_prediction_accuracy(df: pd.DataFrame, test_size: int = 50) -> dict:
+    """
+    Test the prediction accuracy using historical data.
     
-    prediction = predict_next_draw_v2(patterns)
-    print("\nDự đoán cho kỳ tiếp theo:", prediction)
+    Args:
+        df: DataFrame containing historical lottery results
+        test_size: Number of recent draws to use for testing
+        
+    Returns:
+        Dictionary containing accuracy metrics
+    """
+    # Split data into training and testing sets
+    train_df = df.iloc[:-test_size]
+    test_df = df.iloc[-test_size:]
+    
+    metrics = {
+        'exact_matches': 0,  # Predictions that match exactly
+        'partial_matches': [],  # Number of correct numbers in each prediction
+        'avg_correct_numbers': 0.0,  # Average number of correct numbers per prediction
+    }
+    
+    for idx, test_row in test_df.iterrows():
+        # Get training data up to this point
+        current_train = df[df.index < idx]
+        
+        # Analyze patterns and make prediction
+        patterns = analyze_detailed_patterns(current_train)
+        predicted_numbers = predict_next_draw_v2(patterns)
+        actual_numbers = set(test_row['Result'])
+        
+        # Compare prediction with actual results
+        correct_numbers = len(set(predicted_numbers) & actual_numbers)
+        metrics['partial_matches'].append(correct_numbers)
+        
+        if correct_numbers == 6:  # All numbers match
+            metrics['exact_matches'] += 1
+    
+    # Calculate average accuracy
+    metrics['avg_correct_numbers'] = sum(metrics['partial_matches']) / len(metrics['partial_matches'])
+    metrics['accuracy_by_matches'] = {
+        i: metrics['partial_matches'].count(i) / len(metrics['partial_matches']) * 100
+        for i in range(7)
+    }
+    
+    return metrics
+
+def analyze_time_patterns(df: pd.DataFrame) -> dict:
+    """
+    Analyze patterns related to time and date of number appearances.
+    """
+    time_patterns = {
+        'weekday_patterns': {},  # Patterns for each day of week
+        'number_cycles': {},     # Average cycles for each number
+        'last_appearances': {},  # Last appearance date for each number
+        'seasonal_patterns': {}  # Monthly patterns
+    }
+    
+    # Convert date to datetime
+    df['Date'] = pd.to_datetime(df['Date'])
+    
+    # Analyze weekday patterns
+    df['weekday'] = df['Date'].dt.dayofweek
+    weekday_numbers = {}
+    for day in range(7):
+        day_numbers = []
+        for numbers in df[df['weekday'] == day]['Result']:
+            day_numbers.extend(numbers)
+        weekday_numbers[day] = Counter(day_numbers)
+    time_patterns['weekday_patterns'] = weekday_numbers
+    
+    # Analyze cycles and gaps for each number
+    for num in range(1, 56):
+        appearances = []
+        for idx, row in df.iterrows():
+            if num in row['Result']:
+                appearances.append(row['Date'])
+        
+        if appearances:
+            # Calculate average cycle (days between appearances)
+            if len(appearances) > 1:
+                gaps = [(appearances[i+1] - appearances[i]).days 
+                       for i in range(len(appearances)-1)]
+                avg_cycle = sum(gaps) / len(gaps)
+                time_patterns['number_cycles'][num] = avg_cycle
+            
+            # Record last appearance
+            time_patterns['last_appearances'][num] = appearances[-1]
+    
+    # Analyze seasonal patterns (monthly)
+    df['month'] = df['Date'].dt.month
+    monthly_numbers = {}
+    for month in range(1, 13):
+        month_numbers = []
+        for numbers in df[df['month'] == month]['Result']:
+            month_numbers.extend(numbers)
+        monthly_numbers[month] = Counter(month_numbers)
+    time_patterns['seasonal_patterns'] = monthly_numbers
+    
+    return time_patterns
+
+def predict_next_draw_v3(patterns, time_patterns, next_date):
+    available_numbers = list(range(1, 56))
+    selected_numbers = []
+    current_even = 0
+    current_high = 0
+    
+    # Calculate base weights for all numbers
+    weights = np.zeros(55)
+    
+    # Weight based on frequency (40%)
+    frequency_weight = 0.4
+    for num, freq in patterns['overall_frequency'].items():
+        weights[num-1] += freq * frequency_weight
+    
+    # Weight based on recency (30%)
+    recency_weight = 0.3
+    for num, gap in patterns['average_gaps'].items():
+        recency_score = 1.0 / (gap + 1)  # Inverse of average gap
+        weights[num-1] += recency_score * recency_weight
+    
+    # Weight based on weekday patterns (15%)
+    weekday_weight = 0.15
+    next_weekday = next_date.weekday()
+    weekday_patterns = time_patterns['weekday_patterns'].get(next_weekday, {})
+    for num, freq in weekday_patterns.items():
+        weights[num-1] += (freq / (max(weekday_patterns.values()) + 1e-10)) * weekday_weight
+    
+    # Weight based on pair frequency (15%)
+    pair_weight = 0.15
+    if len(selected_numbers) > 0:
+        for num in available_numbers:
+            pair_score = 0
+            for selected in selected_numbers:
+                pair_key = (min(num, selected), max(num, selected))
+                if pair_key in patterns['pair_frequency']:
+                    pair_score += patterns['pair_frequency'][pair_key]
+            weights[num-1] += pair_score * pair_weight
+    
+    # Add hot/cold number strategy
+    recent_freq = patterns['recent_frequency']
+    hot_numbers = set([num for num, freq in sorted(recent_freq.items(), 
+                                                 key=lambda x: x[1], reverse=True)[:10]])
+    cold_numbers = set([num for num, freq in sorted(recent_freq.items(), 
+                                                 key=lambda x: x[1])[:10]])
+    
+    # Select numbers one by one
+    for i in range(6):
+        current_weights = weights.copy()
+        
+        # Apply constraints for even/odd and high/low numbers
+        if current_even >= 4:  # Too many even numbers
+            for j, num in enumerate(available_numbers):
+                if num % 2 == 0:
+                    current_weights[num-1] *= 0.3
+        elif current_even <= 1 and i >= 4:  # Too few even numbers
+            for j, num in enumerate(available_numbers):
+                if num % 2 == 0:
+                    current_weights[num-1] *= 1.5
+                    
+        if current_high >= 4:  # Too many high numbers
+            for j, num in enumerate(available_numbers):
+                if num > 28:
+                    current_weights[num-1] *= 0.3
+        elif current_high <= 1 and i >= 4:  # Too few high numbers
+            for j, num in enumerate(available_numbers):
+                if num > 28:
+                    current_weights[num-1] *= 1.5
+        
+        # Adjust weights based on hot/cold strategy
+        for num in available_numbers:
+            if num in hot_numbers:
+                current_weights[num-1] *= 1.2
+            elif num in cold_numbers:
+                current_weights[num-1] *= 0.8
+        
+        # Normalize weights for available numbers only
+        available_indices = [num-1 for num in available_numbers]
+        current_weights[available_indices] = current_weights[available_indices] / np.sum(current_weights[available_indices])
+        
+        # Selection strategy: 70% highest weight, 30% weighted random from top 5
+        if random.random() < 0.7:
+            selected_idx = available_indices[np.argmax(current_weights[available_indices])]
+        else:
+            # Get top 5 indices from available numbers
+            top_indices = sorted(available_indices, key=lambda x: current_weights[x])[-5:]
+            top_weights = current_weights[top_indices]
+            top_weights = top_weights / np.sum(top_weights)  # Renormalize
+            selected_idx = np.random.choice(top_indices, p=top_weights)
+        
+        selected_num = selected_idx + 1
+        
+        # Update counters
+        if selected_num % 2 == 0:
+            current_even += 1
+        if selected_num > 28:
+            current_high += 1
+            
+        selected_numbers.append(selected_num)
+        available_numbers.remove(selected_num)
+        
+        # Update pair weights after each selection
+        if i < 5:  # Don't need to update for the last number
+            for num in available_numbers:
+                pair_score = 0
+                for selected in selected_numbers:
+                    pair_key = (min(num, selected), max(num, selected))
+                    if pair_key in patterns['pair_frequency']:
+                        pair_score += patterns['pair_frequency'][pair_key]
+                weights[num-1] = weights[num-1] * 0.7 + pair_score * pair_weight * 0.3
+    
+    return sorted(selected_numbers)
+
+def test_prediction_accuracy_v2(df: pd.DataFrame, test_size: int = 50) -> dict:
+    train_df = df.iloc[:-test_size]
+    test_df = df.iloc[-test_size:]
+    
+    metrics = {
+        'exact_matches': 0,
+        'partial_matches': [],
+        'avg_correct_numbers': 0.0,
+    }
+    
+    for idx, test_row in test_df.iterrows():
+        current_train = df[df.index < idx]
+        patterns = analyze_detailed_patterns(current_train)
+        time_patterns = analyze_time_patterns(current_train)
+        
+        test_date = pd.to_datetime(test_row['Date'])
+        predicted_numbers = predict_next_draw_v3(patterns, time_patterns, test_date)
+        actual_numbers = set(test_row['Result'])
+        
+        correct_numbers = len(set(predicted_numbers) & actual_numbers)
+        metrics['partial_matches'].append(correct_numbers)
+        
+        if correct_numbers == 6:
+            metrics['exact_matches'] += 1
+    
+    metrics['avg_correct_numbers'] = sum(metrics['partial_matches']) / len(metrics['partial_matches'])
+    metrics['accuracy_by_matches'] = {
+        i: metrics['partial_matches'].count(i) / len(metrics['partial_matches']) * 100
+        for i in range(7)
+    }
+    
+    return metrics
+
+if __name__ == "__main__":
+    print("\n=== VIETLOTT POWER 655 - DỰ ĐOÁN KẾT QUẢ ===\n")
+    
+    # Load data
+    df = load_data_from_csv('power655_results.csv')
+    
+    # Get time patterns
+    time_patterns = analyze_time_patterns(df)
+    
+    # Get next draw date
+    last_date = pd.to_datetime(df['Date'].max())
+    today = pd.Timestamp.now()
+    
+    # Map thứ trong tuần (0 = thứ 2, 6 = chủ nhật) sang ngày xổ (2 = thứ 3, 4 = thứ 5, 6 = thứ 7)
+    draw_days = [2, 4, 6]  # Thứ 3, 5, 7
+    
+    # Tìm ngày xổ gần nhất
+    current_weekday = today.weekday()
+    next_draw_day = None
+    
+    for draw_day in draw_days:
+        if draw_day > current_weekday:
+            next_draw_day = draw_day
+            break
+    
+    if next_draw_day is None:  # Nếu đã qua thứ 7, lấy thứ 3 tuần sau
+        next_draw_day = draw_days[0]
+        days_to_add = 7 - current_weekday + next_draw_day
+    else:
+        days_to_add = next_draw_day - current_weekday
+    
+    next_date = today + pd.Timedelta(days=days_to_add)
+    next_date = next_date.normalize()  # Chuẩn hóa về 00:00:00
+    
+    # Get patterns and make prediction
+    patterns = analyze_detailed_patterns(df)
+    prediction = predict_next_draw_v3(patterns, time_patterns, next_date)
+    
+
+    
+    # Test prediction accuracy
+    print("\nKIỂM TRA ĐỘ CHÍNH XÁC CỦA THUẬT TOÁN")
+    print("=" * 50)
+    
+    accuracy_metrics = test_prediction_accuracy_v2(df)
+    
+    print(f"\nKết quả đánh giá độ chính xác:")
+    print(f"Số lần dự đoán chính xác hoàn toàn: {accuracy_metrics['exact_matches']}")
+    print(f"Trung bình số con số đúng mỗi lần dự đoán: {accuracy_metrics['avg_correct_numbers']:.2f}")
+    print("\nPhần trăm dự đoán theo số lượng con số đúng:")
+    for matches, percentage in accuracy_metrics['accuracy_by_matches'].items():
+        print(f"{matches} số đúng: {percentage:.2f}%")
 
 
-    # python predict_next_series_55.py  
-
-    # PYTHONPATH=src python src/vietlott/cli/crawl.py power_655
+    print("=" * 50)
+    print(f"DỰ ĐOÁN CHO NGÀY: {next_date.strftime('%d-%m-%Y')} (Thứ {next_draw_day + 1})")
+    print(f"DÃY SỐ DỰ ĐOÁN: {prediction}")
+    
+# Hướng dẫn sử dụng:
+    
+# 1. Để chạy dự đoán:
+# python3 predict_next_series_55.py
+    
+# 2. Để cập nhật dữ liệu mới:
+# - Cài đặt môi trường:
+#   python3 -m venv venv
+#   source venv/bin/activate
+#   pip install pandas numpy
+    
+# - Chạy script cào dữ liệu:
+#   PYTHONPATH=src python src/vietlott/cli/crawl.py power_655
+    
+# - File kết quả sẽ được lưu tại:
+#   power655_results.csv
+    
+# Lưu ý: 
+# - Nên cập nhật dữ liệu định kỳ để có kết quả dự đoán chính xác hơn
+# - Dữ liệu càng mới càng tốt vì thuật toán có xét đến yếu tố thởi gian
