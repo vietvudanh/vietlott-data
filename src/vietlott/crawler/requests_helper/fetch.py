@@ -3,6 +3,7 @@ fetch data utilities
 """
 
 import re
+import json
 from typing import Callable, Optional, Tuple
 
 import requests
@@ -55,7 +56,7 @@ def fetch_wrapper(
 
             res = requests.post(
                 url,
-                json=body,
+                data=json.dumps(body),
                 params=params,
                 headers=_headers,
                 cookies=cookies,
