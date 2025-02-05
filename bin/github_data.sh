@@ -7,6 +7,11 @@ DATA_FOLDER=data
 USER="Viet VU"
 EMAIl="vietvudanh@gmail.com"
 
+# Activate virtual environment if it exists
+if [ -n "$VENV" ]; then
+  source "$VENV/bin/activate"
+fi
+
 # generate data file
 echo "pwd $(pwd)"
 
