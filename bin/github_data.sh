@@ -1,5 +1,5 @@
-# commit to csv_data
 #!/usr/bin/env bash
+# commit to csv_data
 
 URL=https://github.com/vietvudanh/vietlott-data.git
 FOLDER=vietlott-data
