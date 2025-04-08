@@ -1,9 +1,10 @@
 from datetime import date
 from typing import List
 
-from vietlott.config.products import get_config
+from model.dataset import gen_random_list, load_dataset  # noqa: F401
 from model.strategy.base import BaseStrategy
-from model.dataset import load_dataset, gen_random_list  # noqa: F401
+
+from vietlott.config.products import get_config
 
 
 class NotRepeatStrategy(BaseStrategy):

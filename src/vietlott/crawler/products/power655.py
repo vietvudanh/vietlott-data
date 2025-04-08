@@ -2,7 +2,7 @@ import math
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from typing import Optional, List, Dict
+from typing import Dict, List, Optional
 
 import cattrs
 import pandas as pd
@@ -12,7 +12,8 @@ from loguru import logger
 from vietlott.config.products import ProductConfig
 from vietlott.crawler import collections_helper
 from vietlott.crawler.products.base import BaseProduct
-from vietlott.crawler.requests_helper import config as requests_config, fetch
+from vietlott.crawler.requests_helper import config as requests_config
+from vietlott.crawler.requests_helper import fetch
 from vietlott.crawler.schema.requests import RequestPower655
 
 

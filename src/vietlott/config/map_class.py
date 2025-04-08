@@ -1,4 +1,4 @@
-from vietlott.crawler.products import ProductPower655, ProductPower645, ProductKeno, P3D, P3DPro
+from vietlott.crawler.products import P3D, P3DPro, ProductKeno, ProductPower645, ProductPower655
 
 map_class_name = {
     "keno": ProductKeno,

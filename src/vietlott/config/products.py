@@ -1,6 +1,7 @@
-import attr
 from datetime import timedelta
 from pathlib import Path
+
+import attr
 
 cwd = Path(__file__).parent
 project_root = Path(__file__).parent.parent.parent

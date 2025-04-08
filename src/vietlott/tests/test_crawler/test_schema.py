@@ -1,6 +1,6 @@
 import cattrs
 
-from vietlott.crawler.schema.requests import RequestPower655, ORenderInfoCls
+from vietlott.crawler.schema.requests import ORenderInfoCls, RequestPower655
 
 
 def find_diff(d1, d2, path=""):

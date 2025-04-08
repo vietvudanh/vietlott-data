@@ -6,7 +6,7 @@ import pendulum
 from loguru import logger
 
 from vietlott.config.map_class import map_class_name
-from vietlott.config.products import product_config_map, ProductConfig
+from vietlott.config.products import ProductConfig, product_config_map
 from vietlott.crawler.products import BaseProduct
 
 

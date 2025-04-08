@@ -3,11 +3,12 @@
 this script is used to render the README.md that shows in repo's Github
 """
 
-import pandas as pd
 from datetime import datetime, timedelta
 from io import StringIO
-from loguru import logger
 from pathlib import Path
+
+import pandas as pd
+from loguru import logger
 
 from vietlott.config.products import get_config
 from vietlott.model.strategy.random import RandomModel
@@ -142,6 +143,23 @@ def main():
     stats_60d = _balance_long_df(fn_stats(df[df["date"] >= (datetime.now().date() - timedelta(days=60))]))
     stats_90d = _balance_long_df(fn_stats(df[df["date"] >= (datetime.now().date() - timedelta(days=90))]))
 
+    # stats all data products
+    data_stats_all_producsts = []
+    for product in ["power_655", "power_645", "keno", "3d", "3d_pro"]:
+        df_loop = pd.read_json(get_config(product).raw_path, lines=True, dtype=object, convert_dates=False)
+        data_stats_all_producsts.append(
+            {
+                "product": product,
+                "n_dates": df_loop["date"].nunique(),
+                "start_date": df_loop["date"].min(),
+                "end_date": df_loop["date"].max(),
+                "n_ids": df_loop["id"].nunique(),
+                "start_id": df_loop["id"].min(),
+                "end_id": df_loop["id"].max(),
+            }
+        )
+    include_data_stats = pd.DataFrame(data_stats_all_producsts).to_markdown(index=False)
+
     # predictions
     ticket_per_days = 20
     random_model = RandomModel(df, ticket_per_days)
@@ -170,6 +188,9 @@ These are backtest results for the strategies I have tested (just the abstract m
 predicted: {ticket_per_days} / day ({ticket_per_days} tickets perday or {10000 * ticket_per_days:,d} vnd)
 predicted corrected:
 {df_random_correct.to_markdown()} 
+
+## Data stats
+{include_data_stats}
 
 ## raw details 6/55 last 10 days
 {df.head(10).to_markdown(index=False)}

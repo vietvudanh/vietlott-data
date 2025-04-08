@@ -2,8 +2,8 @@
 fetch data utilities
 """
 
-import re
 import json
+import re
 from typing import Callable, Optional, Tuple
 
 import requests
