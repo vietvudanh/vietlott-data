@@ -1,49 +1,67 @@
-# Vietlot data
+# 🎰 Vietlott Data
 
-Data crawling from https://vietlott.vn/, results for products:
-- [6/55](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655)
-- [6/45](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645)
-- [Keno](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno)
-- [Max 3D](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d)
-- [Max 3D Pro](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro)
+[![GitHub Actions](https://github.com/vietvudanh/vietlott-data/workflows/crawl/badge.svg)](https://github.com/vietvudanh/vietlott-data/actions)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Data Updated](https://img.shields.io/badge/data-daily%20updated-brightgreen.svg)](https://github.com/vietvudanh/vietlott-data/commits/main)
 
-## Table of content
-- [Vietlot data](#vietlot-data)
-  * [Predictions (just for testing, not a financial advice)](#predictions--just-for-testing--not-a-financial-advice-)
-    + [random](#random)
-  * [raw details 6/55](#raw-details-6-55)
-  * [stats 6/55 all time](#stats-6-55-all-time)
-  * [stats 6/55 -15d](#stats-6-55--15d)
-  * [stats 6/55 -30d](#stats-6-55--30d)
-  * [stats 6/55 -60d](#stats-6-55--60d)
-  * [stats 6/55 -90d](#stats-6-55--90d)
-- [Install](#install)
-  * [via pip](#via-pip)
-  * [cli](#cli)
-    + [crawl](#crawl)
-    + [Backfill missing data](#backfill-missing-data)
+> 📊 **Automated Vietnamese Lottery Data Collection & Analysis**
+> 
+> This project automatically crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing comprehensive statistics and insights for all major lottery products.
+
+## 🎯 Supported Lottery Products
+
+| Product | Link | Description |
+|---------|------|-------------|
+| **Power 6/55** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | Choose 6 numbers from 1-55 |
+| **Power 6/45** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | Choose 6 numbers from 1-45 |
+| **Keno** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
+| **Max 3D** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
+| **Max 3D Pro** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
 
 
-## Predictions (just for testing, not a financial advice)
-These are backtest results for the strategies I have tested (just the abstract method at the moment, you can't predict lotery lol)
+## 📋 Table of Contents
 
-### random strategy
-predicted: 20 / day (20 tickets perday or 200,000 vnd)
-predicted corrected:
-|       | date       | result                      | predicted               |
-|------:|:-----------|:----------------------------|:------------------------|
-| 20559 | 2018-09-04 | [8, 18, 20, 29, 34, 37, 51] | [51, 37, 20, 29, 8, 36] | 
+- [🎯 Supported Lottery Products](#-supported-lottery-products)
+- [📊 Data Statistics](#-data-statistics)
+- [🔮 Prediction Models](#-prediction-models)
+- [📈 Power 6/55 Analysis](#-power-655-analysis)
+  - [📅 Recent Results](#-recent-results)
+  - [🎲 Number Frequency (All Time)](#-number-frequency-all-time)
+  - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period)
+- [⚙️ How It Works](#️-how-it-works)
+- [🚀 Installation & Usage](#-installation--usage)
+- [📄 License](#-license)
 
-## Data stats
-| product   |   n_dates | start_date   | end_date   |   n_ids | start_id   | end_id   |
-|:----------|----------:|:-------------|:-----------|--------:|:-----------|:---------|
-| power_655 |      1198 | 2017-08-01   | 2025-06-03 |    1198 | 00001      | 01198    |
-| power_645 |      1164 | 2017-10-25   | 2025-06-01 |    1164 | 00198      | 01361    |
-| keno      |       908 | 2022-12-04   | 2025-06-02 |  129077 | #0110271   | #0239906 |
-| 3d        |       930 | 2019-04-22   | 2025-06-02 |     930 | 00001      | 00932    |
-| 3d_pro    |       577 | 2021-09-14   | 2025-06-03 |     577 | 00001      | 00579    |
 
-## raw details 6/55 last 10 days
+## 📊 Data Statistics
+
+| Product   |   Total Draws | Start Date   | End Date   |   Total Records | First ID   | Latest ID   |
+|:----------|--------------:|:-------------|:-----------|----------------:|:-----------|:------------|
+| Power 655 |          1198 | 2017-08-01   | 2025-06-03 |            1198 | 00001      | 01198       |
+| Power 645 |          1165 | 2017-10-25   | 2025-06-04 |            1165 | 00198      | 01362       |
+| Keno      |           908 | 2022-12-04   | 2025-06-02 |          129077 | #0110271   | #0239906    |
+| 3D        |           931 | 2019-04-22   | 2025-06-04 |             931 | 00001      | 00933       |
+| 3D Pro    |           577 | 2021-09-14   | 2025-06-03 |             577 | 00001      | 00579       |
+
+## 🔮 Prediction Models
+
+> ⚠️ **Disclaimer**: These are experimental models for educational purposes only. Lottery outcomes are random and cannot be predicted reliably.
+
+### 🎲 Random Strategy Backtest
+
+- **Strategy**: Random number selection
+- **Tickets per day**: 20
+- **Daily cost**: 200,000 VND
+- **Results with 5+ matches**:
+
+No significant matches found in backtest period.
+
+
+
+## 📈 Power 6/55 Analysis
+
+### 📅 Recent Results (Last 10 draws)
 | date       |    id | result                       |   page | process_time               |
 |:-----------|------:|:-----------------------------|-------:|:---------------------------|
 | 2025-06-03 | 01198 | [2, 11, 14, 16, 27, 38, 51]  |      0 | 2025-06-03 19:01:13.225100 |
@@ -56,7 +74,8 @@ predicted corrected:
 | 2025-05-17 | 01191 | [2, 7, 26, 29, 41, 50, 43]   |      0 | 2025-05-19 09:08:44.622335 |
 | 2025-05-15 | 01190 | [6, 9, 13, 44, 49, 54, 47]   |      0 | 2025-05-19 09:08:44.622459 |
 | 2025-05-13 | 01189 | [3, 7, 24, 39, 54, 55, 42]   |      0 | 2025-05-19 09:08:44.622555 |
-## stats 6/55 all time
+
+### 🎲 Number Frequency (All Time)
 |   result |   count |    % | -   |   result |   count |    % | -   | result   | count   | %    |
 |---------:|--------:|-----:|:----|---------:|--------:|-----:|:----|:---------|:--------|:-----|
 |        1 |     166 | 1.98 |     |       21 |     148 | 1.77 |     | 41       | 181     | 2.16 |
@@ -79,7 +98,10 @@ predicted corrected:
 |       18 |     154 | 1.84 |     |       38 |     144 | 1.72 |     |          |         |      |
 |       19 |     152 | 1.81 |     |       39 |     146 | 1.74 |     |          |         |      |
 |       20 |     162 | 1.93 |     |       40 |     165 | 1.97 |     |          |         |      |
-## stats 6/55 -15d
+
+### 📊 Frequency Analysis by Period
+
+#### Last 30 Days
 |   result |   count |   % | -   |   result |   count |   % | -   | result   | count   | %   |
 |---------:|--------:|----:|:----|---------:|--------:|----:|:----|:---------|:--------|:----|
 |        2 |       2 | 2.2 |     |       25 |       1 | 1.1 |     | 51       | 2       | 2.2 |
@@ -102,30 +124,8 @@ predicted corrected:
 |       21 |       1 | 1.1 |     |       48 |       1 | 1.1 |     |          |         |     |
 |       22 |       1 | 1.1 |     |       49 |       2 | 2.2 |     |          |         |     |
 |       24 |       2 | 2.2 |     |       50 |       3 | 3.3 |     |          |         |     |
-## stats 6/55 -30d
-|   result |   count |   % | -   |   result |   count |   % | -   | result   | count   | %   |
-|---------:|--------:|----:|:----|---------:|--------:|----:|:----|:---------|:--------|:----|
-|        2 |       2 | 2.2 |     |       25 |       1 | 1.1 |     | 51       | 2       | 2.2 |
-|        3 |       2 | 2.2 |     |       26 |       1 | 1.1 |     | 52       | 1       | 1.1 |
-|        4 |       1 | 1.1 |     |       27 |       3 | 3.3 |     | 54       | 2       | 2.2 |
-|        5 |       1 | 1.1 |     |       28 |       2 | 2.2 |     | 55       | 4       | 4.4 |
-|        6 |       2 | 2.2 |     |       29 |       2 | 2.2 |     |          |         |     |
-|        7 |       3 | 3.3 |     |       30 |       2 | 2.2 |     |          |         |     |
-|        8 |       2 | 2.2 |     |       34 |       1 | 1.1 |     |          |         |     |
-|        9 |       3 | 3.3 |     |       37 |       2 | 2.2 |     |          |         |     |
-|       11 |       1 | 1.1 |     |       38 |       1 | 1.1 |     |          |         |     |
-|       12 |       2 | 2.2 |     |       39 |       3 | 3.3 |     |          |         |     |
-|       13 |       1 | 1.1 |     |       41 |       3 | 3.3 |     |          |         |     |
-|       14 |       4 | 4.4 |     |       42 |       3 | 3.3 |     |          |         |     |
-|       15 |       3 | 3.3 |     |       43 |       1 | 1.1 |     |          |         |     |
-|       16 |       3 | 3.3 |     |       44 |       3 | 3.3 |     |          |         |     |
-|       18 |       1 | 1.1 |     |       45 |       4 | 4.4 |     |          |         |     |
-|       19 |       4 | 4.4 |     |       46 |       1 | 1.1 |     |          |         |     |
-|       20 |       1 | 1.1 |     |       47 |       3 | 3.3 |     |          |         |     |
-|       21 |       1 | 1.1 |     |       48 |       1 | 1.1 |     |          |         |     |
-|       22 |       1 | 1.1 |     |       49 |       2 | 2.2 |     |          |         |     |
-|       24 |       2 | 2.2 |     |       50 |       3 | 3.3 |     |          |         |     |
-## stats 6/55 -60d
+
+#### Last 60 Days
 |   result |   count |    % | -   |   result |   count |    % | -   | result   | count   | %    |
 |---------:|--------:|-----:|:----|---------:|--------:|-----:|:----|:---------|:--------|:-----|
 |        1 |       2 | 1.1  |     |       21 |       3 | 1.65 |     | 42       | 8       | 4.4  |
@@ -148,7 +148,8 @@ predicted corrected:
 |       18 |       2 | 1.1  |     |       39 |       4 | 2.2  |     |          |         |      |
 |       19 |       7 | 3.85 |     |       40 |       3 | 1.65 |     |          |         |      |
 |       20 |       3 | 1.65 |     |       41 |       9 | 4.95 |     |          |         |      |
-## stats 6/55 -90d
+
+#### Last 90 Days
 |   result |   count |    % | -   |   result |   count |    % | -   | result   | count   | %    |
 |---------:|--------:|-----:|:----|---------:|--------:|-----:|:----|:---------|:--------|:-----|
 |        1 |       4 | 1.47 |     |       21 |       6 | 2.2  |     | 41       | 12      | 4.4  |
@@ -172,52 +173,82 @@ predicted corrected:
 |       19 |       8 | 2.93 |     |       39 |       7 | 2.56 |     |          |         |      |
 |       20 |       3 | 1.1  |     |       40 |       5 | 1.83 |     |          |         |      |
 
-# How project works
-Since there are many people asked, I write this section.
 
-## Schedule
-The project is schedule automatically via Github Actions, run a script, fetch data and auto commit to Github. No server is required, I don't need to do anything.
-Details in [workflow file](https://github.com/vietvudanh/vietlott-data/blob/dffb2bcdfa860a0dfc3f2e22e269e6978d478965/.github/workflows/crawl.yaml#L8)
 
-## How crawling works
-I just inspected network packages sent between browser and server to find out how data is fetched and replicated that in Python code. 
+## ⚙️ How It Works
 
-# Install
- 
-## via pip
+### 🤖 Automated Data Collection
 
-```shell
+This project runs completely automatically using **GitHub Actions** - no server required!
+
+- **⏰ Schedule**: Runs daily via [GitHub Actions workflow](.github/workflows/crawl.yaml)
+- **🔄 Process**: Fetches latest results → Processes data → Commits to repository
+- **📊 Analysis**: Generates statistics and updates README automatically
+
+### 🕵️ Data Crawling Method
+
+The data collection works by:
+1. **🔍 Network Analysis**: Inspecting browser-server communication
+2. **🐍 Python Replication**: Recreating the data fetch logic in Python
+3. **📋 Structured Storage**: Saving results in JSONL format for easy analysis
+4. **🔄 Continuous Updates**: Daily automated runs ensure fresh data
+
+> **Note**: This is purely for educational and research purposes. No gambling advice is provided.
+
+
+## 🚀 Installation & Usage
+
+### 📦 Install via pip
+
+```bash
 pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.3
 ```
 
-## cli
-project provides two cli
+### 💻 Command Line Interface
 
-### crawl
-```shell
-Usage: vietlott-crawl [OPTIONS] PRODUCT
+#### 🔍 Crawl Data
 
-  crawl a product with a given run date or from/to index page 
+```bash
+vietlott-crawl [OPTIONS] PRODUCT
 
-Options:
-  --run-date TEXT
-  --index_from INTEGER  page index from run since we crawl by pagination the
-                        pages
-  --index_to INTEGER    page index from run since we crawl by pagination the
-                        pages
-  --help                Show this message and exit.
+# Options:
+#   --run-date TEXT       Specific date to crawl
+#   --index_from INTEGER  Starting page index
+#   --index_to INTEGER    Ending page index
+#   --help               Show help message
 ```
 
-### Backfill missing data
+#### 🔧 Backfill Missing Data
 
-```shell
-Usage: vietlott-missing [OPTIONS] PRODUCT
+```bash
+vietlott-missing [OPTIONS] PRODUCT
 
-  detect_missing_data and run if needed :param ctx: context :param product:
-  product to run :param limit: number of pages to run :return:
-
-Options:
-  --limit INTEGER
-  --help           Show this message and exit.
+# Options:
+#   --limit INTEGER  Number of pages to process
+#   --help          Show help message
 ```
+
+### 🛠️ Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/vietvudanh/vietlott-data.git
+cd vietlott-data
+
+# Install dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+  <strong>⭐ If you find this project useful, please consider giving it a star!</strong>
+</div>
 
