@@ -43,6 +43,7 @@ class ReadmeTemplates:
 | **Keno** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
 | **Max 3D** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
 | **Max 3D Pro** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
+| **Bingo18** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18) | 3 numbers from 0-9 game |
 """
 
     @staticmethod
@@ -212,7 +213,7 @@ class ReadmeGenerator:
 
     def _get_data_overview(self) -> str:
         """Generate overview statistics for all products."""
-        products = ["power_655", "power_645", "keno", "3d", "3d_pro"]
+        products = ["power_655", "power_645", "keno", "3d", "3d_pro", "bingo18"]
         data_stats = []
 
         for product in products:
