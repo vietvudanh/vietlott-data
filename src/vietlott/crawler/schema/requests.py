@@ -82,4 +82,4 @@ class RequestBingo18:
     number: str = field(default="")
     DrawDate: str = field(default="")
     PageIndex: int = field(default=1)
-    TotalRow: int = field(default=43569)
+    TotalRow: int = field(default=DEFAULT_TOTAL_ROW_BINGO18)
