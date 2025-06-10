@@ -16,7 +16,7 @@ class ProductBingo18(ProductPower655):
     stored_data_dtype = {
         "date": str,
         "id": str,
-        "result": "list",
+        "result": List[int],
         "total": int,
         "large_small": str,
         "page": int,
