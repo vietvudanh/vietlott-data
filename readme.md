@@ -44,6 +44,7 @@
 | Keno      |           908 | 2022-12-04   | 2025-06-02 |          129077 | #0110271   | #0239906    |
 | 3D        |           933 | 2019-04-22   | 2025-06-09 |             933 | 00001      | 00935       |
 | 3D Pro    |           578 | 2021-09-14   | 2025-06-05 |             578 | 00001      | 00580       |
+| Bingo18   |             2 | 2024-12-03   | 2025-06-10 |              25 | 0083144    | 0113149     |
 
 ## 🔮 Prediction Models
 
@@ -252,3 +253,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
   <strong>⭐ If you find this project useful, please consider giving it a star!</strong>
 </div>
+
