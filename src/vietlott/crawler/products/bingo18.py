@@ -126,7 +126,7 @@ class ProductBingo18(ProductPower655):
 
             # Add metadata
             row["page"] = body.get("PageIndex", -1)
-            row["process_time"] = pendulum.now().to_iso8601_string()
+            row["process_time"] = process_time  # Use precomputed timestamp
 
             data.append(row)
 
