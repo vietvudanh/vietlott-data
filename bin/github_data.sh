@@ -28,6 +28,8 @@ python src/vietlott/cli/crawl.py 3d
 python src/vietlott/cli/missing.py 3d
 python src/vietlott/cli/crawl.py 3d_pro
 python src/vietlott/cli/missing.py 3d_pro
+python src/vietlott/cli/crawl.py bingo18
+python src/vietlott/cli/missing.py bingo18
 
 python src/render_readme.py
 

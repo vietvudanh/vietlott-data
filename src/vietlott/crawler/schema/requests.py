@@ -72,3 +72,14 @@ class RequestP3DPro:
     PageIndex: int = field(default=1)
     number01: str = field(default="123")
     number02: str = field(default="321")
+
+
+@define
+class RequestBingo18:
+    ORenderInfo: ORenderInfoCls = field(default=ORenderInfoCls())
+    GameId: str = field(default="8")
+    GameDrawNo: str = field(default="")
+    number: str = field(default="")
+    DrawDate: str = field(default="")
+    PageIndex: int = field(default=1)
+    TotalRow: int = field(default=DEFAULT_TOTAL_ROW_BINGO18)

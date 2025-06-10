@@ -80,7 +80,22 @@ p3d_pro_config = ProductConfig(
     use_cookies=False,
 )
 
-product_config_map = {c.name: c for c in [power645_config, power655_config, keno_config, p3d_config, p3d_pro_config]}
+bingo18_config = ProductConfig(
+    name="bingo18",
+    raw_path=data_dir / "bingo18.jsonl",
+    min_value=0,
+    max_value=9,
+    size_output=3,
+    interval=timedelta(minutes=5),  # Bingo18 runs frequently throughout the day
+    default_index_to=1,
+    num_thread=10,
+    page_size=6,
+    use_cookies=False,
+)
+
+product_config_map = {
+    c.name: c for c in [power645_config, power655_config, keno_config, p3d_config, p3d_pro_config, bingo18_config]
+}
 
 
 def get_config(name: str) -> ProductConfig:

@@ -18,6 +18,7 @@
 | **Keno** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
 | **Max 3D** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
 | **Max 3D Pro** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
+| **Bingo18** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18) | 3 numbers from 0-9 game |
 
 
 ## 📋 Table of Contents
@@ -41,7 +42,7 @@
 | Power 655 |          1200 | 2017-08-01   | 2025-06-07 |            1200 | 00001      | 01200       |
 | Power 645 |          1167 | 2017-10-25   | 2025-06-08 |            1167 | 00198      | 01364       |
 | Keno      |           908 | 2022-12-04   | 2025-06-02 |          129077 | #0110271   | #0239906    |
-| 3D        |           932 | 2019-04-22   | 2025-06-06 |             932 | 00001      | 00934       |
+| 3D        |           933 | 2019-04-22   | 2025-06-09 |             933 | 00001      | 00935       |
 | 3D Pro    |           578 | 2021-09-14   | 2025-06-05 |             578 | 00001      | 00580       |
 
 ## 🔮 Prediction Models
@@ -55,9 +56,7 @@
 - **Daily cost**: 200,000 VND
 - **Results with 5+ matches**:
 
-| date       | result                       | predicted                |
-|:-----------|:-----------------------------|:-------------------------|
-| 2025-05-20 | [19, 27, 44, 45, 47, 52, 15] | [45, 27, 23, 47, 15, 52] |
+No significant matches found in backtest period.
 
 
 
@@ -253,4 +252,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 <div align="center">
   <strong>⭐ If you find this project useful, please consider giving it a star!</strong>
 </div>
-
