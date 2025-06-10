@@ -43,12 +43,12 @@ def fetch_wrapper(
         """
         tasks_str = ",".join(str(t["task_id"]) for t in tasks)
         logger.debug(f"worker start, tasks_ids={tasks_str}")
-        _headers = headers.copy()
+        _headers = headers.copy() if headers is not None else {}
 
         results = []
         for task in tasks:
             task_id, task_data = task["task_id"], task["task_data"]
-            params = org_params.copy()
+            params = org_params.copy() if org_params is not None else {}
             body = org_body.copy()
 
             params.update(task_data["params"])
@@ -72,7 +72,7 @@ def fetch_wrapper(
                 result = process_result_fn(params, body, res.json(), task_data)
                 results.append(result)
                 logger.debug(f"task {task_id} done")
-            except requests.exceptions.JSONDecodeError as e:
+            except json.JSONDecodeError as e:
                 logger.error(
                     f"json decode error, args={task_data}, text={res.text[:200]}, headers={headers}, cookies={cookies}, body={body}, params={params}"
                 )

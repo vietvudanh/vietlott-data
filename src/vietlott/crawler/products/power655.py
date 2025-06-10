@@ -155,6 +155,9 @@ class ProductPower655(BaseProduct):
             df_final = pd.concat([current_data, df_take], axis="rows")
         else:
             df_final = df_crawled
+
+        # Sort the final dataframe
+        assert isinstance(df_final, pd.DataFrame), "df_final should be a DataFrame"
         df_final = df_final.sort_values(by=["date", "id"])
 
         logger.info(

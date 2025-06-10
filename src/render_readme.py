@@ -1,218 +1,385 @@
-# /usr/bin/env python
+#!/usr/bin/env python
 """
-this script is used to render the README.md that shows in repo's Github
+README Generator for Vietlott Data Project
+
+This script generates a comprehensive README.md file for the GitHub repository
+frontpage, including data statistics, predictions, and project information.
 """
 
 from datetime import datetime, timedelta
-from io import StringIO
 from pathlib import Path
+from typing import Optional
 
 import pandas as pd
 from loguru import logger
 
 from vietlott.config.products import get_config
-from vietlott.model.strategy.random import RandomModel
+from vietlott.model.strategy.random_strategy import RandomModel
 
-include_toc = """- [Vietlot data](#vietlot-data)
-  * [Predictions (just for testing, not a financial advice)](#predictions--just-for-testing--not-a-financial-advice-)
-    + [random](#random)
-  * [raw details 6/55](#raw-details-6-55)
-  * [stats 6/55 all time](#stats-6-55-all-time)
-  * [stats 6/55 -15d](#stats-6-55--15d)
-  * [stats 6/55 -30d](#stats-6-55--30d)
-  * [stats 6/55 -60d](#stats-6-55--60d)
-  * [stats 6/55 -90d](#stats-6-55--90d)
-- [Install](#install)
-  * [via pip](#via-pip)
-  * [cli](#cli)
-    + [crawl](#crawl)
-    + [Backfill missing data](#backfill-missing-data)
+
+class ReadmeTemplates:
+    """Container for README template strings and formatting."""
+
+    @staticmethod
+    def get_header() -> str:
+        """Get the main header with badges and description."""
+        return """# 🎰 Vietlott Data
+
+[![GitHub Actions](https://github.com/vietvudanh/vietlott-data/workflows/crawl/badge.svg)](https://github.com/vietvudanh/vietlott-data/actions)
+[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Data Updated](https://img.shields.io/badge/data-daily%20updated-brightgreen.svg)](https://github.com/vietvudanh/vietlott-data/commits/main)
+
+> 📊 **Automated Vietnamese Lottery Data Collection & Analysis**
+> 
+> This project automatically crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing comprehensive statistics and insights for all major lottery products.
+
+## 🎯 Supported Lottery Products
+
+| Product | Link | Description |
+|---------|------|-------------|
+| **Power 6/55** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | Choose 6 numbers from 1-55 |
+| **Power 6/45** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | Choose 6 numbers from 1-45 |
+| **Keno** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
+| **Max 3D** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
+| **Max 3D Pro** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
 """
-include_how_it_works = """# How project works
-Since there are many people asked, I write this section.
 
-## Schedule
-The project is schedule automatically via Github Actions, run a script, fetch data and auto commit to Github. No server is required, I don't need to do anything.
-Details in [workflow file](https://github.com/vietvudanh/vietlott-data/blob/dffb2bcdfa860a0dfc3f2e22e269e6978d478965/.github/workflows/crawl.yaml#L8)
+    @staticmethod
+    def get_toc() -> str:
+        """Get table of contents."""
+        return """## 📋 Table of Contents
 
-## How crawling works
-I just inspected network packages sent between browser and server to find out how data is fetched and replicated that in Python code. 
+- [🎯 Supported Lottery Products](#-supported-lottery-products)
+- [📊 Data Statistics](#-data-statistics)
+- [🔮 Prediction Models](#-prediction-models)
+- [📈 Power 6/55 Analysis](#-power-655-analysis)
+  - [📅 Recent Results](#-recent-results)
+  - [🎲 Number Frequency (All Time)](#-number-frequency-all-time)
+  - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period)
+- [⚙️ How It Works](#️-how-it-works)
+- [🚀 Installation & Usage](#-installation--usage)
+- [📄 License](#-license)
 """
-include_install_section = """# Install
- 
-## via pip
 
-```shell
+    @staticmethod
+    def get_how_it_works() -> str:
+        """Get how it works section."""
+        return """## ⚙️ How It Works
+
+### 🤖 Automated Data Collection
+
+This project runs completely automatically using **GitHub Actions** - no server required!
+
+- **⏰ Schedule**: Runs daily via [GitHub Actions workflow](.github/workflows/crawl.yaml)
+- **🔄 Process**: Fetches latest results → Processes data → Commits to repository
+- **📊 Analysis**: Generates statistics and updates README automatically
+
+### 🕵️ Data Crawling Method
+
+The data collection works by:
+1. **🔍 Network Analysis**: Inspecting browser-server communication
+2. **🐍 Python Replication**: Recreating the data fetch logic in Python
+3. **📋 Structured Storage**: Saving results in JSONL format for easy analysis
+4. **🔄 Continuous Updates**: Daily automated runs ensure fresh data
+
+> **Note**: This is purely for educational and research purposes. No gambling advice is provided.
+"""
+
+    @staticmethod
+    def get_install_section() -> str:
+        """Get installation section."""
+        return """## 🚀 Installation & Usage
+
+### 📦 Install via pip
+
+```bash
 pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.3
 ```
 
-## cli
-project provides two cli
+### 💻 Command Line Interface
 
-### crawl
-```shell
-Usage: vietlott-crawl [OPTIONS] PRODUCT
+#### 🔍 Crawl Data
 
-  crawl a product with a given run date or from/to index page 
+```bash
+vietlott-crawl [OPTIONS] PRODUCT
 
-Options:
-  --run-date TEXT
-  --index_from INTEGER  page index from run since we crawl by pagination the
-                        pages
-  --index_to INTEGER    page index from run since we crawl by pagination the
-                        pages
-  --help                Show this message and exit.
+# Options:
+#   --run-date TEXT       Specific date to crawl
+#   --index_from INTEGER  Starting page index
+#   --index_to INTEGER    Ending page index
+#   --help               Show help message
 ```
 
-### Backfill missing data
+#### 🔧 Backfill Missing Data
 
-```shell
-Usage: vietlott-missing [OPTIONS] PRODUCT
+```bash
+vietlott-missing [OPTIONS] PRODUCT
 
-  detect_missing_data and run if needed :param ctx: context :param product:
-  product to run :param limit: number of pages to run :return:
-
-Options:
-  --limit INTEGER
-  --help           Show this message and exit.
+# Options:
+#   --limit INTEGER  Number of pages to process
+#   --help          Show help message
 ```
+
+### 🛠️ Development Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/vietvudanh/vietlott-data.git
+cd vietlott-data
+
+# Install dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest
+```
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+  <strong>⭐ If you find this project useful, please consider giving it a star!</strong>
+</div>
 """
 
 
-def _balance_long_df(df_: pd.DataFrame, n_splits: int = 20):
-    """convert long dataframe to multiple columns"""
-    df_ = df_.reset_index()
-    df_["result"] = df_["result"].astype(str)
-    df_["count"] = df_["count"].astype(str)
+class ReadmeGenerator:
+    """Main class for generating the README.md file."""
 
-    final = None
+    def __init__(self):
+        self.templates = ReadmeTemplates()
 
-    for i in range(len(df_) // n_splits + 1):
-        dd = df_.iloc[i * n_splits : (i + 1) * n_splits]
+    def _balance_long_df(self, df_: pd.DataFrame, n_splits: int = 20) -> pd.DataFrame:
+        """Convert long dataframe to multiple columns for better display."""
+        if df_.empty:
+            return df_
 
-        if final is None:
-            final = dd
+        df_ = df_.reset_index()
+        df_["result"] = df_["result"].astype(str)
+        df_["count"] = df_["count"].astype(str)
+
+        final = None
+
+        for i in range(len(df_) // n_splits + 1):
+            dd = df_.iloc[i * n_splits : (i + 1) * n_splits]
+
+            if dd.empty:
+                continue
+
+            if final is None:
+                final = dd
+            else:
+                final = pd.concat(
+                    [
+                        final.reset_index(drop=True),
+                        pd.DataFrame([None] * len(dd), columns=["-"]),
+                        dd.reset_index(drop=True),
+                    ],
+                    axis="columns",
+                )
+
+        if final is not None:
+            final = final.fillna("")
         else:
-            final = pd.concat(
-                [
-                    final.reset_index(drop=True),
-                    pd.DataFrame([None] * len(dd), columns=["-"]),
-                    dd.reset_index(drop=True),
-                ],
-                axis="columns",
-            )
-    final = final.fillna("")
+            final = pd.DataFrame()
 
-    return final
+        return final
 
+    def _load_lottery_data(self, product: str) -> pd.DataFrame:
+        """Load and prepare lottery data for analysis."""
+        try:
+            df = pd.read_json(get_config(product).raw_path, lines=True, dtype=object, convert_dates=False)
+            df["date"] = pd.to_datetime(df["date"]).dt.date
+            df = df.sort_values(by=["date", "id"], ascending=False)
+            return df
+        except Exception as e:
+            logger.error(f"Error loading data for {product}: {e}")
+            return pd.DataFrame()
 
-def read_data(data_dir: Path):
-    df_files = [
-        pd.read_json(str(file), dtype=False, convert_dates=False, lines=True) for file in data_dir.glob("*.jsonl")
-    ]
-    logger.info("df_files: %d", len(df_files))
-    logger.info(df_files[0])
-    df = pd.concat(df_files, axis="rows")
-    return df
+    def _calculate_stats(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Calculate number frequency statistics."""
+        if df.empty:
+            return pd.DataFrame()
 
-
-def read_data_str(data_dir: Path):
-    string = ""
-    for file in data_dir.glob("*.jsonl"):
-        string += file.open("r").read()
-    df = pd.read_json(StringIO(string), lines=True, dtype=object, convert_dates=False)
-    return df
-
-
-def main():
-    df = pd.read_json(get_config("power_655").raw_path, lines=True, dtype=object, convert_dates=False)
-    df["date"] = pd.to_datetime(df["date"]).dt.date
-    df = df.sort_values(by=["date", "id"], ascending=False)
-
-    def fn_stats(df_):
-        df_explode = df_.explode("result")
+        df_explode = df.explode("result")
         stats = df_explode.groupby("result").agg(count=("id", "count"))
         stats["%"] = (stats["count"] / len(df_explode) * 100).round(2)
         return stats
 
-    stats = _balance_long_df(fn_stats(df))
+    def _get_data_overview(self) -> str:
+        """Generate overview statistics for all products."""
+        products = ["power_655", "power_645", "keno", "3d", "3d_pro"]
+        data_stats = []
 
-    # stats n months
-    # stats_15d = _balance_long_df(fn_stats(df[df["date"] >= (datetime.now().date() - timedelta(days=15))]))
-    stats_30d = _balance_long_df(fn_stats(df[df["date"] >= (datetime.now().date() - timedelta(days=30))]))
-    stats_60d = _balance_long_df(fn_stats(df[df["date"] >= (datetime.now().date() - timedelta(days=60))]))
-    stats_90d = _balance_long_df(fn_stats(df[df["date"] >= (datetime.now().date() - timedelta(days=90))]))
+        for product in products:
+            try:
+                df = self._load_lottery_data(product)
+                if not df.empty:
+                    data_stats.append(
+                        {
+                            "Product": product.replace("_", " ").title(),
+                            "Total Draws": df["date"].nunique(),
+                            "Start Date": df["date"].min(),
+                            "End Date": df["date"].max(),
+                            "Total Records": df["id"].nunique(),
+                            "First ID": df["id"].min(),
+                            "Latest ID": df["id"].max(),
+                        }
+                    )
+            except Exception as e:
+                logger.warning(f"Could not load stats for {product}: {e}")
 
-    # stats all data products
-    data_stats_all_producsts = []
-    for product in ["power_655", "power_645", "keno", "3d", "3d_pro"]:
-        df_loop = pd.read_json(get_config(product).raw_path, lines=True, dtype=object, convert_dates=False)
-        data_stats_all_producsts.append(
-            {
-                "product": product,
-                "n_dates": df_loop["date"].nunique(),
-                "start_date": df_loop["date"].min(),
-                "end_date": df_loop["date"].max(),
-                "n_ids": df_loop["id"].nunique(),
-                "start_id": df_loop["id"].min(),
-                "end_id": df_loop["id"].max(),
-            }
-        )
-    include_data_stats = pd.DataFrame(data_stats_all_producsts).to_markdown(index=False)
+        if data_stats:
+            return pd.DataFrame(data_stats).to_markdown(index=False)
+        return "No data available"
 
-    # predictions
-    ticket_per_days = 20
-    random_model = RandomModel(df, ticket_per_days)
-    random_model.backtest()
-    random_model.evaluate()
-    df_random_correct = random_model.df_backtest_evaluate[random_model.df_backtest_evaluate["correct_num"] >= 5][
-        ["date", "result", "predicted"]
-    ]
+    def _generate_predictions_section(self, df: pd.DataFrame) -> str:
+        """Generate predictions analysis section."""
+        if df.empty:
+            return "## 🔮 Prediction Models\n\n> No data available for predictions.\n"
 
-    output_str = f"""# Vietlot data
+        try:
+            ticket_per_days = 20
+            random_model = RandomModel(df, ticket_per_days)
+            random_model.backtest()
+            random_model.evaluate()
 
-Data crawling from https://vietlott.vn/, results for products:
-- [6/55](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655)
-- [6/45](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645)
-- [Keno](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno)
-- [Max 3D](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d)
-- [Max 3D Pro](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro)
+            df_correct = random_model.df_backtest_evaluate[random_model.df_backtest_evaluate["correct_num"] >= 5][
+                ["date", "result", "predicted"]
+            ]
 
-## Table of content
-{include_toc}
+            cost_per_day = 10000 * ticket_per_days
 
-## Predictions (just for testing, not a financial advice)
-These are backtest results for the strategies I have tested (just the abstract method at the moment, you can't predict lotery lol)
+            return f"""## 🔮 Prediction Models
 
-### random strategy
-predicted: {ticket_per_days} / day ({ticket_per_days} tickets perday or {10000 * ticket_per_days:,d} vnd)
-predicted corrected:
-{df_random_correct.to_markdown()} 
+> ⚠️ **Disclaimer**: These are experimental models for educational purposes only. Lottery outcomes are random and cannot be predicted reliably.
 
-## Data stats
-{include_data_stats}
+### 🎲 Random Strategy Backtest
 
-## raw details 6/55 last 10 days
-{df.head(10).to_markdown(index=False)}
-## stats 6/55 all time
-{stats.to_markdown(index=False)}
-## stats 6/55 -15d
-{stats_30d.to_markdown(index=False)}
-## stats 6/55 -30d
-{stats_30d.to_markdown(index=False)}
-## stats 6/55 -60d
-{stats_60d.to_markdown(index=False)}
-## stats 6/55 -90d
-{stats_90d.to_markdown(index=False)}
+- **Strategy**: Random number selection
+- **Tickets per day**: {ticket_per_days}
+- **Daily cost**: {cost_per_day:,} VND
+- **Results with 5+ matches**:
 
-{include_how_it_works}
-{include_install_section}
+{df_correct.to_markdown(index=False) if not df_correct.empty else "No significant matches found in backtest period."}
+
 """
-    path_output = Path("./readme.md")
-    with path_output.open("w") as ofile:
-        logger.info(f"cwd: {Path.cwd()}")
-        logger.info(f"writing to {path_output.absolute()}")
-        ofile.write(output_str)
+        except Exception as e:
+            logger.error(f"Error generating predictions: {e}")
+            return "## 🔮 Prediction Models\n\n> Error generating prediction analysis.\n"
+
+    def _generate_power655_analysis(self, df: pd.DataFrame) -> str:
+        """Generate detailed Power 6/55 analysis section."""
+        if df.empty:
+            return "## 📈 Power 6/55 Analysis\n\n> No data available for analysis.\n"
+
+        try:
+            # Calculate stats for different periods
+            stats_all = self._balance_long_df(self._calculate_stats(df))
+
+            current_date = datetime.now().date()
+            stats_30d = self._balance_long_df(
+                self._calculate_stats(df[df["date"] >= (current_date - timedelta(days=30))])
+            )
+            stats_60d = self._balance_long_df(
+                self._calculate_stats(df[df["date"] >= (current_date - timedelta(days=60))])
+            )
+            stats_90d = self._balance_long_df(
+                self._calculate_stats(df[df["date"] >= (current_date - timedelta(days=90))])
+            )
+
+            recent_results = df.head(10)
+
+            return f"""## 📈 Power 6/55 Analysis
+
+### 📅 Recent Results (Last 10 draws)
+{recent_results.to_markdown(index=False)}
+
+### 🎲 Number Frequency (All Time)
+{stats_all.to_markdown(index=False) if not stats_all.empty else "No data available"}
+
+### 📊 Frequency Analysis by Period
+
+#### Last 30 Days
+{stats_30d.to_markdown(index=False) if not stats_30d.empty else "No data available"}
+
+#### Last 60 Days
+{stats_60d.to_markdown(index=False) if not stats_60d.empty else "No data available"}
+
+#### Last 90 Days
+{stats_90d.to_markdown(index=False) if not stats_90d.empty else "No data available"}
+
+"""
+        except Exception as e:
+            logger.error(f"Error generating Power 6/55 analysis: {e}")
+            return "## 📈 Power 6/55 Analysis\n\n> Error generating analysis.\n"
+
+    def generate_readme(self) -> str:
+        """Generate the complete README content."""
+        logger.info("Starting README generation...")
+
+        # Load Power 6/55 data (main focus)
+        df_power655 = self._load_lottery_data("power_655")
+
+        # Generate all sections
+        header = self.templates.get_header()
+        toc = self.templates.get_toc()
+        data_overview = self._get_data_overview()
+        predictions = self._generate_predictions_section(df_power655)
+        power655_analysis = self._generate_power655_analysis(df_power655)
+        how_it_works = self.templates.get_how_it_works()
+        install_section = self.templates.get_install_section()
+
+        # Combine all sections
+        readme_content = f"""{header}
+
+{toc}
+
+## 📊 Data Statistics
+
+{data_overview}
+
+{predictions}
+
+{power655_analysis}
+
+{how_it_works}
+
+{install_section}
+"""
+
+        return readme_content
+
+    def save_readme(self, output_path: Optional[Path] = None) -> None:
+        """Generate and save README to file."""
+        if output_path is None:
+            output_path = Path("./readme.md")
+
+        try:
+            readme_content = self.generate_readme()
+
+            with output_path.open("w", encoding="utf-8") as ofile:
+                ofile.write(readme_content)
+
+            logger.info(f"README successfully written to {output_path.absolute()}")
+        except Exception as e:
+            logger.error(f"Error saving README: {e}")
+            raise
+
+
+def main():
+    """Main entry point for README generation."""
+    try:
+        generator = ReadmeGenerator()
+        generator.save_readme()
+        logger.info("README generation completed successfully!")
+    except Exception as e:
+        logger.error(f"Failed to generate README: {e}")
+        raise
 
 
 if __name__ == "__main__":
