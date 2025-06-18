@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # commit to csv_data
 
-URL=https://github.com/vietvudanh/vietlott-data.git
+URL=https://github.com/tungduync/vietlott-data.git
 FOLDER=vietlott-data
 DATA_FOLDER=data
-USER="Viet VU"
-EMAIl="vietvudanh@gmail.com"
+USER="tungduync"
+EMAIl="tungduync@gmail.com"
 
 # Activate virtual environment if it exists
 if [ -n "$VENV" ]; then
@@ -43,7 +43,7 @@ python src/render_readme.py
 #git pull
 
 # commit and push
-git remote add github git@github.com:vietvudanh/vietlott-data.git
+git remote add github git@github.com:tungduync/vietlott-data.git
 git config user.name "\'$USER\'"
 git config user.email "\'$EMAIl\'"
 git status
