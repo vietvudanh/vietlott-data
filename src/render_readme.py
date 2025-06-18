@@ -23,20 +23,15 @@ class ReadmeTemplates:
     @staticmethod
     def get_header() -> str:
         """Get the main header with badges and description."""
-        return """# 🎰 Vietlott Data
+        return """# 🎰 Vietlott Data Collection & Analysis
 
-[![GitHub Actions](https://github.com/vietvudanh/vietlott-data/workflows/crawl/badge.svg)](https://github.com/vietvudanh/vietlott-data/actions)
-[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Data Updated](https://img.shields.io/badge/data-daily%20updated-brightgreen.svg)](https://github.com/vietvudanh/vietlott-data/commits/main)
+> 📊 **Automated data collection and analysis for Vietnam's official lottery games**
 
-> 📊 **Automated Vietnamese Lottery Data Collection & Analysis**
-> 
-> This project automatically crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing comprehensive statistics and insights for all major lottery products.
+This project automatically collects and analyzes data from [Vietlott](https://vietlott.vn) - Vietnam's official lottery operator. It provides comprehensive statistics, frequency analysis, and experimental prediction models for educational purposes.
 
 ## 🎯 Supported Lottery Products
 
-| Product | Link | Description |
+| Product | Official Results | Description |
 |---------|------|-------------|
 | **Power 6/55** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | Choose 6 numbers from 1-55 |
 | **Power 6/45** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | Choose 6 numbers from 1-45 |

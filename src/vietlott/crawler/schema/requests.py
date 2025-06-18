@@ -2,6 +2,8 @@ from typing import List, Optional
 
 from attrs import define, field
 
+# Constants for default values
+DEFAULT_TOTAL_ROW_BINGO18 = 43569
 
 @define
 class ORenderInfoCls:

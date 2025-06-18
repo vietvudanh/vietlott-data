@@ -1,32 +1,41 @@
 import click
 import pendulum
+import logging
 
 from vietlott.config.map_class import map_class_name
 from vietlott.config.products import product_config_map
 from vietlott.crawler.products import BaseProduct
 
+logger = logging.getLogger(__name__)
+
 
 @click.command()
 @click.pass_context
 @click.argument("product")
-@click.option("--run-date", default=pendulum.now(tz="Asia/Ho_Chi_Minh").to_date_string())
-@click.option("--index_from", default=0, type=int, help="page index from run since we crawl by pagination the pages")
-@click.option("--index_to", default=None, type=int, help="page index from run since we crawl by pagination the pages")
+@click.option("--run-date", default=None)
+@click.option("--index_from", default=0)
+@click.option("--index_to", default=None)
 def crawl(ctx, product, run_date, index_from, index_to):
-    """
-    crawl a product with a given run date or from/to index page
-    """
-    if product not in product_config_map:
-        click.echo(f"Error:: Product must in product_map: {list(product_config_map.keys())}", err=True)
-        ctx.exit(1)
-    click.echo(f"product={product}")
+    """crawl data for a specific product"""
+    # Exclude bingo18 from crawling
+    if product == "bingo18":
+        logger.warning("Bingo18 is currently excluded from crawling")
+        return
+    
+    logger.info(f"Starting crawl for product: {product}")
+    
+    try:
+        product_class = map_class_name.get(product)
+        if product_class is None:
+            logger.error(f"Unknown product: {product}")
+            return
 
-    product_obj: BaseProduct = map_class_name[product]()
-    product_obj.crawl(
-        run_date_str=run_date,
-        index_from=index_from,
-        index_to=index_to,
-    )
+        product_obj = product_class()
+        product_obj.crawl(run_date, index_from, index_to)
+        logger.info(f"Successfully crawled data for {product}")
+    except Exception as e:
+        logger.error(f"Error crawling {product}: {e}")
+        raise
 
 
 if __name__ == "__main__":
