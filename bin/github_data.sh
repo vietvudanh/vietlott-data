@@ -50,4 +50,4 @@ git status
 git add $DATA_FOLDER
 git add readme.md
 git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`"
-git push github master
+git push github Test
