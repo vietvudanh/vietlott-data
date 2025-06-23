@@ -6,7 +6,7 @@ FOLDER=vietlott-data
 DATA_FOLDER=data
 USER="Viet VU"
 EMAIl="vietvudanh@gmail.com"
-VENV=".venv"G
+VENV=".venv"
 
 # Activate virtual environment if it exists
 if [ -n "$VENV" ]; then
