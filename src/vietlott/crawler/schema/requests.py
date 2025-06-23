@@ -38,6 +38,9 @@ class RequestPower655:
     PageIndex: int = field(default=1)
 
 
+DEFAULT_TOTAL_ROW_BINGO18 = 45628
+
+
 @define
 class RequestKeno:
     DrawDate: str = field(default="")

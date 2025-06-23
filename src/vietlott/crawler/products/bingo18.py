@@ -64,6 +64,7 @@ class ProductBingo18(ProductPower655):
 
         soup = BeautifulSoup(html_content, "lxml")
         data = []
+        process_time = pendulum.now().to_iso8601_string()
 
         for i, tr in enumerate(soup.select("table tr")):
             if i == 0:  # Skip header row
