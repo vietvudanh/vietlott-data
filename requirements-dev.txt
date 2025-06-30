@@ -78,7 +78,7 @@ pytz==2024.2
     # via pandas
 readme-renderer==44.0
     # via twine
-requests==2.32.3
+requests==2.32.4
     # via
     #   vietlott-data (pyproject.toml)
     #   requests-toolbelt
