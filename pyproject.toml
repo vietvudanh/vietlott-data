@@ -13,16 +13,16 @@ authors = [
     { name = "Viet Vu", email = "vietvudanh@gmail.com" },
 ]
 dependencies = [
-    "bs4>=0.0.2",
-    "pandas>=2.2.1",
-    "lxml>=5.2.1",
-    "attrs>=23.2.0",
-    "cattrs>=23.2.3",
-    "click>=8.1.7",
-    "pendulum>=3.0.0",
-    "requests>=2.31.0",
-    "tabulate>=0.9.0",
-    "loguru>=0.7.2",
+    "bs4",
+    "pandas",
+    "lxml",
+    "attrs",
+    "cattrs",
+    "click",
+    "pendulum",
+    "requests",
+    "tabulate",
+    "loguru",
 ]
 requires-python = ">=3.11"
 readme = "README.md"

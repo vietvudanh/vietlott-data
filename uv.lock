@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.11"
 resolution-markers = [
     "python_full_version >= '3.12'",
@@ -919,21 +920,22 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "attrs", specifier = ">=23.2.0" },
-    { name = "bs4", specifier = ">=0.0.2" },
+    { name = "attrs" },
+    { name = "bs4" },
     { name = "build", marker = "extra == 'dev'", specifier = ">=1.2.1" },
-    { name = "cattrs", specifier = ">=23.2.3" },
-    { name = "click", specifier = ">=8.1.7" },
-    { name = "loguru", specifier = ">=0.7.2" },
-    { name = "lxml", specifier = ">=5.2.1" },
-    { name = "pandas", specifier = ">=2.2.1" },
-    { name = "pendulum", specifier = ">=3.0.0" },
+    { name = "cattrs" },
+    { name = "click" },
+    { name = "loguru" },
+    { name = "lxml" },
+    { name = "pandas" },
+    { name = "pendulum" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.1.1" },
-    { name = "requests", specifier = ">=2.31.0" },
+    { name = "requests" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.3.5" },
-    { name = "tabulate", specifier = ">=0.9.0" },
+    { name = "tabulate" },
     { name = "twine", marker = "extra == 'dev'", specifier = ">=5.0.0" },
 ]
+provides-extras = ["dev"]
 
 [[package]]
 name = "win32-setctime"
