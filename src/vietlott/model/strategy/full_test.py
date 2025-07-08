@@ -7,9 +7,10 @@ import sys
 
 sys.path.append("src")
 
-from datetime import date, timedelta
-import pandas as pd
 import random
+from datetime import date, timedelta
+
+import pandas as pd
 
 
 def create_larger_sample_data():
@@ -26,7 +27,7 @@ def create_larger_sample_data():
         # Generate 6 random numbers between 1-55
         result = sorted(random.sample(range(1, 56), 6))
 
-        data.append({"id": f"655-{i+1:03d}", "date": draw_date, "result": result})
+        data.append({"id": f"655-{i + 1:03d}", "date": draw_date, "result": result})
 
     return pd.DataFrame(data)
 
@@ -40,10 +41,10 @@ def test_strategy_comparison():
 
     try:
         from vietlott.model.strategy.backtest import StrategyBacktester, StrategyComparator
-        from vietlott.model.strategy.random_strategy import RandomModel
+        from vietlott.model.strategy.frequency import ColdNumbersStrategy, HotNumbersStrategy
         from vietlott.model.strategy.not_repeat import NotRepeatStrategy
-        from vietlott.model.strategy.frequency import HotNumbersStrategy, ColdNumbersStrategy
         from vietlott.model.strategy.pattern import PatternStrategy
+        from vietlott.model.strategy.random_strategy import RandomModel
 
         # Initialize backtester and comparator
         backtester = StrategyBacktester(df)
@@ -103,7 +104,7 @@ def test_parameter_tuning():
     df = create_larger_sample_data()
 
     try:
-        from vietlott.model.strategy.backtest import StrategyBacktester, ParameterTuner
+        from vietlott.model.strategy.backtest import ParameterTuner, StrategyBacktester
         from vietlott.model.strategy.not_repeat import NotRepeatStrategy
 
         # Initialize backtester and tuner
@@ -134,7 +135,7 @@ def test_parameter_tuning():
         # Show top 3 results
         print("\nTop 3 parameter combinations:")
         for i, result in enumerate(results[:3]):
-            print(f"{i+1}. Parameters: {result.parameters}")
+            print(f"{i + 1}. Parameters: {result.parameters}")
             print(f"   ROI: {result.roi:.2f}%, Win Rate: {result.win_rate:.2f}, Avg Matches: {result.avg_matches:.2f}")
 
         print("✅ Parameter tuning tested successfully!")

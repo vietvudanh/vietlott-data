@@ -1,6 +1,7 @@
+import random
 from datetime import date, timedelta
 from typing import List
-import random
+
 import pandas as pd
 
 from vietlott.model.strategy.base import PredictModel

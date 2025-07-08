@@ -8,6 +8,7 @@ import sys
 sys.path.append("src")
 
 from datetime import date, timedelta
+
 import pandas as pd
 
 
@@ -25,7 +26,7 @@ def create_sample_data():
         # Generate 6 random numbers between 1-55
         result = sorted(random.sample(range(1, 56), 6))
 
-        data.append({"id": f"655-{i+1:03d}", "date": draw_date, "result": result})
+        data.append({"id": f"655-{i + 1:03d}", "date": draw_date, "result": result})
 
     return pd.DataFrame(data)
 
@@ -56,7 +57,7 @@ def test_basic_strategies():
         print(f"NotRepeat Strategy: {not_repeat_pred}")
 
         # Test FrequencyStrategy
-        from vietlott.model.strategy.frequency import HotNumbersStrategy, ColdNumbersStrategy
+        from vietlott.model.strategy.frequency import ColdNumbersStrategy, HotNumbersStrategy
 
         hot_strategy = HotNumbersStrategy(df, lookback_days=90)
         hot_pred = hot_strategy.predict(test_date)
