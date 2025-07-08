@@ -40,6 +40,7 @@ class ReadmeTemplates:
 |---------|------|-------------|
 | **Power 6/55** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | Choose 6 numbers from 1-55 |
 | **Power 6/45** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | Choose 6 numbers from 1-45 |
+| **Power 5/35** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535) | Choose 5 numbers from 1-35 |
 | **Keno** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
 | **Max 3D** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
 | **Max 3D Pro** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
@@ -58,6 +59,10 @@ class ReadmeTemplates:
   - [📅 Recent Results](#-recent-results)
   - [🎲 Number Frequency (All Time)](#-number-frequency-all-time)
   - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period)
+- [📈 Power 5/35 Analysis](#-power-535-analysis)
+  - [📅 Recent Results](#-recent-results-1)
+  - [🎲 Number Frequency (All Time)](#-number-frequency-all-time-1)
+  - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period-1)
 - [⚙️ How It Works](#️-how-it-works)
 - [🚀 Installation & Usage](#-installation--usage)
 - [📄 License](#-license)
@@ -213,7 +218,7 @@ class ReadmeGenerator:
 
     def _get_data_overview(self) -> str:
         """Generate overview statistics for all products."""
-        products = ["power_655", "power_645", "keno", "3d", "3d_pro", "bingo18"]
+        products = ["power_655", "power_645", "power_535", "keno", "3d", "3d_pro", "bingo18"]
         data_stats = []
 
         for product in products:
@@ -319,6 +324,52 @@ class ReadmeGenerator:
             logger.error(f"Error generating Power 6/55 analysis: {e}")
             return "## 📈 Power 6/55 Analysis\n\n> Error generating analysis.\n"
 
+    def _generate_power535_analysis(self, df: pd.DataFrame) -> str:
+        """Generate detailed Power 5/35 analysis section."""
+        if df.empty:
+            return "## 📈 Power 5/35 Analysis\n\n> No data available for analysis.\n"
+
+        try:
+            # Calculate stats for different periods
+            stats_all = self._balance_long_df(self._calculate_stats(df))
+
+            current_date = datetime.now().date()
+            stats_30d = self._balance_long_df(
+                self._calculate_stats(df[df["date"] >= (current_date - timedelta(days=30))])
+            )
+            stats_60d = self._balance_long_df(
+                self._calculate_stats(df[df["date"] >= (current_date - timedelta(days=60))])
+            )
+            stats_90d = self._balance_long_df(
+                self._calculate_stats(df[df["date"] >= (current_date - timedelta(days=90))])
+            )
+
+            recent_results = df.head(10)
+
+            return f"""## 📈 Power 5/35 Analysis
+
+### 📅 Recent Results (Last 10 draws)
+{recent_results.to_markdown(index=False)}
+
+### 🎲 Number Frequency (All Time)
+{stats_all.to_markdown(index=False) if not stats_all.empty else "No data available"}
+
+### 📊 Frequency Analysis by Period
+
+#### Last 30 Days
+{stats_30d.to_markdown(index=False) if not stats_30d.empty else "No data available"}
+
+#### Last 60 Days
+{stats_60d.to_markdown(index=False) if not stats_60d.empty else "No data available"}
+
+#### Last 90 Days
+{stats_90d.to_markdown(index=False) if not stats_90d.empty else "No data available"}
+
+"""
+        except Exception as e:
+            logger.error(f"Error generating Power 5/35 analysis: {e}")
+            return "## 📈 Power 5/35 Analysis\n\n> Error generating analysis.\n"
+
     def generate_readme(self) -> str:
         """Generate the complete README content."""
         logger.info("Starting README generation...")
@@ -326,12 +377,16 @@ class ReadmeGenerator:
         # Load Power 6/55 data (main focus)
         df_power655 = self._load_lottery_data("power_655")
 
+        # Load Power 5/35 data
+        df_power535 = self._load_lottery_data("power_535")
+
         # Generate all sections
         header = self.templates.get_header()
         toc = self.templates.get_toc()
         data_overview = self._get_data_overview()
         predictions = self._generate_predictions_section(df_power655)
         power655_analysis = self._generate_power655_analysis(df_power655)
+        power535_analysis = self._generate_power535_analysis(df_power535)
         how_it_works = self.templates.get_how_it_works()
         install_section = self.templates.get_install_section()
 
@@ -347,6 +402,8 @@ class ReadmeGenerator:
 {predictions}
 
 {power655_analysis}
+
+{power535_analysis}
 
 {how_it_works}
 
