@@ -41,6 +41,15 @@ power645_config = ProductConfig(
     interval=timedelta(days=2),
     use_cookies=False,
 )
+power535_config = ProductConfig(
+    name="power_535",
+    raw_path=data_dir / "power535.jsonl",
+    min_value=1,
+    max_value=35,
+    size_output=5,
+    interval=timedelta(days=2),
+    use_cookies=False,
+)
 keno_config = ProductConfig(
     name="keno",
     raw_path=data_dir / "keno.jsonl",
@@ -94,7 +103,16 @@ bingo18_config = ProductConfig(
 )
 
 product_config_map = {
-    c.name: c for c in [power645_config, power655_config, keno_config, p3d_config, p3d_pro_config, bingo18_config]
+    c.name: c
+    for c in [
+        power645_config,
+        power655_config,
+        power535_config,
+        keno_config,
+        p3d_config,
+        p3d_pro_config,
+        bingo18_config,
+    ]
 }
 
 

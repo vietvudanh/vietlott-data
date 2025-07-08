@@ -136,8 +136,8 @@ class ProductPower655(BaseProduct):
             return
         df_crawled = pd.DataFrame(list_data)
         logger.info(
-            f'crawled data date: min={df_crawled["date"].min()}, max={df_crawled["date"].max()}'
-            + f' id min={df_crawled["id"].min()}, max={df_crawled["id"].max()}'
+            f"crawled data date: min={df_crawled['date'].min()}, max={df_crawled['date'].max()}"
+            + f" id min={df_crawled['id'].min()}, max={df_crawled['id'].max()}"
             + f", records={len(df_crawled)}"
         )
 
@@ -146,8 +146,8 @@ class ProductPower655(BaseProduct):
         if self.product_config.raw_path.exists():
             current_data = pd.read_json(self.product_config.raw_path, lines=True, dtype=self.stored_data_dtype)
             logger.info(
-                f'current data date min={current_data["date"].min()}, max={current_data["date"].max()}'
-                + f' id min={current_data["id"].min()}, max={current_data["id"].max()}'
+                f"current data date min={current_data['date'].min()}, max={current_data['date'].max()}"
+                + f" id min={current_data['id'].min()}, max={current_data['id'].max()}"
                 + f", records={len(current_data)}"
             )
             current_data_count = len(current_data)
@@ -161,7 +161,7 @@ class ProductPower655(BaseProduct):
         df_final = df_final.sort_values(by=["date", "id"])
 
         logger.info(
-            f'final data min_date={df_final["date"].min()}, max_date={df_final["date"].max()}'
+            f"final data min_date={df_final['date'].min()}, max_date={df_final['date'].max()}"
             + f", records={current_data_count}->{len(df_final)}, diff:{len(df_final) - current_data_count}"
         )
         df_final.to_json(self.product_config.raw_path.absolute(), orient="records", lines=True)

@@ -5,19 +5,20 @@ backtesting, and parameter tuning systems.
 """
 
 from datetime import timedelta
+
 import pandas as pd
 from loguru import logger
 
 from vietlott.config.products import get_config
 from vietlott.model.strategy import (
-    RandomModel,
-    NotRepeatStrategy,
+    ColdNumbersStrategy,
     FrequencyStrategy,
     HotNumbersStrategy,
-    ColdNumbersStrategy,
-    PatternStrategy,
-    StrategyBacktester,
+    NotRepeatStrategy,
     ParameterTuner,
+    PatternStrategy,
+    RandomModel,
+    StrategyBacktester,
     StrategyComparator,
 )
 
@@ -106,7 +107,7 @@ def demo_backtesting():
     # Find best strategy
     if results:
         best_strategy = max(results, key=lambda x: x.roi)
-        logger.info(f"\nBest strategy: {best_strategy.strategy_name} " f"(ROI: {best_strategy.roi:.2f}%)")
+        logger.info(f"\nBest strategy: {best_strategy.strategy_name} (ROI: {best_strategy.roi:.2f}%)")
 
 
 def demo_parameter_tuning():
@@ -144,7 +145,7 @@ def demo_parameter_tuning():
         # Show top 3 results
         logger.info("Top 3 parameter combinations:")
         for i, result in enumerate(results[:3]):
-            logger.info(f"{i+1}. {result.parameters} -> ROI: {result.roi:.2f}%")
+            logger.info(f"{i + 1}. {result.parameters} -> ROI: {result.roi:.2f}%")
 
     except Exception as e:
         logger.error(f"Parameter tuning failed: {e}")

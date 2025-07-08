@@ -9,8 +9,8 @@ from pathlib import Path
 # Add src to Python path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from vietlott.config.products import get_config
 from vietlott.config.map_class import map_class_name
+from vietlott.config.products import get_config
 
 
 def test_bingo18_config():
@@ -33,21 +33,21 @@ def test_bingo18_config():
     # Test class mapping
     product_class = map_class_name.get("bingo18")
     assert product_class is not None, "Product class not found in map_class_name"
-    assert (
-        product_class.__name__ == "ProductBingo18"
-    ), f"Expected class name 'ProductBingo18', got '{product_class.__name__}'"
+    assert product_class.__name__ == "ProductBingo18", (
+        f"Expected class name 'ProductBingo18', got '{product_class.__name__}'"
+    )
     print(f"✓ Product class found: {product_class.__name__}")
 
     # Test instantiation
     instance = product_class()
     assert instance.name == "bingo18", f"Expected instance name 'bingo18', got '{instance.name}'"
-    assert (
-        "GameBingoCompareWebPart" in instance.url
-    ), f"Expected URL to contain 'GameBingoCompareWebPart', got '{instance.url}'"
+    assert "GameBingoCompareWebPart" in instance.url, (
+        f"Expected URL to contain 'GameBingoCompareWebPart', got '{instance.url}'"
+    )
     assert "result" in instance.stored_data_dtype, "Expected 'result' field in stored_data_dtype"
-    assert (
-        len(instance.stored_data_dtype) >= 6
-    ), f"Expected at least 6 data type fields, got {len(instance.stored_data_dtype)}"
+    assert len(instance.stored_data_dtype) >= 6, (
+        f"Expected at least 6 data type fields, got {len(instance.stored_data_dtype)}"
+    )
     print("✓ Product instance created successfully")
     print(f"  - Name: {instance.name}")
     print(f"  - URL: {instance.url}")

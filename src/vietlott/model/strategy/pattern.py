@@ -1,9 +1,10 @@
-from datetime import date, timedelta
-from typing import List, Dict, Any
 import random
-import pandas as pd
-import numpy as np
 from collections import Counter
+from datetime import date, timedelta
+from typing import Any, Dict, List
+
+import numpy as np
+import pandas as pd
 
 from vietlott.model.strategy.base import PredictModel
 
