@@ -31,6 +31,10 @@
   - [📅 Recent Results](#-recent-results)
   - [🎲 Number Frequency (All Time)](#-number-frequency-all-time)
   - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period)
+- [📈 Power 5/35 Analysis](#-power-535-analysis)
+  - [📅 Recent Results](#-recent-results-1)
+  - [🎲 Number Frequency (All Time)](#-number-frequency-all-time-1)
+  - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period-1)
 - [⚙️ How It Works](#️-how-it-works)
 - [🚀 Installation & Usage](#-installation--usage)
 - [📄 License](#-license)
@@ -42,6 +46,7 @@
 |:----------|--------------:|:-------------|:-----------|----------------:|:-----------|:------------|
 | Power 655 |          1212 | 2017-08-01   | 2025-07-05 |            1212 | 00001      | 01212       |
 | Power 645 |          1179 | 2017-10-25   | 2025-07-06 |            1179 | 00198      | 01376       |
+| Power 535 |            10 | 2025-06-29   | 2025-07-08 |              19 | 00001      | 00019       |
 | Keno      |           944 | 2022-12-04   | 2025-07-08 |          133240 | #0110271   | #0244137    |
 | 3D        |           947 | 2019-04-22   | 2025-07-07 |             947 | 00001      | 00947       |
 | 3D Pro    |           593 | 2021-09-14   | 2025-07-05 |             593 | 00001      | 00593       |

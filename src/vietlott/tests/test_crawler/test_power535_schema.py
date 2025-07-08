@@ -1,6 +1,5 @@
 import cattrs
 
-
 from vietlott.crawler.schema.requests import ORenderInfoCls, RequestPower535
 
 

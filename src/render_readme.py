@@ -40,6 +40,7 @@ class ReadmeTemplates:
 |---------|------|-------------|
 | **Power 6/55** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | Choose 6 numbers from 1-55 |
 | **Power 6/45** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | Choose 6 numbers from 1-45 |
+| **Power 5/35** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535) | Choose 5 numbers from 1-35 |
 | **Keno** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
 | **Max 3D** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
 | **Max 3D Pro** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
@@ -58,6 +59,10 @@ class ReadmeTemplates:
   - [📅 Recent Results](#-recent-results)
   - [🎲 Number Frequency (All Time)](#-number-frequency-all-time)
   - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period)
+- [📈 Power 5/35 Analysis](#-power-535-analysis)
+  - [📅 Recent Results](#-recent-results-1)
+  - [🎲 Number Frequency (All Time)](#-number-frequency-all-time-1)
+  - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period-1)
 - [⚙️ How It Works](#️-how-it-works)
 - [🚀 Installation & Usage](#-installation--usage)
 - [📄 License](#-license)
@@ -213,7 +218,7 @@ class ReadmeGenerator:
 
     def _get_data_overview(self) -> str:
         """Generate overview statistics for all products."""
-        products = ["power_655", "power_645", "keno", "3d", "3d_pro", "bingo18"]
+        products = ["power_655", "power_645", "power_535", "keno", "3d", "3d_pro", "bingo18"]
         data_stats = []
 
         for product in products:
@@ -318,6 +323,8 @@ class ReadmeGenerator:
         except Exception as e:
             logger.error(f"Error generating Power 6/55 analysis: {e}")
             return "## 📈 Power 6/55 Analysis\n\n> Error generating analysis.\n"
+
+    # Removed Power 5/35 Analysis section as requested.
 
     def generate_readme(self) -> str:
         """Generate the complete README content."""
