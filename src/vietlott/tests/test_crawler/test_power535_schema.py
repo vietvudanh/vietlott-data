@@ -1,5 +1,6 @@
 import cattrs
 
+
 from vietlott.crawler.schema.requests import ORenderInfoCls, RequestPower535
 
 
@@ -7,7 +8,7 @@ def test_power535_schema_structure():
     """
     Test that the Power 535 schema structure is valid.
     """
-    
+
     # Test basic schema construction
     schema_object = RequestPower535(
         ORenderInfo=ORenderInfoCls(
@@ -36,14 +37,14 @@ def test_power535_schema_structure():
 
     # Test that it can be serialized
     rendered_object = cattrs.unstructure(schema_object)
-    
+
     # Basic validation
     assert "ORenderInfo" in rendered_object
     assert "Key" in rendered_object
     assert "ArrayNumbers" in rendered_object
     assert len(rendered_object["ArrayNumbers"]) == 5  # 5 rows
     assert len(rendered_object["ArrayNumbers"][0]) == 15  # 15 columns per row
-    
+
     print("✓ Power 535 schema validates correctly")
 
 
