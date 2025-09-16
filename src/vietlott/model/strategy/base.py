@@ -85,6 +85,6 @@ class PredictModel:
 
     def revenue(self):
         cost = len(self.df_backtest_evaluate) * self.ticket_price
-        gain = self.df_backtest_evaluate[PredictModel.col_correct_num].apply(lambda v: self.prices.get(v, 0)).sum()
+        gain = self.df_backtest_evaluate[PredictModel.col_correct_num].map(self.prices).fillna(0).astype(int).sum()
 
         return cost, gain, gain - cost

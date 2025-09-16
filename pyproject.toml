@@ -3,15 +3,13 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-where = ["src"]  # list of folders that contain the packages (["."] by default)
+where = ["src"] # list of folders that contain the packages (["."] by default)
 
 [project]
 name = "vietlott-data"
 version = "0.1.3"
 description = "crawl & store vietlott data"
-authors = [
-    { name = "Viet Vu", email = "vietvudanh@gmail.com" },
-]
+authors = [{ name = "Viet Vu", email = "vietvudanh@gmail.com" }]
 dependencies = [
     "bs4",
     "pandas",
@@ -34,12 +32,7 @@ Issues = "https://github.com/vietvudanh/vietlott-data/issues"
 
 
 [project.optional-dependencies]
-dev = [
-    "pytest>=8.1.1",
-    "ruff>=0.3.5",
-    "build>=1.2.1",
-    "twine>=5.0.0",
-]
+dev = ["pytest>=8.1.1", "ruff>=0.3.5", "build>=1.2.1", "twine>=5.0.0"]
 
 [project.scripts]
 vietlott-crawl = "vietlott.cli.crawl:crawl"

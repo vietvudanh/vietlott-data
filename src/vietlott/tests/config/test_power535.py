@@ -54,9 +54,3 @@ def test_power535_config():
     print(f"  - Data types: {instance.stored_data_dtype}")
 
     print("\n✓ All tests passed! Power 535 is configured correctly.")
-    return True
-
-
-if __name__ == "__main__":
-    success = test_power535_config()
-    sys.exit(0 if success else 1)

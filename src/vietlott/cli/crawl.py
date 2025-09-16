@@ -1,5 +1,6 @@
 import click
 import pendulum
+from loguru import logger
 
 from vietlott.config.map_class import map_class_name
 from vietlott.config.products import product_config_map
@@ -17,9 +18,9 @@ def crawl(ctx, product, run_date, index_from, index_to):
     crawl a product with a given run date or from/to index page
     """
     if product not in product_config_map:
-        click.echo(f"Error:: Product must in product_map: {list(product_config_map.keys())}", err=True)
+        logger.error(f"Product must be in product_map: {list(product_config_map.keys())}")
         ctx.exit(1)
-    click.echo(f"product={product}")
+    logger.info(f"product={product}")
 
     product_obj: BaseProduct = map_class_name[product]()
     product_obj.crawl(

@@ -3,12 +3,11 @@ from typing import Dict, List
 import pendulum
 from bs4 import BeautifulSoup
 
-from vietlott.crawler.products import BaseProduct
-from vietlott.crawler.products.power655 import ProductPower655
+from vietlott.crawler.products.base import BaseProduct
 from vietlott.crawler.schema.requests import RequestKeno
 
 
-class ProductKeno(ProductPower655):
+class ProductKeno(BaseProduct):
     name = "keno"
     url = "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameKenoCompareWebPart,Vietlott.PlugIn.WebParts.ashx"
 

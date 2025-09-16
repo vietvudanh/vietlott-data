@@ -23,22 +23,22 @@ def detect_missing_data(ctx, product, limit):
     :return:
     """
     if product not in product_config_map:
-        click.echo(f"Error:: Product must in product_map: {list(product_config_map.keys())}", err=True)
+        logger.error(f"Product must be in product_map: {list(product_config_map.keys())}")
         ctx.exit(1)
-    click.echo(f"product={product}, limit={limit}")
+    logger.info(f"product={product}, limit={limit}")
 
     product_cfg: ProductConfig = product_config_map[product]
     df = pd.read_json(product_cfg.raw_path, lines=True)
-    print(df["id"].dtype)
+    logger.info(f"ID column data type: {df['id'].dtype}")
     if df["id"].dtype == "object":
         df["id"] = df["id"].str.replace("#", "").astype(int)
     df["id_next"] = df["id"].shift(-1)
     df["diff"] = df["id_next"] - df["id"]
 
-    df_missing = df[df["diff"] > 1]
+    df_missing = df[df["diff"] > 1].copy()
     last_id = df["id"].max()
-    df_missing["index"] = df_missing["id"].apply(lambda x: (last_id - x) / product_cfg.page_size)
-    df_missing["index_next"] = df_missing["id_next"].apply(lambda x: (last_id - x) / product_cfg.page_size)
+    df_missing["index"] = (last_id - df_missing["id"]) / product_cfg.page_size
+    df_missing["index_next"] = (last_id - df_missing["id_next"]) / product_cfg.page_size
     df_missing_process = df_missing.iloc[::-1].iloc[1:].head(limit)
 
     logger.info("\n" + df_missing_process[["date", "id", "id_next", "diff", "index", "index_next"]].to_markdown())

@@ -4,12 +4,11 @@ import pendulum
 from bs4 import BeautifulSoup
 
 from vietlott.crawler.collections_helper import chunks_iter
-from vietlott.crawler.products import BaseProduct
-from vietlott.crawler.products.power655 import ProductPower655
+from vietlott.crawler.products.base import BaseProduct
 from vietlott.crawler.schema.requests import RequestP3D
 
 
-class P3D(ProductPower655):
+class P3D(BaseProduct):
     name = "3d"
     url = "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameMax3DCompareWebPart,Vietlott.PlugIn.WebParts.ashx"
 

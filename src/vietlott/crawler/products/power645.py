@@ -1,9 +1,8 @@
-from vietlott.crawler.products import BaseProduct
-from vietlott.crawler.products.power655 import ProductPower655
+from vietlott.crawler.products.base import BaseProduct
 from vietlott.crawler.schema.requests import RequestPower655
 
 
-class ProductPower645(ProductPower655):
+class ProductPower645(BaseProduct):
     name = "power_645"
     url = "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.Game645CompareWebPart,Vietlott.PlugIn.WebParts.ashx"
 

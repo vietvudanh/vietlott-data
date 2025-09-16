@@ -1,11 +1,18 @@
-from vietlott.crawler.products import BaseProduct
-from vietlott.crawler.products.power655 import ProductPower655
+from vietlott.crawler.products.base import BaseProduct
 from vietlott.crawler.schema.requests import RequestPower535
 
 
-class ProductPower535(ProductPower655):
+class ProductPower535(BaseProduct):
     name = "power_535"
     url = "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.Game535CompareWebPart,Vietlott.PlugIn.WebParts.ashx"
+
+    stored_data_dtype = {
+        "date": str,
+        "id": str,
+        "result": "list",
+        "page": int,
+        "process_time": str,
+    }
 
     # Use RequestPower535 schema similar to 645/655 but adjusted for 5/35
     org_body = RequestPower535(

@@ -4,12 +4,11 @@ import pendulum
 from bs4 import BeautifulSoup
 from loguru import logger
 
-from vietlott.crawler.products import BaseProduct
-from vietlott.crawler.products.power655 import ProductPower655
+from vietlott.crawler.products.base import BaseProduct
 from vietlott.crawler.schema.requests import RequestBingo18
 
 
-class ProductBingo18(ProductPower655):
+class ProductBingo18(BaseProduct):
     name = "bingo18"
     url = "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameBingoCompareWebPart,Vietlott.PlugIn.WebParts.ashx"
 

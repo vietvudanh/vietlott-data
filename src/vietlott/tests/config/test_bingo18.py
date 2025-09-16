@@ -54,9 +54,3 @@ def test_bingo18_config():
     print(f"  - Data types: {instance.stored_data_dtype}")
 
     print("\n✓ All tests passed! Bingo18 is configured correctly.")
-    return True
-
-
-if __name__ == "__main__":
-    success = test_bingo18_config()
-    sys.exit(0 if success else 1)
