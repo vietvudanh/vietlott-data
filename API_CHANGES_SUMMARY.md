@@ -102,21 +102,51 @@ Based on the provided curl command, the Vietlott API now requires:
    ```
    Logs will be saved to `/tmp/*_test.log`
 
+## Current Key Values
+
+Power products use a "Key" field that may need periodic updates:
+- **power_655**: `5a0fff20` (updated from `23bbd667`)
+- **power_645**: `785cdae0` (may need update - verify when testing)
+- **power_535**: `d0ea794f` (may need update - verify when testing)
+
+Other products use GameId instead:
+- **keno**: GameId="6"
+- **3d**: GameId="5"
+- **3d_pro**: GameId="7"
+- **bingo18**: GameId="8"
+
 ## Next Steps
 
 When testing on a system with access to vietlott.vn:
 
-1. Run the diagnostic script to verify cookies and tokens are extracted
-2. Run the test script for each product
+1. Run the diagnostic script to verify cookies and tokens are extracted:
+   ```bash
+   python bin/diagnose_api.py
+   ```
+
+2. Run the test script for each product:
+   ```bash
+   bash bin/test_api_calls.sh
+   ```
+
 3. Check the debug logs to ensure:
    - Cookies are being set correctly
    - X-csrftoken header is present
    - X-Ajax-Token header is present
    - Responses are successful (status 200)
+
 4. If any product fails:
-   - Check if its Key value needs updating
+   - Check if its Key value needs updating (for Power products)
    - Compare request format with working curl command
    - Check for any missing headers or different body structure
+   - Verify the response error message for clues
+
+5. To get the correct Key for a product:
+   - Open browser developer tools (F12)
+   - Navigate to the product page on vietlott.vn
+   - Go to Network tab
+   - Trigger a search/load
+   - Look for the AJAX request and check the "Key" value in the request payload
 
 ## Notes
 
