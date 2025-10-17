@@ -13,13 +13,35 @@ from vietlott.crawler.requests_helper.config import TIMEOUT
 
 
 def get_vietlott_cookie() -> Tuple[str, dict]:
-    res = requests.get("https://vietlott.vn/ajaxpro/")
+    """
+    Get cookies and tokens from vietlott.vn
+    Returns: (cookie_string, cookies_dict)
+    """
+    # First, get the main page to obtain session cookies
+    res = requests.get("https://vietlott.vn/")
+    logger.debug(f"Initial cookies from vietlott.vn: {res.cookies}")
+    
+    # Extract cookies from response
+    cookies = {}
+    cookie_parts = []
+    for cookie_name, cookie_value in res.cookies.items():
+        cookies[cookie_name] = cookie_value
+        cookie_parts.append(f"{cookie_name}={cookie_value}")
+    
+    # Try to extract cookie from JavaScript if present
     match = re.search(r'document.cookie="(.*?)"', res.text)
-    if match is None:
-        raise ValueError(f"cookie is None, text={res.text}")
-    cookie = match.group(1)
-    cookies = {cookie.split("=")[0]: cookie.split("=")[1]}
-    return cookie, cookies
+    if match:
+        extra_cookie = match.group(1)
+        cookie_key, cookie_val = extra_cookie.split("=", 1)
+        cookies[cookie_key] = cookie_val
+        cookie_parts.append(extra_cookie)
+        logger.debug(f"Found JS cookie: {extra_cookie}")
+    
+    cookie_string = "; ".join(cookie_parts) if cookie_parts else ""
+    logger.debug(f"Final cookie string: {cookie_string}")
+    logger.debug(f"Final cookies dict: {cookies}")
+    
+    return cookie_string, cookies
 
 
 def fetch_wrapper(
@@ -54,6 +76,12 @@ def fetch_wrapper(
             params.update(task_data["params"])
             body.update(task_data["body"])
 
+            logger.debug(f"Request URL: {url}")
+            logger.debug(f"Request headers: {_headers}")
+            logger.debug(f"Request cookies: {cookies}")
+            logger.debug(f"Request body: {json.dumps(body)[:500]}")
+            logger.debug(f"Request params: {params}")
+
             res = requests.post(
                 url,
                 data=json.dumps(body),
@@ -62,6 +90,10 @@ def fetch_wrapper(
                 cookies=cookies,
                 timeout=TIMEOUT,
             )
+
+            logger.debug(f"Response status: {res.status_code}")
+            logger.debug(f"Response headers: {dict(res.headers)}")
+            logger.debug(f"Response text: {res.text[:500]}")
 
             if not res.ok:
                 logger.error(

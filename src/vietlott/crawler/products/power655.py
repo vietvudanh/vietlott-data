@@ -22,7 +22,7 @@ class ProductPower655(BaseProduct):
 
     org_body = RequestPower655(
         ORenderInfo=BaseProduct.orender_info_default,
-        Key="23bbd667",
+        Key="5a0fff20",
         GameDrawId="",
         ArrayNumbers=[["" for _ in range(18)] for _ in range(5)],
         CheckMulti=False,
