@@ -49,22 +49,26 @@ class BaseProduct:
 
         if self.product_config.use_cookies:
             self.vietlott_cookie, self.cookies = get_vietlott_cookie()
-            self.headers.update({"Cookie": self.vietlott_cookie})
             
-            # Add CSRF and Ajax tokens from cookies if available
+            if self.vietlott_cookie:
+                self.headers.update({"Cookie": self.vietlott_cookie})
+            
+            # Add CSRF token from cookies if available
             if "csrf-token-value" in self.cookies:
                 self.headers["X-csrftoken"] = self.cookies["csrf-token-value"]
                 logger.debug(f"Added X-csrftoken header: {self.cookies['csrf-token-value'][:20]}...")
             
-            # For Ajax-Token, we'll compute it from the cookies or use a default
-            # The Ajax token appears to be derived from session/csrf tokens
-            if "session-cookie" in self.cookies and "csrf-token-value" in self.cookies:
-                # Simple hash combination - this might need adjustment
+            # Add Ajax token from cookies if available (extracted from page)
+            if "ajax-token" in self.cookies:
+                self.headers["X-Ajax-Token"] = self.cookies["ajax-token"]
+                logger.debug(f"Added X-Ajax-Token header: {self.cookies['ajax-token'][:20]}...")
+            elif "session-cookie" in self.cookies and "csrf-token-value" in self.cookies:
+                # Fallback: generate Ajax token from session and csrf
                 import hashlib
                 combined = f"{self.cookies['session-cookie']}{self.cookies['csrf-token-value']}"
                 ajax_token = hashlib.sha256(combined.encode()).hexdigest()
                 self.headers["X-Ajax-Token"] = ajax_token
-                logger.debug(f"Added X-Ajax-Token header: {ajax_token[:20]}...")
+                logger.debug(f"Generated X-Ajax-Token header: {ajax_token[:20]}...")
         else:
             self.vietlott_cookie, self.cookies = None, None
 

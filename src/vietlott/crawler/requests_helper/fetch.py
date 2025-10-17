@@ -16,32 +16,52 @@ def get_vietlott_cookie() -> Tuple[str, dict]:
     """
     Get cookies and tokens from vietlott.vn
     Returns: (cookie_string, cookies_dict)
+    
+    The vietlott API now requires session cookies and CSRF tokens.
+    This function fetches the main page to obtain these values.
     """
-    # First, get the main page to obtain session cookies
-    res = requests.get("https://vietlott.vn/")
-    logger.debug(f"Initial cookies from vietlott.vn: {res.cookies}")
-    
-    # Extract cookies from response
-    cookies = {}
-    cookie_parts = []
-    for cookie_name, cookie_value in res.cookies.items():
-        cookies[cookie_name] = cookie_value
-        cookie_parts.append(f"{cookie_name}={cookie_value}")
-    
-    # Try to extract cookie from JavaScript if present
-    match = re.search(r'document.cookie="(.*?)"', res.text)
-    if match:
-        extra_cookie = match.group(1)
-        cookie_key, cookie_val = extra_cookie.split("=", 1)
-        cookies[cookie_key] = cookie_val
-        cookie_parts.append(extra_cookie)
-        logger.debug(f"Found JS cookie: {extra_cookie}")
-    
-    cookie_string = "; ".join(cookie_parts) if cookie_parts else ""
-    logger.debug(f"Final cookie string: {cookie_string}")
-    logger.debug(f"Final cookies dict: {cookies}")
-    
-    return cookie_string, cookies
+    try:
+        # First, get the main page to obtain session cookies
+        res = requests.get("https://vietlott.vn/", timeout=10)
+        logger.debug(f"Initial cookies from vietlott.vn: {res.cookies}")
+        
+        # Extract cookies from response
+        cookies = {}
+        cookie_parts = []
+        for cookie_name, cookie_value in res.cookies.items():
+            cookies[cookie_name] = cookie_value
+            cookie_parts.append(f"{cookie_name}={cookie_value}")
+        
+        # Try to extract cookie from JavaScript if present
+        match = re.search(r'document.cookie="(.*?)"', res.text)
+        if match:
+            extra_cookie = match.group(1)
+            cookie_key, cookie_val = extra_cookie.split("=", 1)
+            cookies[cookie_key] = cookie_val
+            cookie_parts.append(extra_cookie)
+            logger.debug(f"Found JS cookie: {extra_cookie}")
+        
+        # Try to extract CSRF tokens from the page HTML/scripts
+        # Look for patterns like: csrf-token-value, X-Ajax-Token
+        csrf_match = re.search(r'csrf-token-value["\s:=]+([a-f0-9]+)', res.text, re.IGNORECASE)
+        if csrf_match:
+            cookies["csrf-token-value"] = csrf_match.group(1)
+            logger.debug(f"Found CSRF token in page: {csrf_match.group(1)[:20]}...")
+        
+        ajax_token_match = re.search(r'["\']X-Ajax-Token["\']\s*:\s*["\']([a-f0-9]+)["\']', res.text, re.IGNORECASE)
+        if ajax_token_match:
+            cookies["ajax-token"] = ajax_token_match.group(1)
+            logger.debug(f"Found Ajax token in page: {ajax_token_match.group(1)[:20]}...")
+        
+        cookie_string = "; ".join(cookie_parts) if cookie_parts else ""
+        logger.debug(f"Final cookie string: {cookie_string}")
+        logger.debug(f"Final cookies dict: {cookies}")
+        
+        return cookie_string, cookies
+    except Exception as e:
+        logger.error(f"Failed to get cookies from vietlott.vn: {e}")
+        # Return empty values to allow the code to continue
+        return "", {}
 
 
 def fetch_wrapper(

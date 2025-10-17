@@ -30,7 +30,7 @@ power655_config = ProductConfig(
     max_value=55,
     size_output=6,
     interval=timedelta(days=2),
-    use_cookies=False,
+    use_cookies=True,
 )
 power645_config = ProductConfig(
     name="power_645",
@@ -39,7 +39,7 @@ power645_config = ProductConfig(
     max_value=45,
     size_output=6,
     interval=timedelta(days=2),
-    use_cookies=False,
+    use_cookies=True,
 )
 power535_config = ProductConfig(
     name="power_535",
@@ -48,7 +48,7 @@ power535_config = ProductConfig(
     max_value=35,
     size_output=5,
     interval=timedelta(days=2),
-    use_cookies=False,
+    use_cookies=True,
 )
 keno_config = ProductConfig(
     name="keno",
@@ -60,7 +60,7 @@ keno_config = ProductConfig(
     default_index_to=24,
     num_thread=20,
     page_size=6,
-    use_cookies=False,
+    use_cookies=True,
 )
 
 p3d_config = ProductConfig(
@@ -73,7 +73,7 @@ p3d_config = ProductConfig(
     default_index_to=1,
     num_thread=20,
     page_size=5,
-    use_cookies=False,
+    use_cookies=True,
 )
 
 p3d_pro_config = ProductConfig(
@@ -86,7 +86,7 @@ p3d_pro_config = ProductConfig(
     default_index_to=1,
     num_thread=20,
     page_size=5,
-    use_cookies=False,
+    use_cookies=True,
 )
 
 bingo18_config = ProductConfig(
@@ -99,7 +99,7 @@ bingo18_config = ProductConfig(
     default_index_to=1,
     num_thread=10,
     page_size=6,
-    use_cookies=False,
+    use_cookies=True,
 )
 
 product_config_map = {
