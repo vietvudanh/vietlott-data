@@ -13,6 +13,7 @@ authors = [{ name = "Viet Vu", email = "vietvudanh@gmail.com" }]
 dependencies = [
     "bs4",
     "polars",
+    "pyarrow",
     "lxml",
     "attrs",
     "cattrs",
