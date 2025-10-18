@@ -23,7 +23,7 @@ test:
 
 lint: .venv
 	@echo "Linting..."
-	source $(VENV_DIR)/bin/activate && ruff check --select I --fix . && ruff format .
+	source $(VENV_DIR)/bin/activate && ruff check --select I --fix ./src && ruff format ./src
 
 build: lint tests
 	@echo "Building..."
