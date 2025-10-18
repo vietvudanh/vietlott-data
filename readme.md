@@ -1,7 +1,8 @@
 # 🎰 Vietlott Data
 
 [![GitHub Actions](https://github.com/vietvudanh/vietlott-data/workflows/crawl/badge.svg)](https://github.com/vietvudanh/vietlott-data/actions)
-[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![PyPI](https://img.shields.io/pypi/v/vietlott-data.svg)](https://pypi.org/project/vietlott-data/)
+[![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Data Updated](https://img.shields.io/badge/data-daily%20updated-brightgreen.svg)](https://github.com/vietvudanh/vietlott-data/commits/main)
 
@@ -211,6 +212,10 @@ The data collection works by:
 ### 📦 Install via pip
 
 ```bash
+# Install from PyPI (production)
+pip install vietlott-data
+
+# Or install from TestPyPI (development)
 pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.3
 ```
 
