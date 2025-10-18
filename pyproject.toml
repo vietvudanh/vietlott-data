@@ -12,7 +12,7 @@ description = "crawl & store vietlott data"
 authors = [{ name = "Viet Vu", email = "vietvudanh@gmail.com" }]
 dependencies = [
     "bs4",
-    "pandas",
+    "polars",
     "lxml",
     "attrs",
     "cattrs",

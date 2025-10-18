@@ -3,7 +3,7 @@ from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 
 import cattrs
-import pandas as pd
+import polars as pl
 from loguru import logger
 
 from vietlott.config.products import get_config
@@ -117,7 +117,7 @@ class BaseProduct:
         if len(list_data) == 0:
             logger.info("No results")
             return
-        df_crawled = pd.DataFrame(list_data)
+        df_crawled = pl.DataFrame(list_data)
         logger.info(
             f"crawled data date: min={df_crawled['date'].min()}, max={df_crawled['date'].max()}"
             + f" id min={df_crawled['id'].min()}, max={df_crawled['id'].max()}"
@@ -127,26 +127,28 @@ class BaseProduct:
         # store data
         current_data_count = 0
         if self.product_config.raw_path.exists():
-            current_data = pd.read_json(self.product_config.raw_path, lines=True, dtype=self.stored_data_dtype)
+            current_data = pl.read_ndjson(self.product_config.raw_path)
             logger.info(
                 f"current data date min={current_data['date'].min()}, max={current_data['date'].max()}"
                 + f" id min={current_data['id'].min()}, max={current_data['id'].max()}"
                 + f", records={len(current_data)}"
             )
             current_data_count = len(current_data)
-            df_take = df_crawled[~df_crawled["id"].isin(current_data["id"])]
-            df_final = pd.concat([current_data, df_take], axis="rows")
+            df_take = df_crawled.filter(~pl.col("id").is_in(current_data["id"]))
+            df_final = pl.concat([current_data, df_take])
         else:
             df_final = df_crawled
 
         # Sort the final dataframe
-        assert isinstance(df_final, pd.DataFrame), "df_final should be a DataFrame"
-        df_final = df_final.sort_values(by=["date", "id"])
-        df_final["date"] = pd.to_datetime(df_final["date"]).dt.date
+        assert isinstance(df_final, pl.DataFrame), "df_final should be a DataFrame"
+        df_final = df_final.sort(["date", "id"])
+        # Convert date column to date type if it's not already
+        if df_final["date"].dtype != pl.Date:
+            df_final = df_final.with_columns(pl.col("date").str.to_date())
 
         logger.info(
             f"final data min_date={df_final['date'].min()}, max_date={df_final['date'].max()}"
             + f", records={current_data_count}->{len(df_final)}, diff:{len(df_final) - current_data_count}"
         )
-        df_final.to_json(self.product_config.raw_path.absolute(), orient="records", lines=True)
+        df_final.write_ndjson(self.product_config.raw_path.absolute())
         logger.info(f"wrote to file {self.product_config.raw_path.absolute()}")

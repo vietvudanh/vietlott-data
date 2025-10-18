@@ -22,18 +22,14 @@ loguru==0.7.3
     # via vietlott-data (pyproject.toml)
 lxml==6.0.2
     # via vietlott-data (pyproject.toml)
-numpy==2.3.4
-    # via pandas
-pandas==2.3.3
+polars==1.34.0
     # via vietlott-data (pyproject.toml)
+polars-runtime-32==1.34.0
+    # via polars
 pendulum==3.1.0
     # via vietlott-data (pyproject.toml)
 python-dateutil==2.9.0.post0
-    # via
-    #   pandas
-    #   pendulum
-pytz==2025.2
-    # via pandas
+    # via pendulum
 requests==2.32.5
     # via vietlott-data (pyproject.toml)
 six==1.17.0
@@ -47,8 +43,6 @@ typing-extensions==4.15.0
     #   beautifulsoup4
     #   cattrs
 tzdata==2025.2
-    # via
-    #   pandas
-    #   pendulum
+    # via pendulum
 urllib3==2.5.0
     # via requests

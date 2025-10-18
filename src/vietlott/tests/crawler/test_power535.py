@@ -4,14 +4,14 @@ from vietlott.crawler.products.power535 import ProductPower535
 def make_sample_html():
     # Minimal HTML similar to site structure: table with header row then data rows
     return (
-        '<table>'
-        '<tr><th>Ngày</th><th>Mã</th><th>Kết quả</th></tr>'
-        '<tr>'
-        '<td>10/10/2025</td>'
-        '<td>00001</td>'
-        '<td><span>01</span><span>|</span><span>12</span><span>|</span><span>23</span><span>|</span><span>34</span><span>|</span><span>35</span></td>'
-        '</tr>'
-        '</table>'
+        "<table>"
+        "<tr><th>Ngày</th><th>Mã</th><th>Kết quả</th></tr>"
+        "<tr>"
+        "<td>10/10/2025</td>"
+        "<td>00001</td>"
+        "<td><span>01</span><span>|</span><span>12</span><span>|</span><span>23</span><span>|</span><span>34</span><span>|</span><span>35</span></td>"
+        "</tr>"
+        "</table>"
     )
 
 

@@ -33,21 +33,21 @@ def test_power535_config():
     # Test class mapping
     product_class = map_class_name.get("power_535")
     assert product_class is not None, "Product class not found in map_class_name"
-    assert (
-        product_class.__name__ == "ProductPower535"
-    ), f"Expected class name 'ProductPower535', got '{product_class.__name__}'"
+    assert product_class.__name__ == "ProductPower535", (
+        f"Expected class name 'ProductPower535', got '{product_class.__name__}'"
+    )
     print(f"✓ Product class found: {product_class.__name__}")
 
     # Test instantiation
     instance = product_class()
     assert instance.name == "power_535", f"Expected instance name 'power_535', got '{instance.name}'"
-    assert (
-        "Game535CompareWebPart" in instance.url
-    ), f"Expected URL to contain 'Game535CompareWebPart', got '{instance.url}'"
+    assert "Game535CompareWebPart" in instance.url, (
+        f"Expected URL to contain 'Game535CompareWebPart', got '{instance.url}'"
+    )
     assert "result" in instance.stored_data_dtype, "Expected 'result' field in stored_data_dtype"
-    assert (
-        len(instance.stored_data_dtype) >= 5
-    ), f"Expected at least 5 data type fields, got {len(instance.stored_data_dtype)}"
+    assert len(instance.stored_data_dtype) >= 5, (
+        f"Expected at least 5 data type fields, got {len(instance.stored_data_dtype)}"
+    )
     print("✓ Product instance created successfully")
     print(f"  - Name: {instance.name}")
     print(f"  - URL: {instance.url}")
