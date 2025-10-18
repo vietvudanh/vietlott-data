@@ -1,8 +1,8 @@
 import math
 
 import click
-import pandas as pd
 import pendulum
+import polars as pl
 from loguru import logger
 
 from vietlott.config.map_class import map_class_name
@@ -28,27 +28,32 @@ def detect_missing_data(ctx, product, limit):
     logger.info(f"product={product}, limit={limit}")
 
     product_cfg: ProductConfig = product_config_map[product]
-    df = pd.read_json(product_cfg.raw_path, lines=True)
+    df = pl.read_ndjson(product_cfg.raw_path)
     logger.info(f"ID column data type: {df['id'].dtype}")
-    if df["id"].dtype == "object":
-        df["id"] = df["id"].str.replace("#", "").astype(int)
-    df["id_next"] = df["id"].shift(-1)
-    df["diff"] = df["id_next"] - df["id"]
+    # Handle both string and numeric IDs
+    if df["id"].dtype == pl.String:
+        df = df.with_columns(pl.col("id").str.replace("#", "").cast(pl.Int64))
+    df = df.with_columns(pl.col("id").shift(-1).alias("id_next"))
+    df = df.with_columns((pl.col("id_next") - pl.col("id")).alias("diff"))
 
-    df_missing = df[df["diff"] > 1].copy()
+    df_missing = df.filter(pl.col("diff") > 1)
     last_id = df["id"].max()
-    df_missing["index"] = (last_id - df_missing["id"]) / product_cfg.page_size
-    df_missing["index_next"] = (last_id - df_missing["id_next"]) / product_cfg.page_size
-    df_missing_process = df_missing.iloc[::-1].iloc[1:].head(limit)
+    df_missing = df_missing.with_columns(
+        ((last_id - pl.col("id")) / product_cfg.page_size).alias("index"),
+        ((last_id - pl.col("id_next")) / product_cfg.page_size).alias("index_next"),
+    )
+    df_missing_process = df_missing.reverse().slice(1, limit)
 
-    logger.info("\n" + df_missing_process[["date", "id", "id_next", "diff", "index", "index_next"]].to_markdown())
+    # Convert to pandas for markdown display (tabulate doesn't support polars well yet)
+    df_display = df_missing_process.select(["date", "id", "id_next", "diff", "index", "index_next"]).to_pandas()
+    logger.info("\n" + df_display.to_markdown())
 
     run_date = pendulum.now(tz="Asia/Ho_Chi_Minh").to_date_string()
     product_obj: BaseProduct = map_class_name[product]()
-    for row in df_missing_process.itertuples():
-        if (row.index - row.index_next) > 50:
+    for row in df_missing_process.iter_rows(named=True):
+        if (row["index"] - row["index_next"]) > 50:
             step = 20
-            for i in range(int(math.floor(row.index_next)), int(math.ceil(row.index)), step):
+            for i in range(int(math.floor(row["index_next"])), int(math.ceil(row["index"])), step):
                 product_obj.crawl(
                     run_date_str=run_date,
                     index_from=i,
@@ -57,8 +62,8 @@ def detect_missing_data(ctx, product, limit):
         else:
             product_obj.crawl(
                 run_date_str=run_date,
-                index_from=int(math.floor(row.index_next)),
-                index_to=int(math.ceil(row.index)),
+                index_from=int(math.floor(row["index_next"])),
+                index_to=int(math.ceil(row["index"])),
             )
 
 

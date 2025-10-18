@@ -56,6 +56,12 @@ packaging==25.0
     #   pytest
     #   twine
 pandas==2.3.3
+    # via model strategy tests (kept for backward compatibility)
+polars==1.34.0
+    # via vietlott-data (pyproject.toml)
+polars-runtime-32==1.34.0
+    # via polars
+pyarrow==21.0.0
     # via vietlott-data (pyproject.toml)
 pendulum==3.1.0
     # via vietlott-data (pyproject.toml)

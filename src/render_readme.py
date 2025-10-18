@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
 
-import pandas as pd
+import polars as pl
 from loguru import logger
 
 from vietlott.config.products import get_config
@@ -159,31 +159,37 @@ class ReadmeGenerator:
     def __init__(self):
         self.templates = ReadmeTemplates()
 
-    def _balance_long_df(self, df_: pd.DataFrame, n_splits: int = 20) -> pd.DataFrame:
+    def _balance_long_df(self, df_: pl.DataFrame, n_splits: int = 20) -> pl.DataFrame:
         """Convert long dataframe to multiple columns for better display."""
-        if df_.empty:
+        if df_.is_empty():
             return df_
+
+        # Convert to pandas for this complex operation that's mainly for display
+        import pandas as pd
+
+        df_pd = df_.to_pandas()
+
         # reset_index may return a view in some edge-cases; work on an explicit copy
-        df_ = df_.reset_index().copy()
+        df_pd = df_pd.reset_index().copy()
         # Create converted columns in a separate DataFrame and concat them back to
         # avoid assigning object-dtype data into existing numeric columns which
         # can trigger FutureWarnings about incompatible dtype setting.
-        if "result" in df_.columns and "count" in df_.columns:
+        if "result" in df_pd.columns and "count" in df_pd.columns:
             converted = pd.DataFrame(
                 {
-                    "result": df_["result"].apply(lambda x: str(x)).astype(object),
-                    "count": df_["count"].apply(lambda x: str(x)).astype(object),
+                    "result": df_pd["result"].apply(lambda x: str(x)).astype(object),
+                    "count": df_pd["count"].apply(lambda x: str(x)).astype(object),
                 },
-                index=df_.index,
+                index=df_pd.index,
             )
             # drop original columns then concat converted ones to preserve order
-            left = df_.drop(columns=["result", "count"])
-            df_ = pd.concat([left, converted], axis=1)
+            left = df_pd.drop(columns=["result", "count"])
+            df_pd = pd.concat([left, converted], axis=1)
 
         final = None
 
-        for i in range(len(df_) // n_splits + 1):
-            dd = df_.iloc[i * n_splits : (i + 1) * n_splits]
+        for i in range(len(df_pd) // n_splits + 1):
+            dd = df_pd.iloc[i * n_splits : (i + 1) * n_splits]
 
             if dd.empty:
                 continue
@@ -203,64 +209,58 @@ class ReadmeGenerator:
         if final is not None:
             # ensure we operate on an explicit copy before filling
             final = final.copy().fillna("")
+            # Convert back to polars
+            return pl.from_pandas(final)
         else:
-            final = pd.DataFrame()
+            return pl.DataFrame()
 
-        return final
-
-    def _load_lottery_data(self, product: str) -> pd.DataFrame:
+    def _load_lottery_data(self, product: str) -> pl.DataFrame:
         """Load and prepare lottery data for analysis."""
         try:
-            df = pd.read_json(get_config(product).raw_path, lines=True, dtype=object, convert_dates=False)
-            # Normalize/parse date column which can be in multiple formats:
-            # - ISO date strings like '2025-06-29'
-            # - epoch milliseconds (int, e.g. 1501545600000)
-            # - epoch seconds (int, e.g. 1501545600)
+            df = pl.read_ndjson(get_config(product).raw_path)
+
+            # Normalize/parse date column which can be in multiple formats
             if "date" in df.columns:
-                # Try numeric conversion first (handles ints stored as object)
+                # Try to parse the date column
                 try:
-                    numeric = pd.to_numeric(df["date"], errors="coerce")
-                    maxv = numeric.abs().max(skipna=True)
-                except Exception:
-                    numeric = None
-                    maxv = None
-
-                parsed = None
-
-                # If numeric values exist, attempt epoch parsing using sensible unit
-                if numeric is not None and numeric.notna().any():
-                    # Heuristic: ms timestamps are > 1e11 (approx), seconds ~1e9
-                    if maxv is not None and maxv > 1_000_000_000_000:
-                        parsed = pd.to_datetime(numeric, unit="ms", errors="coerce")
-                    elif maxv is not None and maxv > 1_000_000_000:
-                        # values look like seconds since epoch
-                        parsed = pd.to_datetime(numeric, unit="s", errors="coerce")
+                    # Check if it's already a date type
+                    if df["date"].dtype in [pl.Date, pl.Datetime]:
+                        df = df.with_columns(pl.col("date").cast(pl.Date))
+                    # Check if it's numeric (epoch time)
+                    elif df["date"].dtype in [pl.Int64, pl.Int32, pl.Float64]:
+                        # Check if values are in milliseconds or seconds
+                        max_val = df["date"].max()
+                        if max_val > 1_000_000_000_000:
+                            # milliseconds
+                            df = df.with_columns(
+                                (pl.col("date").cast(pl.Int64) / 1000).cast(pl.Datetime("ms")).cast(pl.Date)
+                            )
+                        else:
+                            # seconds
+                            df = df.with_columns(pl.col("date").cast(pl.Int64).cast(pl.Datetime("s")).cast(pl.Date))
                     else:
-                        # fallback: let pandas try to infer
-                        parsed = pd.to_datetime(df["date"], errors="coerce")
+                        # String date - try to parse
+                        df = df.with_columns(pl.col("date").str.to_date(strict=False))
+                except Exception as e:
+                    logger.warning(f"Could not parse date column: {e}")
+                    # Fallback: try string parsing
+                    df = df.with_columns(pl.col("date").str.to_date(strict=False))
 
-                # If parsing numeric didn't produce datetimes (or no numeric data), try general parsing
-                if parsed is None or parsed.isna().all():
-                    parsed = pd.to_datetime(df["date"], errors="coerce")
-
-                # Convert to date (drop time) and keep as python date objects
-                # use .loc to avoid chained-assignment warnings
-                df.loc[:, "date"] = parsed.dt.date
-            df = df.sort_values(by=["date", "id"], ascending=False)
+            df = df.sort(["date", "id"], descending=True)
             return df
         except Exception as e:
             logger.error(f"Error loading data for {product}: {e}")
-            return pd.DataFrame()
+            return pl.DataFrame()
 
-    def _calculate_stats(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _calculate_stats(self, df: pl.DataFrame) -> pl.DataFrame:
         """Calculate number frequency statistics."""
-        if df.empty:
-            return pd.DataFrame()
+        if df.is_empty():
+            return pl.DataFrame()
 
         df_explode = df.explode("result")
-        stats = df_explode.groupby("result").agg(count=("id", "count"))
-        # assign using .loc to avoid chained-assignment warnings
-        stats.loc[:, "%"] = (stats["count"] / len(df_explode) * 100).round(2)
+        stats = df_explode.group_by("result").agg(pl.count("id").alias("count"))
+        total_count = len(df_explode)
+        stats = stats.with_columns(((pl.col("count") / total_count * 100).round(2)).alias("%"))
         return stats
 
     def _get_data_overview(self) -> str:
@@ -271,33 +271,38 @@ class ReadmeGenerator:
         for product in products:
             try:
                 df = self._load_lottery_data(product)
-                if not df.empty:
+                if not df.is_empty():
                     data_stats.append(
                         {
                             "Product": product.replace("_", " ").title(),
-                            "Total Draws": df["date"].nunique(),
-                            "Start Date": df["date"].min(),
-                            "End Date": df["date"].max(),
-                            "Total Records": df["id"].nunique(),
-                            "First ID": df["id"].min(),
-                            "Latest ID": df["id"].max(),
+                            "Total Draws": df["date"].n_unique(),
+                            "Start Date": str(df["date"].min()),
+                            "End Date": str(df["date"].max()),
+                            "Total Records": df["id"].n_unique(),
+                            "First ID": str(df["id"].min()),
+                            "Latest ID": str(df["id"].max()),
                         }
                     )
             except Exception as e:
                 logger.warning(f"Could not load stats for {product}: {e}")
 
         if data_stats:
+            import pandas as pd
+
             return pd.DataFrame(data_stats).to_markdown(index=False)
         return "No data available"
 
-    def _generate_predictions_section(self, df: pd.DataFrame) -> str:
+    def _generate_predictions_section(self, df: pl.DataFrame) -> str:
         """Generate predictions analysis section."""
-        if df.empty:
+        if df.is_empty():
             return "## 🔮 Prediction Models\n\n> No data available for predictions.\n"
 
         try:
+            # Convert to pandas for the model (if it expects pandas)
+            df_pd = df.to_pandas()
+
             ticket_per_days = 20
-            random_model = RandomModel(df, ticket_per_days)
+            random_model = RandomModel(df_pd, ticket_per_days)
             random_model.backtest()
             random_model.evaluate()
 
@@ -325,9 +330,9 @@ class ReadmeGenerator:
             logger.error(f"Error generating predictions: {e}")
             return "## 🔮 Prediction Models\n\n> Error generating prediction analysis.\n"
 
-    def _generate_power655_analysis(self, df: pd.DataFrame) -> str:
+    def _generate_power655_analysis(self, df: pl.DataFrame) -> str:
         """Generate detailed Power 6/55 analysis section."""
-        if df.empty:
+        if df.is_empty():
             return "## 📈 Power 6/55 Analysis\n\n> No data available for analysis.\n"
 
         try:
@@ -336,35 +341,44 @@ class ReadmeGenerator:
 
             current_date = datetime.now().date()
             stats_30d = self._balance_long_df(
-                self._calculate_stats(df[df["date"] >= (current_date - timedelta(days=30))])
+                self._calculate_stats(df.filter(pl.col("date") >= (current_date - timedelta(days=30))))
             )
             stats_60d = self._balance_long_df(
-                self._calculate_stats(df[df["date"] >= (current_date - timedelta(days=60))])
+                self._calculate_stats(df.filter(pl.col("date") >= (current_date - timedelta(days=60))))
             )
             stats_90d = self._balance_long_df(
-                self._calculate_stats(df[df["date"] >= (current_date - timedelta(days=90))])
+                self._calculate_stats(df.filter(pl.col("date") >= (current_date - timedelta(days=90))))
             )
 
             recent_results = df.head(10)
 
+            # Convert to pandas for markdown display
+            import pandas as pd
+
+            recent_results_pd = recent_results.to_pandas()
+            stats_all_pd = stats_all.to_pandas() if not stats_all.is_empty() else pd.DataFrame()
+            stats_30d_pd = stats_30d.to_pandas() if not stats_30d.is_empty() else pd.DataFrame()
+            stats_60d_pd = stats_60d.to_pandas() if not stats_60d.is_empty() else pd.DataFrame()
+            stats_90d_pd = stats_90d.to_pandas() if not stats_90d.is_empty() else pd.DataFrame()
+
             return f"""## 📈 Power 6/55 Analysis
 
 ### 📅 Recent Results (Last 10 draws)
-{recent_results.to_markdown(index=False)}
+{recent_results_pd.to_markdown(index=False)}
 
 ### 🎲 Number Frequency (All Time)
-{stats_all.to_markdown(index=False) if not stats_all.empty else "No data available"}
+{stats_all_pd.to_markdown(index=False) if not stats_all_pd.empty else "No data available"}
 
 ### 📊 Frequency Analysis by Period
 
 #### Last 30 Days
-{stats_30d.to_markdown(index=False) if not stats_30d.empty else "No data available"}
+{stats_30d_pd.to_markdown(index=False) if not stats_30d_pd.empty else "No data available"}
 
 #### Last 60 Days
-{stats_60d.to_markdown(index=False) if not stats_60d.empty else "No data available"}
+{stats_60d_pd.to_markdown(index=False) if not stats_60d_pd.empty else "No data available"}
 
 #### Last 90 Days
-{stats_90d.to_markdown(index=False) if not stats_90d.empty else "No data available"}
+{stats_90d_pd.to_markdown(index=False) if not stats_90d_pd.empty else "No data available"}
 
 """
         except Exception as e:

@@ -379,7 +379,7 @@ class StrategyBacktester:
         required_params = set()
         current_class = strategy_class
 
-        while current_class != object:
+        while current_class is not object:
             if hasattr(current_class, "__init__"):
                 try:
                     sig = inspect.signature(current_class.__init__)
