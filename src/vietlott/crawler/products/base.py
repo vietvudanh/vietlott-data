@@ -142,6 +142,7 @@ class BaseProduct:
         # Sort the final dataframe
         assert isinstance(df_final, pd.DataFrame), "df_final should be a DataFrame"
         df_final = df_final.sort_values(by=["date", "id"])
+        df_final['date'] = pd.to_datetime(df_final['date']).dt.date
 
         logger.info(
             f"final data min_date={df_final['date'].min()}, max_date={df_final['date'].max()}"

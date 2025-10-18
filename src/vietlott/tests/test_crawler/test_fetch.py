@@ -25,6 +25,7 @@ def test_power_655():
     resp = fn_fetch([{"task_id": "1", "task_data": {"params": {}, "body": {"PageIndex": 1}}}])
 
     assert len(resp) == 1, "some task fail"
+    assert resp[0] is not None, "response is None"
 
 
 def test_power_645():
@@ -44,6 +45,7 @@ def test_power_645():
     resp = fn_fetch([{"task_id": "1", "task_data": {"params": {}, "body": {"PageIndex": 1}}}])
 
     assert len(resp) == 1, "some task fail"
+    assert resp[0] is not None, "response is None"
 
 
 def test_power_3d():
