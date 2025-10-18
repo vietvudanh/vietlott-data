@@ -199,7 +199,39 @@ class ReadmeGenerator:
         """Load and prepare lottery data for analysis."""
         try:
             df = pd.read_json(get_config(product).raw_path, lines=True, dtype=object, convert_dates=False)
-            df["date"] = pd.to_datetime(df["date"]).dt.date
+            # Normalize/parse date column which can be in multiple formats:
+            # - ISO date strings like '2025-06-29'
+            # - epoch milliseconds (int, e.g. 1501545600000)
+            # - epoch seconds (int, e.g. 1501545600)
+            if "date" in df.columns:
+                # Try numeric conversion first (handles ints stored as object)
+                try:
+                    numeric = pd.to_numeric(df["date"], errors="coerce")
+                    maxv = numeric.abs().max(skipna=True)
+                except Exception:
+                    numeric = None
+                    maxv = None
+
+                parsed = None
+
+                # If numeric values exist, attempt epoch parsing using sensible unit
+                if numeric is not None and numeric.notna().any():
+                    # Heuristic: ms timestamps are > 1e11 (approx), seconds ~1e9
+                    if maxv is not None and maxv > 1_000_000_000_000:
+                        parsed = pd.to_datetime(numeric, unit="ms", errors="coerce")
+                    elif maxv is not None and maxv > 1_000_000_000:
+                        # values look like seconds since epoch
+                        parsed = pd.to_datetime(numeric, unit="s", errors="coerce")
+                    else:
+                        # fallback: let pandas try to infer
+                        parsed = pd.to_datetime(df["date"], errors="coerce")
+
+                # If parsing numeric didn't produce datetimes (or no numeric data), try general parsing
+                if parsed is None or parsed.isna().all():
+                    parsed = pd.to_datetime(df["date"], errors="coerce")
+
+                # Convert to date (drop time) and keep as python date objects
+                df["date"] = parsed.dt.date
             df = df.sort_values(by=["date", "id"], ascending=False)
             return df
         except Exception as e:
