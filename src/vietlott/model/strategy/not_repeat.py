@@ -2,7 +2,7 @@ import random
 from datetime import date, timedelta
 from typing import List
 
-import pandas as pd
+import polars as pl
 
 from vietlott.model.strategy.base import PredictModel
 
@@ -15,7 +15,7 @@ class NotRepeatStrategy(PredictModel):
 
     def __init__(
         self,
-        df: pd.DataFrame,
+        df: pl.DataFrame,
         time_predict: int = 1,
         min_val: int = PredictModel.POWER_655_MIN_VAL,
         max_val: int = PredictModel.POWER_655_MAX_VAL,
@@ -40,10 +40,10 @@ class NotRepeatStrategy(PredictModel):
 
     def _prepare_historical_data(self):
         """Prepare historical data for quick lookups."""
-        self.df_sorted = self.df.sort_values("date")
+        self.df_sorted = self.df.sort("date")
         # Create a dictionary for fast date-based lookups
         self.date_to_results = {}
-        for _, row in self.df_sorted.iterrows():
+        for row in self.df_sorted.iter_rows(named=True):
             self.date_to_results[row["date"]] = row["result"]
 
     def _get_recent_numbers(self, target_date: date) -> set:

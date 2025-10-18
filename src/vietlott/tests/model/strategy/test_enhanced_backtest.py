@@ -10,7 +10,7 @@ sys.path.append("src")
 import random
 from datetime import date, timedelta
 
-import pandas as pd
+import polars as pl
 
 
 def create_test_data():
@@ -24,7 +24,7 @@ def create_test_data():
         result = sorted(random.sample(range(1, 56), 6))
         data.append({"id": f"655-{i + 1:03d}", "date": draw_date, "result": result})
 
-    return pd.DataFrame(data)
+    return pl.DataFrame(data)
 
 
 def test_enhanced_backtest():

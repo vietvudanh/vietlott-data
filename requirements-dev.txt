@@ -48,25 +48,21 @@ more-itertools==10.8.0
     #   jaraco-functools
 nh3==0.3.1
     # via readme-renderer
-numpy==2.3.4
-    # via pandas
 packaging==25.0
     # via
     #   build
     #   pytest
     #   twine
-pandas==2.3.3
-    # via model strategy tests (kept for backward compatibility)
+pendulum==3.1.0
+    # via vietlott-data (pyproject.toml)
+pluggy==1.6.0
+    # via pytest
 polars==1.34.0
     # via vietlott-data (pyproject.toml)
 polars-runtime-32==1.34.0
     # via polars
 pyarrow==21.0.0
     # via vietlott-data (pyproject.toml)
-pendulum==3.1.0
-    # via vietlott-data (pyproject.toml)
-pluggy==1.6.0
-    # via pytest
 pygments==2.19.2
     # via
     #   pytest
@@ -77,11 +73,7 @@ pyproject-hooks==1.2.0
 pytest==8.4.2
     # via vietlott-data (pyproject.toml)
 python-dateutil==2.9.0.post0
-    # via
-    #   pandas
-    #   pendulum
-pytz==2025.2
-    # via pandas
+    # via pendulum
 readme-renderer==44.0
     # via twine
 requests==2.32.5
@@ -111,9 +103,7 @@ typing-extensions==4.15.0
     #   beautifulsoup4
     #   cattrs
 tzdata==2025.2
-    # via
-    #   pandas
-    #   pendulum
+    # via pendulum
 urllib3==2.5.0
     # via
     #   requests

@@ -137,6 +137,15 @@ class BaseProduct:
             # Use set-based filtering to avoid deprecation warning
             existing_ids = set(current_data["id"].to_list())
             df_take = df_crawled.filter(~pl.col("id").is_in(existing_ids))
+
+            # Ensure schemas match before concatenating
+            # Cast date columns to string to match current data format
+            for col in df_take.columns:
+                if col in current_data.columns:
+                    # Match the dtype of current_data
+                    if df_take[col].dtype != current_data[col].dtype:
+                        df_take = df_take.with_columns(pl.col(col).cast(current_data[col].dtype))
+
             df_final = pl.concat([current_data, df_take])
         else:
             df_final = df_crawled
@@ -144,9 +153,17 @@ class BaseProduct:
         # Sort the final dataframe
         assert isinstance(df_final, pl.DataFrame), "df_final should be a DataFrame"
         df_final = df_final.sort(["date", "id"])
-        # Convert date column to date type if it's not already
-        if df_final["date"].dtype != pl.Date:
-            df_final = df_final.with_columns(pl.col("date").str.to_date())
+
+        # Ensure date is stored as string in YYYY-MM-DD format for JSON output
+        if df_final["date"].dtype not in [pl.Utf8]:
+            if df_final["date"].dtype in [pl.Int64, pl.Int32]:
+                # It's a timestamp in milliseconds, convert to date string
+                df_final = df_final.with_columns(
+                    pl.from_epoch(pl.col("date"), time_unit="ms").dt.strftime("%Y-%m-%d").alias("date")
+                )
+            elif df_final["date"].dtype in [pl.Date, pl.Datetime]:
+                # It's already a date/datetime type, convert to string
+                df_final = df_final.with_columns(pl.col("date").dt.strftime("%Y-%m-%d").alias("date"))
 
         logger.info(
             f"final data min_date={df_final['date'].min()}, max_date={df_final['date'].max()}"

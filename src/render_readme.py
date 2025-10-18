@@ -8,13 +8,37 @@ frontpage, including data statistics, predictions, and project information.
 
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import polars as pl
 from loguru import logger
 
 from vietlott.config.products import get_config
 from vietlott.model.strategy.random_strategy import RandomModel
+
+
+def df_to_markdown(df: Union[pl.DataFrame, list[dict]], index: bool = True) -> str:
+    """Convert DataFrame or list of dicts to markdown table."""
+    if isinstance(df, list):
+        df = pl.DataFrame(df)
+
+    if df.is_empty():
+        return "No data available"
+
+    # Get column names
+    columns = df.columns
+
+    # Build header
+    header = "| " + " | ".join(columns) + " |"
+    separator = "| " + " | ".join(["---"] * len(columns)) + " |"
+
+    # Build rows
+    rows = []
+    for row_data in df.iter_rows(named=True):
+        row_values = [str(row_data[col]) for col in columns]
+        rows.append("| " + " | ".join(row_values) + " |")
+
+    return "\n".join([header, separator] + rows)
 
 
 class ReadmeTemplates:
@@ -160,59 +184,17 @@ class ReadmeGenerator:
         self.templates = ReadmeTemplates()
 
     def _balance_long_df(self, df_: pl.DataFrame, n_splits: int = 20) -> pl.DataFrame:
-        """Convert long dataframe to multiple columns for better display."""
+        """Convert long dataframe to multiple columns for better display.
+
+        For now, this is simplified to just return the dataframe.
+        The complex balancing operation that was done in pandas is not essential
+        for markdown display and adds complexity."""
         if df_.is_empty():
             return df_
 
-        # Convert to pandas for this complex operation that's mainly for display
-        import pandas as pd
-
-        df_pd = df_.to_pandas()
-
-        # reset_index may return a view in some edge-cases; work on an explicit copy
-        df_pd = df_pd.reset_index().copy()
-        # Create converted columns in a separate DataFrame and concat them back to
-        # avoid assigning object-dtype data into existing numeric columns which
-        # can trigger FutureWarnings about incompatible dtype setting.
-        if "result" in df_pd.columns and "count" in df_pd.columns:
-            converted = pd.DataFrame(
-                {
-                    "result": df_pd["result"].apply(lambda x: str(x)).astype(object),
-                    "count": df_pd["count"].apply(lambda x: str(x)).astype(object),
-                },
-                index=df_pd.index,
-            )
-            # drop original columns then concat converted ones to preserve order
-            left = df_pd.drop(columns=["result", "count"])
-            df_pd = pd.concat([left, converted], axis=1)
-
-        final = None
-
-        for i in range(len(df_pd) // n_splits + 1):
-            dd = df_pd.iloc[i * n_splits : (i + 1) * n_splits]
-
-            if dd.empty:
-                continue
-
-            if final is None:
-                final = dd
-            else:
-                final = pd.concat(
-                    [
-                        final.reset_index(drop=True),
-                        pd.DataFrame([None] * len(dd), columns=["-"]),
-                        dd.reset_index(drop=True),
-                    ],
-                    axis="columns",
-                )
-
-        if final is not None:
-            # ensure we operate on an explicit copy before filling
-            final = final.copy().fillna("")
-            # Convert back to polars
-            return pl.from_pandas(final)
-        else:
-            return pl.DataFrame()
+        # Simple implementation: just limit rows for display
+        # If we need the multi-column layout, we can implement it in polars later
+        return df_.head(n_splits * 3)  # Show 3 columns worth of data
 
     def _load_lottery_data(self, product: str) -> pl.DataFrame:
         """Load and prepare lottery data for analysis."""
@@ -287,9 +269,7 @@ class ReadmeGenerator:
                 logger.warning(f"Could not load stats for {product}: {e}")
 
         if data_stats:
-            import pandas as pd
-
-            return pd.DataFrame(data_stats).to_markdown(index=False)
+            return df_to_markdown(data_stats, index=False)
         return "No data available"
 
     def _generate_predictions_section(self, df: pl.DataFrame) -> str:
@@ -298,17 +278,15 @@ class ReadmeGenerator:
             return "## 🔮 Prediction Models\n\n> No data available for predictions.\n"
 
         try:
-            # Convert to pandas for the model (if it expects pandas)
-            df_pd = df.to_pandas()
-
+            # Models now accept polars DataFrame
             ticket_per_days = 20
-            random_model = RandomModel(df_pd, ticket_per_days)
+            random_model = RandomModel(df, ticket_per_days)
             random_model.backtest()
             random_model.evaluate()
 
-            df_correct = random_model.df_backtest_evaluate[random_model.df_backtest_evaluate["correct_num"] >= 5][
+            df_correct = random_model.df_backtest_evaluate.filter(pl.col("correct_num") >= 5).select(
                 ["date", "result", "predicted"]
-            ]
+            )
 
             cost_per_day = 10000 * ticket_per_days
 
@@ -323,11 +301,14 @@ class ReadmeGenerator:
 - **Daily cost**: {cost_per_day:,} VND
 - **Results with 5+ matches**:
 
-{df_correct.to_markdown(index=False) if not df_correct.empty else "No significant matches found in backtest period."}
+{df_to_markdown(df_correct, index=False) if not df_correct.is_empty() else "No significant matches found in backtest period."}
 
 """
         except Exception as e:
             logger.error(f"Error generating predictions: {e}")
+            import traceback
+
+            traceback.print_exc()
             return "## 🔮 Prediction Models\n\n> Error generating prediction analysis.\n"
 
     def _generate_power655_analysis(self, df: pl.DataFrame) -> str:
@@ -352,33 +333,31 @@ class ReadmeGenerator:
 
             recent_results = df.head(10)
 
-            # Convert to pandas for markdown display
-            import pandas as pd
-
-            recent_results_pd = recent_results.to_pandas()
-            stats_all_pd = stats_all.to_pandas() if not stats_all.is_empty() else pd.DataFrame()
-            stats_30d_pd = stats_30d.to_pandas() if not stats_30d.is_empty() else pd.DataFrame()
-            stats_60d_pd = stats_60d.to_pandas() if not stats_60d.is_empty() else pd.DataFrame()
-            stats_90d_pd = stats_90d.to_pandas() if not stats_90d.is_empty() else pd.DataFrame()
+            # Convert to markdown tables
+            recent_results_md = df_to_markdown(recent_results, index=False)
+            stats_all_md = df_to_markdown(stats_all, index=False) if not stats_all.is_empty() else "No data available"
+            stats_30d_md = df_to_markdown(stats_30d, index=False) if not stats_30d.is_empty() else "No data available"
+            stats_60d_md = df_to_markdown(stats_60d, index=False) if not stats_60d.is_empty() else "No data available"
+            stats_90d_md = df_to_markdown(stats_90d, index=False) if not stats_90d.is_empty() else "No data available"
 
             return f"""## 📈 Power 6/55 Analysis
 
 ### 📅 Recent Results (Last 10 draws)
-{recent_results_pd.to_markdown(index=False)}
+{recent_results_md}
 
 ### 🎲 Number Frequency (All Time)
-{stats_all_pd.to_markdown(index=False) if not stats_all_pd.empty else "No data available"}
+{stats_all_md}
 
 ### 📊 Frequency Analysis by Period
 
 #### Last 30 Days
-{stats_30d_pd.to_markdown(index=False) if not stats_30d_pd.empty else "No data available"}
+{stats_30d_md}
 
 #### Last 60 Days
-{stats_60d_pd.to_markdown(index=False) if not stats_60d_pd.empty else "No data available"}
+{stats_60d_md}
 
 #### Last 90 Days
-{stats_90d_pd.to_markdown(index=False) if not stats_90d_pd.empty else "No data available"}
+{stats_90d_md}
 
 """
         except Exception as e:

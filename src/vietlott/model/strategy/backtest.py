@@ -1,11 +1,11 @@
 import itertools
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass, field
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from typing import Any, Callable, Dict, List, Optional, Tuple, Type
 
 import numpy as np
-import pandas as pd
+import polars as pl
 from loguru import logger
 
 # Optional matplotlib import for visualization
@@ -71,25 +71,31 @@ class BacktestResult:
             "memory_usage": self.memory_usage,
         }
 
-    def to_dataframe(self) -> pd.DataFrame:
+    def to_dataframe(self) -> pl.DataFrame:
         """Convert result to DataFrame for analysis."""
         # Create main metrics dataframe
         main_data = {k: [v] for k, v in self.to_dict().items() if not isinstance(v, (dict, list))}
-        df = pd.DataFrame(main_data)
+        df = pl.DataFrame(main_data)
 
         # Add matches distribution as separate columns
         for matches, count in self.matches_distribution.items():
-            df[f"matches_{matches}_count"] = count
-            df[f"matches_{matches}_rate"] = count / self.total_predictions if self.total_predictions > 0 else 0
+            df = df.with_columns(
+                [
+                    pl.lit(count).alias(f"matches_{matches}_count"),
+                    pl.lit(count / self.total_predictions if self.total_predictions > 0 else 0).alias(
+                        f"matches_{matches}_rate"
+                    ),
+                ]
+            )
 
         return df
 
-    def get_prediction_history_df(self) -> pd.DataFrame:
+    def get_prediction_history_df(self) -> pl.DataFrame:
         """Get prediction history as DataFrame."""
         if not self.prediction_history:
-            return pd.DataFrame()
+            return pl.DataFrame()
 
-        return pd.DataFrame(self.prediction_history)
+        return pl.DataFrame(self.prediction_history)
 
     def plot_performance(self, metric: str = "profit", figsize: Tuple[int, int] = (12, 6)) -> None:
         """Generate performance visualization."""
@@ -303,7 +309,7 @@ class StrategyBacktester:
     Comprehensive backtesting system for lottery prediction strategies.
     """
 
-    def __init__(self, df: pd.DataFrame, ticket_price: float = 10000, min_history_days: int = 365):
+    def __init__(self, df: pl.DataFrame, ticket_price: float = 10000, min_history_days: int = 365):
         """
         Initialize the backtester.
 
@@ -315,9 +321,11 @@ class StrategyBacktester:
         # Validate input dataframe
         self._validate_dataframe(df)
 
-        self.df = df.copy()
-        self.df["date"] = pd.to_datetime(self.df["date"]).dt.date
-        self.df = self.df.sort_values("date")
+        self.df = df.clone()
+        # Convert date column to date type if it's not already
+        if self.df["date"].dtype != pl.Date:
+            self.df = self.df.with_columns(pl.col("date").str.strptime(pl.Date, "%Y-%m-%d").alias("date"))
+        self.df = self.df.sort("date")
         self.ticket_price = ticket_price
         self.min_history_days = min_history_days
 
@@ -329,7 +337,7 @@ class StrategyBacktester:
             3: 50_000,  # Fourth prize
         }
 
-    def _validate_dataframe(self, df: pd.DataFrame) -> None:
+    def _validate_dataframe(self, df: pl.DataFrame) -> None:
         """
         Validate the input dataframe structure.
 
@@ -339,7 +347,7 @@ class StrategyBacktester:
         Raises:
             ValueError: If the dataframe doesn't have the required structure
         """
-        if df is None or df.empty:
+        if df is None or df.is_empty():
             raise ValueError("Input dataframe cannot be None or empty")
 
         required_columns = ["date", "result"]
@@ -349,12 +357,14 @@ class StrategyBacktester:
             raise ValueError(f"Input dataframe is missing required columns: {missing_columns}")
 
         # Check that result column contains lists of numbers
-        if not all(isinstance(x, list) for x in df["result"].dropna()):
+        result_col = df["result"]
+        if result_col.dtype != pl.List:
             raise ValueError("The 'result' column must contain lists of numbers")
 
         # Check date column can be converted to datetime
         try:
-            pd.to_datetime(df["date"], format="%Y-%m-%d")
+            if df["date"].dtype not in [pl.Date, pl.Datetime]:
+                pl.col("date").str.strptime(pl.Date, "%Y-%m-%d")
         except Exception as e:
             raise ValueError(f"The 'date' column must contain valid dates: {e}")
 
@@ -379,7 +389,7 @@ class StrategyBacktester:
         required_params = set()
         current_class = strategy_class
 
-        while current_class != object:
+        while current_class is not object:
             if hasattr(current_class, "__init__"):
                 try:
                     sig = inspect.signature(current_class.__init__)
@@ -756,7 +766,7 @@ class StrategyBacktester:
         statistical_significance = {
             "error": True,
             "error_message": error_msg or "No successful predictions",
-            "timestamp": pd.Timestamp.now().isoformat(),
+            "timestamp": datetime.now().isoformat(),
         }
 
         return BacktestResult(
@@ -975,7 +985,7 @@ class StrategyComparator:
 
     def compare_strategies(
         self, strategies_configs: List[Tuple[Type[PredictModel], Dict[str, Any]]], **backtest_kwargs
-    ) -> pd.DataFrame:
+    ) -> pl.DataFrame:
         """
         Compare multiple strategies with their configurations.
 
@@ -995,28 +1005,28 @@ class StrategyComparator:
             except Exception as e:
                 logger.error(f"Failed to backtest {strategy_class.__name__}: {e}")
 
-        df = pd.DataFrame(results)
+        df = pl.DataFrame(results)
 
         # Sort by ROI by default
-        if not df.empty:
-            df = df.sort_values("roi", ascending=False)
+        if not df.is_empty():
+            df = df.sort("roi", descending=True)
 
         return df
 
-    def save_results(self, results_df: pd.DataFrame, filepath: str):
+    def save_results(self, results_df: pl.DataFrame, filepath: str):
         """Save comparison results to file."""
-        results_df.to_csv(filepath, index=False)
+        results_df.write_csv(filepath)
         logger.info(f"Results saved to {filepath}")
 
-    def generate_report(self, results_df: pd.DataFrame) -> str:
+    def generate_report(self, results_df: pl.DataFrame) -> str:
         """Generate a text report from comparison results."""
-        if results_df.empty:
+        if results_df.is_empty():
             return "No results to report."
 
         report = "Strategy Comparison Report\n"
         report += "=" * 50 + "\n\n"
 
-        for idx, row in results_df.iterrows():
+        for row in results_df.iter_rows(named=True):
             report += f"Strategy: {row['strategy_name']}\n"
             report += f"Parameters: {row['parameters']}\n"
             report += f"ROI: {row['roi']:.2f}%\n"

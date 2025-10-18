@@ -6,7 +6,7 @@ backtesting, and parameter tuning systems.
 
 from datetime import timedelta
 
-import pandas as pd
+import polars as pl
 from loguru import logger
 
 from vietlott.config.products import get_config
@@ -26,9 +26,10 @@ from vietlott.model.strategy import (
 def load_sample_data():
     """Load sample lottery data."""
     try:
-        df = pd.read_json(get_config("power_655").raw_path, lines=True, dtype=object, convert_dates=False)
-        df["date"] = pd.to_datetime(df["date"]).dt.date
-        df = df.sort_values(by=["date", "id"], ascending=False)
+        df = pl.read_ndjson(get_config("power_655").raw_path)
+        # Convert date column to date type
+        df = df.with_columns(pl.col("date").str.strptime(pl.Date, "%Y-%m-%d"))
+        df = df.sort(by=["date", "id"], descending=True)
         logger.info(f"Loaded {len(df)} records from {df['date'].min()} to {df['date'].max()}")
         return df
     except Exception as e:
@@ -45,7 +46,7 @@ def demo_basic_predictions():
         return
 
     # Get a sample date for prediction
-    sample_date = df["date"].iloc[10]  # Use 10th most recent date
+    sample_date = df["date"][10]  # Use 10th most recent date
     logger.info(f"Making predictions for date: {sample_date}")
 
     # Test different strategies
@@ -185,7 +186,7 @@ def demo_strategy_comparison():
             logger.info("Strategy Comparison Results:")
             logger.info("=" * 80)
 
-            for _, row in results_df.iterrows():
+            for row in results_df.iter_rows(named=True):
                 strategy_name = row["strategy_name"]
                 roi = row["roi"]
                 win_rate = row["win_rate"] * 100
@@ -220,7 +221,7 @@ def demo_advanced_strategies():
     if df is None:
         return
 
-    sample_date = df["date"].iloc[20]
+    sample_date = df["date"][20]
 
     # Test FrequencyStrategy with different configurations
     logger.info("FrequencyStrategy variations:")

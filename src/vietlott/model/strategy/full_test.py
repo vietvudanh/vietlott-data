@@ -10,7 +10,7 @@ sys.path.append("src")
 import random
 from datetime import date, timedelta
 
-import pandas as pd
+import polars as pl
 
 
 def create_larger_sample_data():
@@ -29,7 +29,7 @@ def create_larger_sample_data():
 
         data.append({"id": f"655-{i + 1:03d}", "date": draw_date, "result": result})
 
-    return pd.DataFrame(data)
+    return pl.DataFrame(data)
 
 
 def test_strategy_comparison():

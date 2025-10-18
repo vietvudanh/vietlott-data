@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from typing import Any, Dict, List
 
 import numpy as np
-import pandas as pd
+import polars as pl
 
 from vietlott.model.strategy.base import PredictModel
 
@@ -16,7 +16,7 @@ class PatternStrategy(PredictModel):
 
     def __init__(
         self,
-        df: pd.DataFrame,
+        df: pl.DataFrame,
         time_predict: int = 1,
         min_val: int = PredictModel.POWER_655_MIN_VAL,
         max_val: int = PredictModel.POWER_655_MAX_VAL,
@@ -41,7 +41,7 @@ class PatternStrategy(PredictModel):
 
     def _prepare_historical_data(self):
         """Prepare historical data for pattern analysis."""
-        self.df_sorted = self.df.sort_values("date")
+        self.df_sorted = self.df.sort("date")
 
     def _analyze_spacing_patterns(self, target_date: date) -> Dict[str, Any]:
         """
@@ -54,12 +54,11 @@ class PatternStrategy(PredictModel):
             Dictionary containing spacing analysis
         """
         start_date = target_date - timedelta(days=self.lookback_days)
-        mask = (self.df_sorted["date"] >= start_date) & (self.df_sorted["date"] < target_date)
-        relevant_data = self.df_sorted[mask]
+        relevant_data = self.df_sorted.filter((pl.col("date") >= start_date) & (pl.col("date") < target_date))
 
         spacing_patterns = []
 
-        for _, row in relevant_data.iterrows():
+        for row in relevant_data.iter_rows(named=True):
             sorted_numbers = sorted(row["result"])
             spacings = []
             for i in range(1, len(sorted_numbers)):
@@ -101,7 +100,7 @@ class PatternStrategy(PredictModel):
 
         range_counts = {i: 0 for i in range(5)}
 
-        for _, row in relevant_data.iterrows():
+        for row in relevant_data.iter_rows(named=True):
             for num in row["result"]:
                 for i, (start, end) in enumerate(ranges):
                     if start <= num <= end:
@@ -121,12 +120,11 @@ class PatternStrategy(PredictModel):
             Dictionary containing odd/even analysis
         """
         start_date = target_date - timedelta(days=self.lookback_days)
-        mask = (self.df_sorted["date"] >= start_date) & (self.df_sorted["date"] < target_date)
-        relevant_data = self.df_sorted[mask]
+        relevant_data = self.df_sorted.filter((pl.col("date") >= start_date) & (pl.col("date") < target_date))
 
         odd_even_patterns = []
 
-        for _, row in relevant_data.iterrows():
+        for row in relevant_data.iter_rows(named=True):
             odd_count = sum(1 for num in row["result"] if num % 2 == 1)
             even_count = len(row["result"]) - odd_count
             odd_even_patterns.append((odd_count, even_count))

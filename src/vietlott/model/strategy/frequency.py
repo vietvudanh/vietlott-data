@@ -2,7 +2,7 @@ import random
 from datetime import date, timedelta
 from typing import Dict, List
 
-import pandas as pd
+import polars as pl
 
 from vietlott.model.strategy.base import PredictModel
 
@@ -15,7 +15,7 @@ class FrequencyStrategy(PredictModel):
 
     def __init__(
         self,
-        df: pd.DataFrame,
+        df: pl.DataFrame,
         time_predict: int = 1,
         min_val: int = PredictModel.POWER_655_MIN_VAL,
         max_val: int = PredictModel.POWER_655_MAX_VAL,
@@ -43,7 +43,7 @@ class FrequencyStrategy(PredictModel):
 
     def _prepare_historical_data(self):
         """Prepare historical data for frequency analysis."""
-        self.df_sorted = self.df.sort_values("date")
+        self.df_sorted = self.df.sort("date")
 
     def _get_frequency_data(self, target_date: date) -> Dict[int, int]:
         """
@@ -58,8 +58,7 @@ class FrequencyStrategy(PredictModel):
         start_date = target_date - timedelta(days=self.lookback_days)
 
         # Filter data for the lookback period
-        mask = (self.df_sorted["date"] >= start_date) & (self.df_sorted["date"] < target_date)
-        relevant_data = self.df_sorted[mask]
+        relevant_data = self.df_sorted.filter((pl.col("date") >= start_date) & (pl.col("date") < target_date))
 
         # Count frequency of each number
         frequency_counts = {}
@@ -70,7 +69,7 @@ class FrequencyStrategy(PredictModel):
             frequency_counts[num] = 0
 
         # Count actual frequencies
-        for _, row in relevant_data.iterrows():
+        for row in relevant_data.iter_rows(named=True):
             for num in row["result"]:
                 if num in frequency_counts:
                     frequency_counts[num] += 1
@@ -158,7 +157,7 @@ class FrequencyStrategy(PredictModel):
 class HotNumbersStrategy(FrequencyStrategy):
     """Convenience class for hot numbers strategy."""
 
-    def __init__(self, df: pd.DataFrame, **kwargs):
+    def __init__(self, df: pl.DataFrame, **kwargs):
         kwargs["strategy_type"] = "hot"
         super().__init__(df, **kwargs)
 
@@ -166,6 +165,6 @@ class HotNumbersStrategy(FrequencyStrategy):
 class ColdNumbersStrategy(FrequencyStrategy):
     """Convenience class for cold numbers strategy."""
 
-    def __init__(self, df: pd.DataFrame, **kwargs):
+    def __init__(self, df: pl.DataFrame, **kwargs):
         kwargs["strategy_type"] = "cold"
         super().__init__(df, **kwargs)

@@ -1,4 +1,4 @@
-import pandas as pd
+import polars as pl
 
 
 class PredictModel:
@@ -19,7 +19,7 @@ class PredictModel:
 
     def __init__(
         self,
-        df: pd.DataFrame,
+        df: pl.DataFrame,
         time_predict: int = 1,
         min_val: int = POWER_655_MIN_VAL,
         max_val: int = POWER_655_MAX_VAL,
@@ -34,7 +34,8 @@ class PredictModel:
 
     @classmethod
     def _count_number(cls, number_series):
-        return number_series.explode().value_counts().to_frame("times")
+        # Explode the series and count values
+        return number_series.explode().value_counts().sort("count", descending=True).rename({"count": "times"})
 
     @classmethod
     def _compare_list(cls, l1, l2):
@@ -47,14 +48,16 @@ class PredictModel:
         pass
 
     def backtest(self):
-        _df = self.df.copy()
+        _df = self.df.clone()
 
-        def fn_apply(row):
-            predicted = []
+        # Process each row to create predictions
+        predictions = []
+        for row in _df.iter_rows(named=True):
+            row_predictions = []
             for i in range(self.time_predict):
-                loop_predict = self.predict(row.date)
-                correct, correct_num = self._compare_list(row.result, loop_predict)
-                predicted.append(
+                loop_predict = self.predict(row["date"])
+                correct, correct_num = self._compare_list(row["result"], loop_predict)
+                row_predictions.append(
                     {
                         PredictModel.col_predict + "_idx": i,
                         PredictModel.col_predict: loop_predict,
@@ -62,29 +65,61 @@ class PredictModel:
                         PredictModel.col_correct_num: correct_num,
                     }
                 )
+            predictions.append(row_predictions)
 
-            return predicted
-
-        _df["predict_metadata"] = _df.apply(fn_apply, axis=1)
+        # Add predictions as a new column
+        _df = _df.with_columns(pl.Series(name="predict_metadata", values=predictions))
         self.df_backtest = _df
 
     def evaluate(self):
+        # Explode the predict_metadata column
         self.df_backtest_explode = self.df_backtest.explode(PredictModel.col_predict_metadata)
-        self.df_backtest_evaluate = pd.concat(
+
+        # Extract fields from the dictionary in predict_metadata
+        metadata_df = self.df_backtest_explode.select(
             [
-                self.df_backtest_explode.reset_index(drop=True),
-                pd.json_normalize(self.df_backtest_explode[PredictModel.col_predict_metadata]),
-            ],
-            axis="columns",
+                pl.col(PredictModel.col_predict_metadata)
+                .struct.field(PredictModel.col_predict + "_idx")
+                .alias(PredictModel.col_predict + "_idx"),
+                pl.col(PredictModel.col_predict_metadata)
+                .struct.field(PredictModel.col_predict)
+                .alias(PredictModel.col_predict),
+                pl.col(PredictModel.col_predict_metadata)
+                .struct.field(PredictModel.col_correct)
+                .alias(PredictModel.col_correct),
+                pl.col(PredictModel.col_predict_metadata)
+                .struct.field(PredictModel.col_correct_num)
+                .alias(PredictModel.col_correct_num),
+            ]
+        )
+
+        # Combine with original dataframe columns (excluding predict_metadata)
+        original_cols = [col for col in self.df_backtest_explode.columns if col != PredictModel.col_predict_metadata]
+        self.df_backtest_evaluate = pl.concat(
+            [self.df_backtest_explode.select(original_cols), metadata_df],
+            how="horizontal",
+        )
+
+        correct_count = self.df_backtest_evaluate.filter(pl.col(PredictModel.col_correct)).height
+        correct_num_counts = (
+            self.df_backtest_evaluate.group_by(PredictModel.col_correct_num).count().sort(PredictModel.col_correct_num)
         )
 
         return {
-            "correct_time": self.df_backtest_evaluate[PredictModel.col_correct].sum(),
-            "count_correct_num": self.df_backtest_evaluate.value_counts(PredictModel.col_correct_num),
+            "correct_time": correct_count,
+            "count_correct_num": correct_num_counts,
         }
 
     def revenue(self):
         cost = len(self.df_backtest_evaluate) * self.ticket_price
-        gain = self.df_backtest_evaluate[PredictModel.col_correct_num].map(self.prices).fillna(0).astype(int).sum()
+
+        # Map correct_num to prizes
+        gain = (
+            self.df_backtest_evaluate.with_columns(
+                pl.col(PredictModel.col_correct_num).replace(self.prices, default=0).alias("prize")
+            )
+            .select(pl.col("prize").sum())
+            .item()
+        )
 
         return cost, gain, gain - cost

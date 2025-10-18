@@ -10,7 +10,7 @@ sys.path.append("src")
 import random
 from datetime import date, timedelta
 
-import pandas as pd
+import polars as pl
 
 
 def create_valid_test_data():
@@ -24,16 +24,16 @@ def create_valid_test_data():
         result = sorted(random.sample(range(1, 56), 6))
         data.append({"id": f"655-{i + 1:03d}", "date": draw_date, "result": result})
 
-    return pd.DataFrame(data)
+    return pl.DataFrame(data)
 
 
 def create_invalid_test_data():
     """Create invalid test lottery data (missing columns, wrong types)."""
     # Missing 'result' column
-    df1 = pd.DataFrame({"id": ["655-001", "655-002"], "date": [date(2022, 1, 1), date(2022, 1, 4)]})
+    df1 = pl.DataFrame({"id": ["655-001", "655-002"], "date": [date(2022, 1, 1), date(2022, 1, 4)]})
 
     # Invalid date format
-    df2 = pd.DataFrame(
+    df2 = pl.DataFrame(
         {
             "id": ["655-001", "655-002"],
             "date": ["invalid", "date"],
@@ -42,7 +42,7 @@ def create_invalid_test_data():
     )
 
     # Invalid result format (not lists)
-    df3 = pd.DataFrame(
+    df3 = pl.DataFrame(
         {
             "id": ["655-001", "655-002"],
             "date": [date(2022, 1, 1), date(2022, 1, 4)],
@@ -93,7 +93,7 @@ def test_dataframe_validation():
 
         # Test with empty DataFrame
         try:
-            _ = StrategyBacktester(pd.DataFrame())
+            _ = StrategyBacktester(pl.DataFrame())
             print("❌ Empty DataFrame was accepted")
         except ValueError as e:
             print(f"✅ Correctly rejected empty DataFrame: {e}")
