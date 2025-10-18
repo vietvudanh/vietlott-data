@@ -163,10 +163,22 @@ class ReadmeGenerator:
         """Convert long dataframe to multiple columns for better display."""
         if df_.empty:
             return df_
-
-        df_ = df_.reset_index()
-        df_["result"] = df_["result"].astype(str)
-        df_["count"] = df_["count"].astype(str)
+        # reset_index may return a view in some edge-cases; work on an explicit copy
+        df_ = df_.reset_index().copy()
+        # Create converted columns in a separate DataFrame and concat them back to
+        # avoid assigning object-dtype data into existing numeric columns which
+        # can trigger FutureWarnings about incompatible dtype setting.
+        if "result" in df_.columns and "count" in df_.columns:
+            converted = pd.DataFrame(
+                {
+                    "result": df_["result"].apply(lambda x: str(x)).astype(object),
+                    "count": df_["count"].apply(lambda x: str(x)).astype(object),
+                },
+                index=df_.index,
+            )
+            # drop original columns then concat converted ones to preserve order
+            left = df_.drop(columns=["result", "count"])
+            df_ = pd.concat([left, converted], axis=1)
 
         final = None
 
@@ -189,7 +201,8 @@ class ReadmeGenerator:
                 )
 
         if final is not None:
-            final = final.fillna("")
+            # ensure we operate on an explicit copy before filling
+            final = final.copy().fillna("")
         else:
             final = pd.DataFrame()
 
@@ -231,7 +244,8 @@ class ReadmeGenerator:
                     parsed = pd.to_datetime(df["date"], errors="coerce")
 
                 # Convert to date (drop time) and keep as python date objects
-                df["date"] = parsed.dt.date
+                # use .loc to avoid chained-assignment warnings
+                df.loc[:, "date"] = parsed.dt.date
             df = df.sort_values(by=["date", "id"], ascending=False)
             return df
         except Exception as e:
@@ -245,7 +259,8 @@ class ReadmeGenerator:
 
         df_explode = df.explode("result")
         stats = df_explode.groupby("result").agg(count=("id", "count"))
-        stats["%"] = (stats["count"] / len(df_explode) * 100).round(2)
+        # assign using .loc to avoid chained-assignment warnings
+        stats.loc[:, "%"] = (stats["count"] / len(df_explode) * 100).round(2)
         return stats
 
     def _get_data_overview(self) -> str:
