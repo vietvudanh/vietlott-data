@@ -216,7 +216,7 @@ The data collection works by:
 pip install vietlott-data
 
 # Or install from TestPyPI (development)
-pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.3
+pip install -i https://test.pypi.org/simple/ vietlott-data
 ```
 
 ### 💻 Command Line Interface

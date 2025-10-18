@@ -15,5 +15,3 @@ To publish a new version to PyPI:
 4. The GitHub Actions workflow will automatically build and publish to PyPI
 
 Note: The workflow uses PyPI's trusted publishing (OIDC) for secure authentication. Make sure the PyPI project is configured to accept trusted publishing from this GitHub repository.
-
-# 
