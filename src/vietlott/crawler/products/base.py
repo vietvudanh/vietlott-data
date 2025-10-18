@@ -134,7 +134,9 @@ class BaseProduct:
                 + f", records={len(current_data)}"
             )
             current_data_count = len(current_data)
-            df_take = df_crawled.filter(~pl.col("id").is_in(current_data["id"]))
+            # Use set-based filtering to avoid deprecation warning
+            existing_ids = set(current_data["id"].to_list())
+            df_take = df_crawled.filter(~pl.col("id").is_in(existing_ids))
             df_final = pl.concat([current_data, df_take])
         else:
             df_final = df_crawled
