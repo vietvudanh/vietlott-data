@@ -43,7 +43,11 @@ jobs:
     environment:
       name: pypi
       url: https://pypi.org/p/vietlott-data
+    # Job-level permissions override the workflow-level permissions block.
+    # Ensure the job keeps `contents: read` (needed for download-artifact) and
+    # also allows `id-token: write` for OIDC-based publishing if used.
     permissions:
+      contents: read
       id-token: write  # IMPORTANT: mandatory for trusted publishing
 
     steps:
@@ -55,3 +59,9 @@ jobs:
 
       - name: Publish distribution to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+        # Use a PyPI API token stored in repository secrets. Create a secret
+        # named `PYPI_API_TOKEN` with a token from https://pypi.org/manage/account/
+        # The recommended `user` for API tokens is the literal string "__token__".
+        with:
+          user: "__token__"
+          password: ${{ secrets.PYPI_API_TOKEN }}
