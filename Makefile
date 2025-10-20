@@ -1,46 +1,46 @@
 # Makefile
 VENV_DIR := .venv
+UV := uv
 LINTER := ruff  # Replace this with the packages you need
 LOGURU_LEVEL := INFO
+export
 
-all: venv lint run
-.PHONY: lint  run
+all: lint test
+.PHONY: all requirements-dev test lint build pypi run-crawl run-missing
 
 .venv:
 	@echo "Initializing virtual environment..."
-	uv venv
+	$(UV) venv
 
 requirements-dev: .venv
-	source $(VENV_DIR)/bin/activate \
- 		&& uv pip compile --extra dev pyproject.toml > requirements-dev.txt \
- 		&& uv pip install -r requirements-dev.txt \
-   		&& uv pip install -e .
+	@echo "Generating & installing dev requirements..."
+	$(UV) run pip compile --extra dev pyproject.toml > requirements-dev.txt
+	$(UV) run pip install -r requirements-dev.txt
+	$(UV) run pip install -e .
 
-.PHONY: test
 test:
-	source $(VENV_DIR)/bin/activate \
-	&& pytest src/vietlott/tests
+	$(UV) run pytest src/vietlott/tests
 
 lint: .venv
 	@echo "Linting..."
-	source $(VENV_DIR)/bin/activate && ruff check --select I --fix ./src && ruff format ./src
+	$(UV) run ruff check --select I --fix ./src
+	$(UV) run ruff format ./src
 
-build: lint tests
+build: lint test
 	@echo "Building..."
-	source $(VENV_DIR)/bin/activate && python3 -m build
-	source $(VENV_DIR)/bin/activate && python3 -m bdist_wheel
+	$(UV) run python -m build
 
 pypi: build
 	@echo "Publishing..."
-	source $(VENV_DIR)/bin/activate && python3 -m twine upload --repository pypi dist/*
+	$(UV) run python -m twine upload --repository testpypi dist/*
 
 run-crawl: .venv
-	@echo "Running script..."
-	source $(VENV_DIR)/bin/activate && LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src python src/vietlott/cli/crawl.py keno
-	source $(VENV_DIR)/bin/activate && LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src python src/vietlott/cli/crawl.py power_535
-	source $(VENV_DIR)/bin/activate && LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src python src/vietlott/cli/crawl.py power_655
+	@echo "Running crawl scripts..."
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/crawl.py keno
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/crawl.py power_535
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/crawl.py power_655
 
 run-missing: .venv
-	@echo "Running script..."
-	source $(VENV_DIR)/bin/activate && LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src python src/vietlott/cli/missing.py keno
-	source $(VENV_DIR)/bin/activate && LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src python src/vietlott/cli/missing.py power_535
+	@echo "Running missing scripts..."
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py keno
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py power_535
