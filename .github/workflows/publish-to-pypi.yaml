@@ -3,7 +3,7 @@ name: Publish to PyPI
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: read
@@ -35,33 +35,16 @@ jobs:
           name: python-package-distributions
           path: dist/
 
-  publish-to-pypi:
-    name: Publish to PyPI
-    needs:
-      - build
+  pypi-publish:
+    name: upload release to PyPI
     runs-on: ubuntu-latest
-    environment:
-      name: pypi
-      url: https://pypi.org/p/vietlott-data
-    # Job-level permissions override the workflow-level permissions block.
-    # Ensure the job keeps `contents: read` (needed for download-artifact) and
-    # also allows `id-token: write` for OIDC-based publishing if used.
+    # Specifying a GitHub environment is optional, but strongly encouraged
+    environment: pypi
     permissions:
-      contents: read
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
-
+      # IMPORTANT: this permission is mandatory for Trusted Publishing
+      id-token: write
     steps:
-      - name: Download all the dists
-        uses: actions/download-artifact@v4
-        with:
-          name: python-package-distributions
-          path: dist/
+      # retrieve your distributions here
 
-      - name: Publish distribution to PyPI
+      - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        # Use a PyPI API token stored in repository secrets. Create a secret
-        # named `PYPI_API_TOKEN` with a token from https://pypi.org/manage/account/
-        # The recommended `user` for API tokens is the literal string "__token__".
-        with:
-          user: "__token__"
-          password: ${{ secrets.PYPI_API_TOKEN }}
