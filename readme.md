@@ -54,17 +54,7 @@
 
 ## 🔮 Prediction Models
 
-> ⚠️ **Disclaimer**: These are experimental models for educational purposes only. Lottery outcomes are random and cannot be predicted reliably.
-
-### 🎲 Random Strategy Backtest
-
-- **Strategy**: Random number selection
-- **Tickets per day**: 20
-- **Daily cost**: 200,000 VND
-- **Results with 5+ matches**:
-
-No significant matches found in backtest period.
-
+> Error generating prediction analysis.
 
 
 ## 📈 Power 6/55 Analysis
