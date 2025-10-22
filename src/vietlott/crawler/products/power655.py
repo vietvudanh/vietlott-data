@@ -16,7 +16,6 @@ class ProductPower655(BaseProduct):
         "date": str,
         "id": str,
         "result": "list",
-        "page": int,
         "process_time": str,
     }
 
@@ -40,7 +39,7 @@ class ProductPower655(BaseProduct):
         :param body:
         :param res_json:
         :param task_data:
-        :return: list of dict data {date, id, result, page, process_time}
+        :return: list of dict data {date, id, result, process_time}
         """
         soup = BeautifulSoup(res_json.get("value", {}).get("HtmlContent"), "lxml")
         data = []
@@ -55,7 +54,6 @@ class ProductPower655(BaseProduct):
 
             # last number of special
             row["result"] = [int(span.text) for span in tds[2].find_all("span") if span.text.strip() != "|"]
-            row["page"] = body.get("PageIndex", -1)
             row["process_time"] = datetime.now().isoformat()
 
             data.append(row)

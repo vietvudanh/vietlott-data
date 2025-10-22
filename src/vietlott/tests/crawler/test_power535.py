@@ -29,4 +29,3 @@ def test_power535_process_result_parses_sample():
     assert row["id"] == "00001"
     # numbers should be parsed (filtering out '|' tokens)
     assert row["result"] == [1, 12, 23, 34, 35]
-    assert row["page"] == 0

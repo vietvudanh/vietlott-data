@@ -64,7 +64,6 @@ class ProductKeno(BaseProduct):
             #
             row["big_small"] = tds[2].text
             row["odd_even"] = tds[3].text
-            row["page"] = body.get("PageIndex", -1)
 
             data.append(row)
         return data

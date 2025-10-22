@@ -18,7 +18,6 @@ class ProductBingo18(BaseProduct):
         "result": List[int],
         "total": int,
         "large_small": str,
-        "page": int,
         "process_time": str,
     }
 
@@ -125,7 +124,6 @@ class ProductBingo18(BaseProduct):
                 row["large_small"] = tds[3].get_text().strip()
 
             # Add metadata
-            row["page"] = body.get("PageIndex", -1)
             row["process_time"] = process_time  # Use precomputed timestamp
 
             data.append(row)

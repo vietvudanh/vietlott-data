@@ -85,8 +85,5 @@ class P3D(BaseProduct):
                 cur_idx += prize["count"]
             row["result"] = results
 
-            #
-            row["page"] = body.get("PageIndex", -1)
-
             data.append(row)
         return data

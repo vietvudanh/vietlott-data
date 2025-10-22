@@ -15,7 +15,6 @@ class ProductPower535(BaseProduct):
         "date": str,
         "id": str,
         "result": "list",
-        "page": int,
         "process_time": str,
     }
 
@@ -34,7 +33,7 @@ class ProductPower535(BaseProduct):
     def process_result(self, params, body, res_json, task_data) -> List[Dict]:
         """
         process 5/35 (power_535) result
-        return list of dicts with keys: date, id, result, page, process_time
+        return list of dicts with keys: date, id, result, process_time
         """
         soup = BeautifulSoup(res_json.get("value", {}).get("HtmlContent"), "lxml")
         data = []
@@ -55,7 +54,6 @@ class ProductPower535(BaseProduct):
             row["id"] = tds[1].text.strip()
             # numbers are in the following td, collect span texts
             row["result"] = [int(span.text) for span in tds[2].find_all("span") if span.text.strip() != "|"]
-            row["page"] = body.get("PageIndex", -1)
             row["process_time"] = datetime.now().isoformat()
 
             data.append(row)

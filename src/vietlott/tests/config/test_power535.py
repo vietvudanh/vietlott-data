@@ -45,8 +45,8 @@ def test_power535_config():
         f"Expected URL to contain 'Game535CompareWebPart', got '{instance.url}'"
     )
     assert "result" in instance.stored_data_dtype, "Expected 'result' field in stored_data_dtype"
-    assert len(instance.stored_data_dtype) >= 5, (
-        f"Expected at least 5 data type fields, got {len(instance.stored_data_dtype)}"
+    assert len(instance.stored_data_dtype) >= 4, (
+        f"Expected at least 4 data type fields, got {len(instance.stored_data_dtype)}"
     )
     print("✓ Product instance created successfully")
     print(f"  - Name: {instance.name}")
