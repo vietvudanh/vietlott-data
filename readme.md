@@ -46,15 +46,25 @@
 |:----------|--------------:|:-------------|:-----------|----------------:|:-----------|:------------|
 | Power 655 |          1258 | 2017-08-01   | 2025-10-21 |            1258 | 00001      | 01258       |
 | Power 645 |          1224 | 2017-10-25   | 2025-10-19 |            1224 | 00198      | 01421       |
-| Power 535 |            91 | 2025-06-29   | 2025-10-21 |             182 | 00001      | 00230       |
-| Keno      |           297 | 2022-12-04   | 2025-10-21 |           39417 | #0110271   | #0256705    |
+| Power 535 |            92 | 2025-06-29   | 2025-10-22 |             183 | 00001      | 00231       |
+| Keno      |           348 | 2022-12-04   | 2025-10-22 |           45485 | #0110271   | #0256770    |
 | 3D        |           988 | 2019-04-22   | 2025-10-20 |             988 | 00001      | 00992       |
 | 3D Pro    |           635 | 2021-09-14   | 2025-10-21 |             635 | 00001      | 00639       |
-| Bingo18   |           321 | 2024-12-03   | 2025-10-21 |           50692 | 0083123    | 0134377     |
+| Bingo18   |           324 | 2024-12-03   | 2025-10-22 |           51292 | 0083123    | 0134464     |
 
 ## 🔮 Prediction Models
 
-> Error generating prediction analysis.
+> ⚠️ **Disclaimer**: These are experimental models for educational purposes only. Lottery outcomes are random and cannot be predicted reliably.
+
+### 🎲 Random Strategy Backtest
+
+- **Strategy**: Random number selection
+- **Tickets per day**: 20
+- **Daily cost**: 200,000 VND
+- **Results with 5+ matches**:
+
+No significant matches found in backtest period.
+
 
 
 ## 📈 Power 6/55 Analysis
