@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"] # list of folders that contain the packages (["."] by default)
+
+[project]
+name = "vietlott-data"
+version = "0.2.0"
+description = "crawl & store vietlott data"
+authors = [{ name = "Viet Vu", email = "vietvudanh@gmail.com" }]
+dependencies = [
+    "bs4",
+    "polars",
+    "pyarrow",
+    "lxml",
+    "attrs",
+    "cattrs",
+    "click",
+    "pendulum",
+    "requests",
+    "tabulate",
+    "loguru",
+    "pandas",
+]
+requires-python = ">=3.11,<3.14"
+readme = "README.md"
+license = { text = "MIT" }
+
+[project.urls]
+Homepage = "https://github.com/vietvudanh/vietlott-data"
+Issues = "https://github.com/vietvudanh/vietlott-data/issues"
+
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "build", "setuptools", "wheel","twine"]
+
+[project.scripts]
+vietlott-crawl = "vietlott.cli.crawl:crawl"
+vietlott-missing = "vietlott.cli.missing:detect_missing_data"
+
+[tool.ruff]
+line-length = 120

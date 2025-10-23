@@ -1,0 +1,80 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vietlott data</title>
+
+    <div id="table"></div>
+
+    <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+    <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+</head>
+
+<body>
+    <py-config>
+        packages = ["pandas", "numpy"] 
+    </py-config>
+    <py-script>
+        from datetime import datetime, timedelta
+        import pandas as pd
+
+        from pyodide.http import open_url
+
+        url = ( 
+            "https://raw.githubusercontent.com/vietvudanh/vietlott-data/master/data/power655.jsonl"
+        )
+        data_655 = pd.read_json(open_url(url), lines=True)
+        data_655['date'] = pd.to_datetime(data_655['date']).dt.date
+        data_655 = data_655.sort_values(by=['date', 'id'], ascending=False)
+
+        # plot
+        def fn_stats(df_, window_time=None):
+            if window_time is not None:
+                df_ = df_[df_['date'] >= (datetime.now().date() - timedelta(days=window_time))]
+            df_explode = df_.explode('result')
+            stats = df_explode.groupby('result').agg(
+                count=('id', 'count')
+            )
+            stats['%'] = (stats['count'] / len(df_explode) * 100).round(2)
+            return stats
+        
+        stats = fn_stats(data_655)
+
+        # stats n months
+        stats_15d = fn_stats(data_655, 15)
+        stats_30d = fn_stats(data_655, 30)
+        stats_60d = fn_stats(data_655, 60)
+        stats_90d = fn_stats(data_655, 90)
+        
+        display(stats, target='stats_all_time')
+        display(stats_15d, target='stats_15d')
+        display(stats_30d, target='stats_30d')
+        display(stats_60d, target='stats_60d')
+        display(stats_90d, target='stats_90d')
+
+    </py-script>
+
+    <py-repl>
+        data_655
+    </py-repl>
+
+    <div>
+        <h1>All time</h1>
+        <div id="stats_all_time"></div>
+        <h1>15d</h1>
+        <div id="stats_15d"></div>
+        <h1>30d</h1>
+        <div id="stats_30d"></div>
+        <h1>60d</h1>
+        <div id="stats_60d"></div>
+        <h1>90d</h1>
+        <div id="stats_90d"></div>
+        
+    </div>
+    
+</body>
+
+</html>
