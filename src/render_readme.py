@@ -200,8 +200,8 @@ class ReadmeGenerator:
                 final = pd.concat(
                     [
                         final.reset_index(drop=True),
-                        pd.DataFrame([None] * len(dd), columns=["-"]),
-                        dd.reset_index(drop=True),
+                        pd.DataFrame([None] * len(dd), columns=["-"]).add_prefix(str(i)),
+                        dd.reset_index(drop=True).add_prefix(str(i)),
                     ],
                     axis="columns",
                 )
@@ -209,8 +209,32 @@ class ReadmeGenerator:
         if final is not None:
             # ensure we operate on an explicit copy before filling
             final = final.copy().fillna("")
-            # Convert back to polars
-            return pl.from_pandas(final)
+
+            # Guarantee unique, string-based column names before conversion
+            seen: dict[str, int] = {}
+            renamed_columns = []
+            for col in final.columns:
+                col_str = str(col)
+                if col_str in seen:
+                    seen[col_str] += 1
+                    col_str = f"{col_str}_{seen[col_str]}"
+                else:
+                    seen[col_str] = 0
+                renamed_columns.append(col_str)
+            final.columns = renamed_columns
+
+            # Convert everything to string for display to avoid numeric columns with empty strings
+            data = {}
+            for col in final.columns:
+                col_values = []
+                for value in final[col].tolist():
+                    if value == "":
+                        col_values.append("")
+                    else:
+                        col_values.append(str(value))
+                data[col] = col_values
+
+            return pl.DataFrame(data)
         else:
             return pl.DataFrame()
 
@@ -382,7 +406,7 @@ class ReadmeGenerator:
 
 """
         except Exception as e:
-            logger.error(f"Error generating Power 6/55 analysis: {e}")
+            logger.exception(f"EError generating Power 6/55 analysis: {e}")
             return "## 📈 Power 6/55 Analysis\n\n> Error generating analysis.\n"
 
     # Removed Power 5/35 Analysis section as requested.
