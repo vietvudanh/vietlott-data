@@ -1,0 +1,402 @@
+/* Neobrutalism Design System */
+
+:root {
+    /* Colors */
+    --bg-primary: #FEFAE0;
+    --bg-white: #FFFFFF;
+    --text-primary: #1A1A1A;
+    --border-primary: #000000;
+    
+    /* Brand colors */
+    --color-red: #FF6B6B;
+    --color-blue: #4ECDC4;
+    --color-green: #95E1D3;
+    --color-yellow: #FFE66D;
+    --color-purple: #B19CD9;
+    --color-orange: #FFA07A;
+    --color-pink: #FFB3D9;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Border */
+    --border-width: 4px;
+    --border-radius: 0;
+    
+    /* Shadow */
+    --shadow-offset: 6px;
+    --shadow-color: var(--border-primary);
+}
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: var(--spacing-lg);
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Typography */
+h1, h2, h3, h4 {
+    font-weight: 900;
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-md);
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+p {
+    margin-bottom: var(--spacing-sm);
+}
+
+a {
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-xl);
+    background-color: var(--bg-white);
+    border: var(--border-width) solid var(--border-primary);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+}
+
+.title {
+    font-size: 3.5rem;
+    margin-bottom: var(--spacing-sm);
+    text-transform: uppercase;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-md);
+    font-weight: 600;
+}
+
+.badges {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.badge {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background-color: var(--color-blue);
+    border: var(--border-width) solid var(--border-primary);
+    box-shadow: 4px 4px 0 var(--shadow-color);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.badge:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    text-decoration: none;
+}
+
+.badge-green {
+    background-color: var(--color-green);
+}
+
+/* Section */
+.section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    background-color: var(--color-yellow);
+    border: var(--border-width) solid var(--border-primary);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+    text-transform: uppercase;
+}
+
+/* Card */
+.card {
+    background-color: var(--bg-white);
+    border: var(--border-width) solid var(--border-primary);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Products Grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.product-card {
+    background-color: var(--bg-white);
+    border: var(--border-width) solid var(--border-primary);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
+    padding: var(--spacing-lg);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 var(--shadow-color);
+}
+
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.product-tag {
+    font-size: 2rem;
+}
+
+/* Features Grid */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.feature-card {
+    background-color: var(--bg-white);
+    border: var(--border-width) solid var(--border-primary);
+    box-shadow: 4px 4px 0 var(--shadow-color);
+    padding: var(--spacing-lg);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.feature-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--shadow-color);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    border: var(--border-width) solid var(--border-primary);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--color-red);
+    box-shadow: 4px 4px 0 var(--shadow-color);
+    margin-top: var(--spacing-sm);
+}
+
+.btn-primary:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background-color: var(--color-purple);
+    box-shadow: 4px 4px 0 var(--shadow-color);
+}
+
+.btn-secondary:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--shadow-color);
+    text-decoration: none;
+}
+
+/* Table */
+.stats-table {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+thead tr {
+    background-color: var(--color-pink);
+}
+
+th, td {
+    padding: var(--spacing-sm);
+    text-align: left;
+    border: var(--border-width) solid var(--border-primary);
+}
+
+th {
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--color-green);
+}
+
+tbody tr:nth-child(odd) {
+    background-color: var(--bg-white);
+}
+
+/* Code Block */
+.code-block {
+    background-color: var(--text-primary);
+    color: var(--color-yellow);
+    padding: var(--spacing-md);
+    border: var(--border-width) solid var(--border-primary);
+    box-shadow: 4px 4px 0 var(--shadow-color);
+    margin: var(--spacing-md) 0;
+    overflow-x: auto;
+}
+
+.code-block code {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+/* CLI Examples */
+.cli-examples {
+    display: grid;
+    gap: var(--spacing-lg);
+}
+
+.cli-example h4 {
+    margin-bottom: var(--spacing-sm);
+    color: var(--text-primary);
+}
+
+/* Disclaimer */
+.disclaimer {
+    background-color: var(--color-orange);
+    border-color: var(--border-primary);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: var(--spacing-xl) 0;
+    margin-top: var(--spacing-xl);
+}
+
+.footer-text {
+    margin-top: var(--spacing-md);
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: var(--spacing-sm);
+    }
+    
+    .title {
+        font-size: 2.5rem;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .header {
+        padding: var(--spacing-lg);
+    }
+    
+    .products-grid,
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card {
+        padding: var(--spacing-md);
+    }
+    
+    :root {
+        --shadow-offset: 4px;
+    }
+}
+
+/* Animations */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.product-tag {
+    animation: bounce 2s ease-in-out infinite;
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background-color: white;
+    }
+    
+    .card,
+    .product-card,
+    .feature-card {
+        box-shadow: none;
+        page-break-inside: avoid;
+    }
+}
