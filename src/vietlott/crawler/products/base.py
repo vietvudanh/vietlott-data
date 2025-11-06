@@ -118,6 +118,7 @@ class BaseProduct:
             logger.info("No results")
             return
         df_crawled = pl.DataFrame(list_data)
+        df_crawled = df_crawled.with_columns(pl.col("id").cast(pl.Utf8))
         logger.info(
             f"crawled data date: min={df_crawled['date'].min()}, max={df_crawled['date'].max()}"
             + f" id min={df_crawled['id'].min()}, max={df_crawled['id'].max()}"
@@ -128,6 +129,7 @@ class BaseProduct:
         current_data_count = 0
         if self.product_config.raw_path.exists():
             current_data = pl.read_ndjson(self.product_config.raw_path)
+            current_data = current_data.with_columns(pl.col("id").cast(pl.Utf8), pl.col("date").cast(pl.Utf8))
             logger.info(
                 f"current data date min={current_data['date'].min()}, max={current_data['date'].max()}"
                 + f" id min={current_data['id'].min()}, max={current_data['id'].max()}"
@@ -146,7 +148,16 @@ class BaseProduct:
         df_final = df_final.sort(["date", "id"])
         # Convert date column to date type if it's not already
         if df_final["date"].dtype != pl.Date:
-            df_final = df_final.with_columns(pl.col("date").str.to_date())
+            from datetime import datetime
+
+            df_final = df_final.with_columns(
+                pl.col("date").map_elements(
+                    lambda x: datetime.fromisoformat(x).date()
+                    if "-" in x
+                    else datetime.fromtimestamp(int(x) / 1000).date(),
+                    return_dtype=pl.Date,
+                )
+            )
 
         logger.info(
             f"final data min_date={df_final['date'].min()}, max_date={df_final['date'].max()}"

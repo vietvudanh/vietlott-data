@@ -29,6 +29,7 @@ class ReadmeTemplates:
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Data Updated](https://img.shields.io/badge/data-daily%20updated-brightgreen.svg)](https://github.com/vietvudanh/vietlott-data/commits/main)
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-blue)](https://vietvudanh.github.io/vietlott-data/)
 
 > 📊 **Automated Vietnamese Lottery Data Collection & Analysis**
 > 
@@ -111,9 +112,9 @@ pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.3
 vietlott-crawl [OPTIONS] PRODUCT
 
 # Options:
-#   --run-date TEXT       Specific date to crawl
-#   --index_from INTEGER  Starting page index
-#   --index_to INTEGER    Ending page index
+#   --run-date TEXT       Specific date to crawl (default: current date)
+#   --index-from INTEGER  Starting page index (default: 0)
+#   --index-to INTEGER    Ending page index (default: None)
 #   --help               Show help message
 ```
 
@@ -123,9 +124,11 @@ vietlott-crawl [OPTIONS] PRODUCT
 vietlott-missing [OPTIONS] PRODUCT
 
 # Options:
-#   --limit INTEGER  Number of pages to process
+#   --limit INTEGER  Number of pages to process (default: 20)
 #   --help          Show help message
 ```
+
+> **Available Products**: power_655, power_645, power_535, keno, 3d, 3d_pro, bingo18
 
 ### 🛠️ Development Setup
 
