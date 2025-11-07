@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 Vietlott Data - Vietnamese Lottery Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">🎰 Vietlott Data</h1>
+            <p class="subtitle">Automated Vietnamese Lottery Data Collection & Analysis</p>
+            <div class="badges">
+                <a href="https://github.com/vietvudanh/vietlott-data/actions" class="badge">
+                    <span>GitHub Actions</span>
+                </a>
+                <a href="https://www.python.org/downloads/" class="badge">
+                    <span>Python 3.8+</span>
+                </a>
+                <a href="https://github.com/vietvudanh/vietlott-data/blob/main/LICENSE" class="badge">
+                    <span>MIT License</span>
+                </a>
+                <span class="badge badge-green">
+                    <span>Daily Updated</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- Description -->
+        <section class="section">
+            <div class="card">
+                <h2>📊 About This Project</h2>
+                <p>This project automatically crawls and analyzes Vietnamese lottery data from <a href="https://vietlott.vn/" target="_blank">vietlott.vn</a>, providing comprehensive statistics and insights for all major lottery products.</p>
+            </div>
+        </section>
+
+        <!-- Supported Products -->
+        <section class="section">
+            <h2 class="section-title">🎯 Supported Lottery Products</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Power 6/55</h3>
+                        <span class="product-tag">🔴</span>
+                    </div>
+                    <p>Choose 6 numbers from 1-55</p>
+                    <a href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655" class="btn btn-primary" target="_blank">
+                        View Results →
+                    </a>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Power 6/45</h3>
+                        <span class="product-tag">🔵</span>
+                    </div>
+                    <p>Choose 6 numbers from 1-45</p>
+                    <a href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645" class="btn btn-primary" target="_blank">
+                        View Results →
+                    </a>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Power 5/35</h3>
+                        <span class="product-tag">🟢</span>
+                    </div>
+                    <p>Choose 5 numbers from 1-35</p>
+                    <a href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535" class="btn btn-primary" target="_blank">
+                        View Results →
+                    </a>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Keno</h3>
+                        <span class="product-tag">🟡</span>
+                    </div>
+                    <p>Fast-pace number game</p>
+                    <a href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno" class="btn btn-primary" target="_blank">
+                        View Results →
+                    </a>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Max 3D</h3>
+                        <span class="product-tag">🟣</span>
+                    </div>
+                    <p>3-digit lottery game</p>
+                    <a href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d" class="btn btn-primary" target="_blank">
+                        View Results →
+                    </a>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Max 3D Pro</h3>
+                        <span class="product-tag">🟠</span>
+                    </div>
+                    <p>Enhanced 3D lottery</p>
+                    <a href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro" class="btn btn-primary" target="_blank">
+                        View Results →
+                    </a>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-header">
+                        <h3>Bingo18</h3>
+                        <span class="product-tag">⚪</span>
+                    </div>
+                    <p>3 numbers from 0-9 game</p>
+                    <a href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18" class="btn btn-primary" target="_blank">
+                        View Results →
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Statistics -->
+        <section class="section">
+            <h2 class="section-title">📊 Data Statistics</h2>
+            <div class="card">
+                <div class="stats-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Total Draws</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Total Records</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Power 655</strong></td>
+                                <td>1,261</td>
+                                <td>2017-08-01</td>
+                                <td>2025-10-28</td>
+                                <td>1,261</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Power 645</strong></td>
+                                <td>1,228</td>
+                                <td>2017-10-25</td>
+                                <td>2025-10-29</td>
+                                <td>1,228</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Power 535</strong></td>
+                                <td>99</td>
+                                <td>2025-06-29</td>
+                                <td>2025-10-29</td>
+                                <td>198</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Keno</strong></td>
+                                <td>356</td>
+                                <td>2022-12-04</td>
+                                <td>2025-10-30</td>
+                                <td>46,418</td>
+                            </tr>
+                            <tr>
+                                <td><strong>3D</strong></td>
+                                <td>992</td>
+                                <td>2019-04-22</td>
+                                <td>2025-10-29</td>
+                                <td>992</td>
+                            </tr>
+                            <tr>
+                                <td><strong>3D Pro</strong></td>
+                                <td>638</td>
+                                <td>2021-09-14</td>
+                                <td>2025-10-28</td>
+                                <td>638</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bingo18</strong></td>
+                                <td>332</td>
+                                <td>2024-12-03</td>
+                                <td>2025-10-30</td>
+                                <td>51,520</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section class="section">
+            <h2 class="section-title">⚙️ How It Works</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h3>Automated Schedule</h3>
+                    <p>Runs daily via GitHub Actions - no server required!</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Data Processing</h3>
+                    <p>Fetches latest results, processes data, and commits to repository</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analysis</h3>
+                    <p>Generates statistics and updates README automatically</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Network Analysis</h3>
+                    <p>Inspects browser-server communication to understand data flow</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🐍</div>
+                    <h3>Python Replication</h3>
+                    <p>Recreates data fetch logic in Python for automation</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📋</div>
+                    <h3>Structured Storage</h3>
+                    <p>Saves results in JSONL format for easy analysis</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Installation -->
+        <section class="section">
+            <h2 class="section-title">🚀 Installation & Usage</h2>
+            <div class="card">
+                <h3>📦 Install via pip</h3>
+                <div class="code-block">
+                    <code>pip install -i https://test.pypi.org/simple/ vietlott-data</code>
+                </div>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;"><em>Check <a href="https://github.com/vietvudanh/vietlott-data/releases" target="_blank">releases</a> for the latest version</em></p>
+
+                <h3>💻 Command Line Interface</h3>
+                <div class="cli-examples">
+                    <div class="cli-example">
+                        <h4>🔍 Crawl Data</h4>
+                        <div class="code-block">
+                            <code>vietlott-crawl [OPTIONS] PRODUCT</code>
+                        </div>
+                    </div>
+
+                    <div class="cli-example">
+                        <h4>🔧 Backfill Missing Data</h4>
+                        <div class="code-block">
+                            <code>vietlott-missing [OPTIONS] PRODUCT</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Disclaimer -->
+        <section class="section">
+            <div class="card disclaimer">
+                <h3>⚠️ Disclaimer</h3>
+                <p>This is purely for educational and research purposes. Lottery outcomes are random and cannot be predicted reliably. No gambling advice is provided.</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>
+                <a href="https://github.com/vietvudanh/vietlott-data" class="btn btn-secondary" target="_blank">
+                    ⭐ Star on GitHub
+                </a>
+            </p>
+            <p class="footer-text">
+                Licensed under MIT License | 
+                <a href="https://github.com/vietvudanh/vietlott-data/blob/main/LICENSE" target="_blank">View License</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
