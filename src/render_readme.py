@@ -325,6 +325,8 @@ class ReadmeGenerator:
             return "## 🔮 Prediction Models\n\n> No data available for predictions.\n"
 
         try:
+            import pandas as pd
+
             # Convert to pandas for the model (if it expects pandas)
             df_pd = df.to_pandas()
 
@@ -333,9 +335,24 @@ class ReadmeGenerator:
             random_model.backtest()
             random_model.evaluate()
 
-            df_correct = random_model.df_backtest_evaluate[random_model.df_backtest_evaluate["correct_num"] >= 5][
-                ["date", "result", "predicted"]
-            ]
+            # Coerce `correct_num` to integer safely before applying threshold
+            if "correct_num" in random_model.df_backtest_evaluate.columns:
+
+                def _to_int(v):
+                    try:
+                        return int(v)
+                    except Exception:
+                        try:
+                            return len(v)
+                        except Exception:
+                            return 0
+
+                s_correct = random_model.df_backtest_evaluate["correct_num"].apply(_to_int)
+                df_correct = random_model.df_backtest_evaluate[s_correct >= 5][["date", "result", "predicted"]]
+            else:
+                import pandas as _pd
+
+                df_correct = _pd.DataFrame()
 
             cost_per_day = 10000 * ticket_per_days
 
