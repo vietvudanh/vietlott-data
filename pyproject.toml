@@ -7,7 +7,7 @@ where = ["src"] # list of folders that contain the packages (["."] by default)
 
 [project]
 name = "vietlott-data"
-version = "0.2.0"
+version = "0.2.3"
 description = "crawl & store vietlott data"
 authors = [{ name = "Viet Vu", email = "vietvudanh@gmail.com" }]
 dependencies = [
