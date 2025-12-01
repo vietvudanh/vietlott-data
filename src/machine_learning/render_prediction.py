@@ -189,7 +189,7 @@ This prediction summary is for educational and research purposes only. Lottery o
     def save_prediction_summary(self, output_path: Optional[Path] = None) -> None:
         """Generate and save prediction summary to file."""
         if output_path is None:
-            output_path = Path(__file__).parent / "prediction_summary.md"
+            output_path = Path(__file__).parent / "readme.md"
 
         try:
             summary_content = self.generate_prediction_summary()

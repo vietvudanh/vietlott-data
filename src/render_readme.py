@@ -53,6 +53,7 @@ class ReadmeTemplates:
         return """## 📋 Table of Contents
 
 - [🎯 Supported Lottery Products](#-supported-lottery-products)
+- [Predictions](#-predictions)
 - [📊 Data Statistics](#-data-statistics)
 - [📈 Power 6/55 Analysis](#-power-655-analysis)
   - [📅 Recent Results](#-recent-results)
@@ -375,6 +376,10 @@ class ReadmeGenerator:
         readme_content = f"""{header}
 
 {toc}
+
+## Predictions
+
+Predicitons models are at [/src/predictions](./src/machine_learning/prediction_summary.md)
 
 ## 📊 Data Statistics
 
