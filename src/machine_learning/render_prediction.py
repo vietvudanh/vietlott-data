@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 """
-README Generator for Vietlott Data Project
+Prediction Summary Generator for Vietlott Data Project.
 
-This script generates a comprehensive README.md file for the GitHub repository
-frontpage, including data statistics, predictions, and project information.
+This script generates a prediction summary markdown file for the machine learning module.
+It extracts prediction logic from the main README generator and outputs to a separate file.
 """
 
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Optional
 
+import pandas as pd
 import polars as pl
 from loguru import logger
 
@@ -17,158 +18,16 @@ from machine_learning.random_strategy import RandomModel
 from vietlott.config.products import get_config
 
 
-class ReadmeTemplates:
-    """Container for README template strings and formatting."""
-
-    @staticmethod
-    def get_header() -> str:
-        """Get the main header with badges and description."""
-        return """# 🎰 Vietlott Data
-
-[![GitHub Actions](https://github.com/vietvudanh/vietlott-data/workflows/crawl/badge.svg)](https://github.com/vietvudanh/vietlott-data/actions)
-[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Data Updated](https://img.shields.io/badge/data-daily%20updated-brightgreen.svg)](https://github.com/vietvudanh/vietlott-data/commits/main)
-[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-blue)](https://vietvudanh.github.io/vietlott-data/)
-
-> 📊 **Automated Vietnamese Lottery Data Collection & Analysis**
-> 
-> This project automatically crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing comprehensive statistics and insights for all major lottery products.
-
-## 🎯 Supported Lottery Products
-
-| Product | Link | Description |
-|---------|------|-------------|
-| **Power 6/55** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | Choose 6 numbers from 1-55 |
-| **Power 6/45** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | Choose 6 numbers from 1-45 |
-| **Power 5/35** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535) | Choose 5 numbers from 1-35 |
-| **Keno** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
-| **Max 3D** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
-| **Max 3D Pro** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
-| **Bingo18** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18) | 3 numbers from 0-9 game |
-"""
-
-    @staticmethod
-    def get_toc() -> str:
-        """Get table of contents."""
-        return """## 📋 Table of Contents
-
-- [🎯 Supported Lottery Products](#-supported-lottery-products)
-- [📊 Data Statistics](#-data-statistics)
-- [🔮 Prediction Models](#-prediction-models)
-- [📈 Power 6/55 Analysis](#-power-655-analysis)
-  - [📅 Recent Results](#-recent-results)
-  - [🎲 Number Frequency (All Time)](#-number-frequency-all-time)
-  - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period)
-- [📈 Power 5/35 Analysis](#-power-535-analysis)
-  - [📅 Recent Results](#-recent-results-1)
-  - [🎲 Number Frequency (All Time)](#-number-frequency-all-time-1)
-  - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period-1)
-- [⚙️ How It Works](#️-how-it-works)
-- [🚀 Installation & Usage](#-installation--usage)
-- [📄 License](#-license)
-"""
-
-    @staticmethod
-    def get_how_it_works() -> str:
-        """Get how it works section."""
-        return """## ⚙️ How It Works
-
-### 🤖 Automated Data Collection
-
-This project runs completely automatically using **GitHub Actions** - no server required!
-
-- **⏰ Schedule**: Runs daily via [GitHub Actions workflow](.github/workflows/crawl.yaml)
-- **🔄 Process**: Fetches latest results → Processes data → Commits to repository
-- **📊 Analysis**: Generates statistics and updates README automatically
-
-### 🕵️ Data Crawling Method
-
-The data collection works by:
-1. **🔍 Network Analysis**: Inspecting browser-server communication
-2. **🐍 Python Replication**: Recreating the data fetch logic in Python
-3. **📋 Structured Storage**: Saving results in JSONL format for easy analysis
-4. **🔄 Continuous Updates**: Daily automated runs ensure fresh data
-
-> **Note**: This is purely for educational and research purposes. No gambling advice is provided.
-"""
-
-    @staticmethod
-    def get_install_section() -> str:
-        """Get installation section."""
-        return """## 🚀 Installation & Usage
-
-### 📦 Install via pip
-
-```bash
-pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.3
-```
-
-### 💻 Command Line Interface
-
-#### 🔍 Crawl Data
-
-```bash
-vietlott-crawl [OPTIONS] PRODUCT
-
-# Options:
-#   --run-date TEXT       Specific date to crawl (default: current date)
-#   --index-from INTEGER  Starting page index (default: 0)
-#   --index-to INTEGER    Ending page index (default: None)
-#   --help               Show help message
-```
-
-#### 🔧 Backfill Missing Data
-
-```bash
-vietlott-missing [OPTIONS] PRODUCT
-
-# Options:
-#   --limit INTEGER  Number of pages to process (default: 20)
-#   --help          Show help message
-```
-
-> **Available Products**: power_655, power_645, power_535, keno, 3d, 3d_pro, bingo18
-
-### 🛠️ Development Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/vietvudanh/vietlott-data.git
-cd vietlott-data
-
-# Install dependencies
-pip install -r requirements-dev.txt
-
-# Run tests
-pytest
-```
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-<div align="center">
-  <strong>⭐ If you find this project useful, please consider giving it a star!</strong>
-</div>
-"""
-
-
-class ReadmeGenerator:
-    """Main class for generating the README.md file."""
+class PredictionSummaryGenerator:
+    """Generator for prediction analysis summary."""
 
     def __init__(self):
-        self.templates = ReadmeTemplates()
+        pass
 
     def _balance_long_df(self, df_: pl.DataFrame, n_splits: int = 20) -> pl.DataFrame:
         """Convert long dataframe to multiple columns for better display."""
         if df_.is_empty():
             return df_
-
-        # Convert to pandas for this complex operation that's mainly for display
-        import pandas as pd
 
         df_pd = df_.to_pandas()
 
@@ -290,43 +149,12 @@ class ReadmeGenerator:
         stats = stats.with_columns(((pl.col("count") / total_count * 100).round(2)).alias("%"))
         return stats
 
-    def _get_data_overview(self) -> str:
-        """Generate overview statistics for all products."""
-        products = ["power_655", "power_645", "power_535", "keno", "3d", "3d_pro", "bingo18"]
-        data_stats = []
-
-        for product in products:
-            try:
-                df = self._load_lottery_data(product)
-                if not df.is_empty():
-                    data_stats.append(
-                        {
-                            "Product": product.replace("_", " ").title(),
-                            "Total Draws": df["date"].n_unique(),
-                            "Start Date": str(df["date"].min()),
-                            "End Date": str(df["date"].max()),
-                            "Total Records": df["id"].n_unique(),
-                            "First ID": str(df["id"].min()),
-                            "Latest ID": str(df["id"].max()),
-                        }
-                    )
-            except Exception as e:
-                logger.warning(f"Could not load stats for {product}: {e}")
-
-        if data_stats:
-            import pandas as pd
-
-            return pd.DataFrame(data_stats).to_markdown(index=False)
-        return "No data available"
-
     def _generate_predictions_section(self, df: pl.DataFrame) -> str:
         """Generate predictions analysis section."""
         if df.is_empty():
             return "## 🔮 Prediction Models\n\n> No data available for predictions.\n"
 
         try:
-            import pandas as pd
-
             # Convert to pandas for the model (if it expects pandas)
             df_pd = df.to_pandas()
 
@@ -350,9 +178,7 @@ class ReadmeGenerator:
                 s_correct = random_model.df_backtest_evaluate["correct_num"].apply(_to_int)
                 df_correct = random_model.df_backtest_evaluate[s_correct >= 5][["date", "result", "predicted"]]
             else:
-                import pandas as _pd
-
-                df_correct = _pd.DataFrame()
+                df_correct = pd.DataFrame()
 
             cost_per_day = 10000 * ticket_per_days
 
@@ -396,9 +222,6 @@ class ReadmeGenerator:
 
             recent_results = df.head(10)
 
-            # Convert to pandas for markdown display
-            import pandas as pd
-
             recent_results_pd = recent_results.to_pandas()
             stats_all_pd = stats_all.to_pandas() if not stats_all.is_empty() else pd.DataFrame()
             stats_30d_pd = stats_30d.to_pandas() if not stats_30d.is_empty() else pd.DataFrame()
@@ -426,72 +249,66 @@ class ReadmeGenerator:
 
 """
         except Exception as e:
-            logger.exception(f"EError generating Power 6/55 analysis: {e}")
+            logger.exception(f"Error generating Power 6/55 analysis: {e}")
             return "## 📈 Power 6/55 Analysis\n\n> Error generating analysis.\n"
 
-    # Removed Power 5/35 Analysis section as requested.
-
-    def generate_readme(self) -> str:
-        """Generate the complete README content."""
-        logger.info("Starting README generation...")
+    def generate_prediction_summary(self) -> str:
+        """Generate the complete prediction summary content."""
+        logger.info("Starting prediction summary generation...")
 
         # Load Power 6/55 data (main focus)
         df_power655 = self._load_lottery_data("power_655")
 
-        # Generate all sections
-        header = self.templates.get_header()
-        toc = self.templates.get_toc()
-        data_overview = self._get_data_overview()
+        # Generate prediction and analysis sections
         predictions = self._generate_predictions_section(df_power655)
         power655_analysis = self._generate_power655_analysis(df_power655)
-        how_it_works = self.templates.get_how_it_works()
-        install_section = self.templates.get_install_section()
 
         # Combine all sections
-        readme_content = f"""{header}
+        summary_content = f"""# 🔮 Vietlott Prediction Summary
 
-{toc}
-
-## 📊 Data Statistics
-
-{data_overview}
+> **Generated**: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+>
+> This document contains machine learning predictions and analysis for Vietnamese lottery data.
+> This is an experimental module for educational purposes only.
 
 {predictions}
 
 {power655_analysis}
 
-{how_it_works}
+---
 
-{install_section}
+## ⚠️ Disclaimer
+
+This prediction summary is for educational and research purposes only. Lottery outcomes are random and cannot be reliably predicted. Never gamble more than you can afford to lose.
 """
 
-        return readme_content
+        return summary_content
 
-    def save_readme(self, output_path: Optional[Path] = None) -> None:
-        """Generate and save README to file."""
+    def save_prediction_summary(self, output_path: Optional[Path] = None) -> None:
+        """Generate and save prediction summary to file."""
         if output_path is None:
-            output_path = Path("./readme.md")
+            output_path = Path(__file__).parent / "prediction_summary.md"
 
         try:
-            readme_content = self.generate_readme()
+            summary_content = self.generate_prediction_summary()
 
             with output_path.open("w", encoding="utf-8") as ofile:
-                ofile.write(readme_content)
+                ofile.write(summary_content)
 
-            logger.info(f"README successfully written to {output_path.absolute()}")
+            logger.info(f"Prediction summary successfully written to {output_path.absolute()}")
         except Exception as e:
-            logger.error(f"Error saving README: {e}")
+            logger.error(f"Error saving prediction summary: {e}")
             raise
 
 
 def main():
-    """Main entry point for README generation."""
+    """Main entry point for prediction summary generation."""
     try:
-        generator = ReadmeGenerator()
-        generator.save_readme()
-        logger.info("README generation completed successfully!")
+        generator = PredictionSummaryGenerator()
+        generator.save_prediction_summary()
+        logger.info("Prediction summary generation completed successfully!")
     except Exception as e:
-        logger.error(f"Failed to generate README: {e}")
+        logger.error(f"Failed to generate prediction summary: {e}")
         raise
 
 
