@@ -1367,7 +1367,7 @@ wheels = [
 
 [[package]]
 name = "vietlott-data"
-version = "0.2.3"
+version = "0.2.5"
 source = { editable = "." }
 dependencies = [
     { name = "attrs" },
@@ -1376,7 +1376,6 @@ dependencies = [
     { name = "click" },
     { name = "loguru" },
     { name = "lxml" },
-    { name = "pandas" },
     { name = "pendulum" },
     { name = "polars" },
     { name = "pyarrow" },
@@ -1396,6 +1395,7 @@ dev = [
 ml = [
     { name = "matplotlib" },
     { name = "numpy" },
+    { name = "pandas" },
     { name = "scikit-learn" },
 ]
 
@@ -1410,7 +1410,7 @@ requires-dist = [
     { name = "lxml" },
     { name = "matplotlib", marker = "extra == 'ml'" },
     { name = "numpy", marker = "extra == 'ml'" },
-    { name = "pandas" },
+    { name = "pandas", marker = "extra == 'ml'" },
     { name = "pendulum" },
     { name = "polars" },
     { name = "pyarrow" },
