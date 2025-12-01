@@ -1396,7 +1396,6 @@ dev = [
 ml = [
     { name = "matplotlib" },
     { name = "numpy" },
-    { name = "pandas" },
     { name = "scikit-learn" },
 ]
 
@@ -1412,7 +1411,6 @@ requires-dist = [
     { name = "matplotlib", marker = "extra == 'ml'" },
     { name = "numpy", marker = "extra == 'ml'" },
     { name = "pandas" },
-    { name = "pandas", marker = "extra == 'ml'" },
     { name = "pendulum" },
     { name = "polars" },
     { name = "pyarrow" },

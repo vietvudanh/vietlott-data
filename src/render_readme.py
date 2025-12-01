@@ -16,6 +16,15 @@ from loguru import logger
 from machine_learning.random_strategy import RandomModel
 from vietlott.config.products import get_config
 
+# ML import - may fail if ML dependencies not installed
+try:
+    from machine_learning.random_strategy import RandomModel
+
+    ML_AVAILABLE = True
+except ImportError:
+    ML_AVAILABLE = False
+    RandomModel = None  # type: ignore
+
 
 class ReadmeTemplates:
     """Container for README template strings and formatting."""
@@ -323,6 +332,13 @@ class ReadmeGenerator:
         """Generate predictions analysis section."""
         if df.is_empty():
             return "## 🔮 Prediction Models\n\n> No data available for predictions.\n"
+
+        if not ML_AVAILABLE:
+            return """## 🔮 Prediction Models
+
+> ML dependencies not installed. Install with: `pip install vietlott-data[ml]`
+
+"""
 
         try:
             import pandas as pd

@@ -14,8 +14,9 @@ import pandas as pd
 import polars as pl
 from loguru import logger
 
-from machine_learning.random_strategy import RandomModel
 from vietlott.config.products import get_config
+
+from .random_strategy import RandomModel
 
 
 class PredictionSummaryGenerator:

@@ -9,27 +9,37 @@ The ML functionality has been moved to a separate module to keep the core crawle
 Install ML dependencies with: pip install vietlott-data[ml]
 """
 
-# Re-export from machine_learning module for backwards compatibility
-from machine_learning.backtest import BacktestResult, ParameterTuner, StrategyBacktester, StrategyComparator
-from machine_learning.base import PredictModel
-from machine_learning.frequency import ColdNumbersStrategy, FrequencyStrategy, HotNumbersStrategy
-from machine_learning.not_repeat import NotRepeatStrategy
-from machine_learning.pattern import PatternStrategy
-from machine_learning.random_strategy import RandomModel
+try:
+    # Re-export from machine_learning module for backwards compatibility
+    from machine_learning.backtest import BacktestResult, ParameterTuner, StrategyBacktester, StrategyComparator
+    from machine_learning.base import PredictModel
+    from machine_learning.frequency import ColdNumbersStrategy, FrequencyStrategy, HotNumbersStrategy
+    from machine_learning.not_repeat import NotRepeatStrategy
+    from machine_learning.pattern import PatternStrategy
+    from machine_learning.random_strategy import RandomModel
 
-__all__ = [
-    # Base classes
-    "PredictModel",
-    # Strategy implementations
-    "RandomModel",
-    "NotRepeatStrategy",
-    "FrequencyStrategy",
-    "HotNumbersStrategy",
-    "ColdNumbersStrategy",
-    "PatternStrategy",
-    # Backtesting and tuning
-    "StrategyBacktester",
-    "ParameterTuner",
-    "StrategyComparator",
-    "BacktestResult",
-]
+    __all__ = [
+        # Base classes
+        "PredictModel",
+        # Strategy implementations
+        "RandomModel",
+        "NotRepeatStrategy",
+        "FrequencyStrategy",
+        "HotNumbersStrategy",
+        "ColdNumbersStrategy",
+        "PatternStrategy",
+        # Backtesting and tuning
+        "StrategyBacktester",
+        "ParameterTuner",
+        "StrategyComparator",
+        "BacktestResult",
+    ]
+except ImportError as e:
+    import warnings
+
+    warnings.warn(
+        f"ML dependencies not installed. Install with: pip install vietlott-data[ml]. Error: {e}",
+        ImportWarning,
+        stacklevel=2,
+    )
+    __all__ = []
