@@ -3,7 +3,7 @@
 README Generator for Vietlott Data Project
 
 This script generates a comprehensive README.md file for the GitHub repository
-frontpage, including data statistics, predictions, and project information.
+frontpage, including data statistics and project information.
 """
 
 from datetime import datetime, timedelta
@@ -14,7 +14,6 @@ import polars as pl
 from loguru import logger
 
 from vietlott.config.products import get_config
-from vietlott.model.strategy.random_strategy import RandomModel
 
 
 class ReadmeTemplates:
@@ -32,7 +31,7 @@ class ReadmeTemplates:
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-blue)](https://vietvudanh.github.io/vietlott-data/)
 
 > 📊 **Automated Vietnamese Lottery Data Collection & Analysis**
-> 
+>
 > This project automatically crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing comprehensive statistics and insights for all major lottery products.
 
 ## 🎯 Supported Lottery Products
@@ -55,15 +54,10 @@ class ReadmeTemplates:
 
 - [🎯 Supported Lottery Products](#-supported-lottery-products)
 - [📊 Data Statistics](#-data-statistics)
-- [🔮 Prediction Models](#-prediction-models)
 - [📈 Power 6/55 Analysis](#-power-655-analysis)
   - [📅 Recent Results](#-recent-results)
   - [🎲 Number Frequency (All Time)](#-number-frequency-all-time)
   - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period)
-- [📈 Power 5/35 Analysis](#-power-535-analysis)
-  - [📅 Recent Results](#-recent-results-1)
-  - [🎲 Number Frequency (All Time)](#-number-frequency-all-time-1)
-  - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period-1)
 - [⚙️ How It Works](#️-how-it-works)
 - [🚀 Installation & Usage](#-installation--usage)
 - [📄 License](#-license)
@@ -101,7 +95,7 @@ The data collection works by:
 ### 📦 Install via pip
 
 ```bash
-pip install -i https://test.pypi.org/simple/ vietlott-data==0.1.3
+pip install -i vietlott-data
 ```
 
 ### 💻 Command Line Interface
@@ -134,14 +128,13 @@ vietlott-missing [OPTIONS] PRODUCT
 
 ```bash
 # Clone the repository
-git clone https://github.com/vietvudanh/vietlott-data.git
-cd vietlott-data
+git clone https://github.com/vietvudanh/vietlott-data.git ; cd vietlott-data
 
-# Install dependencies
-pip install -r requirements-dev.txt
+# Install dependencies (recommend using uv and virtual environment)
+uv sync --dev
 
 # Run tests
-pytest
+uv run pytest
 ```
 
 ## 📄 License
@@ -156,6 +149,27 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 """
 
 
+def df_to_markdown(df: pl.DataFrame) -> str:
+    """Convert Polars DataFrame to Markdown table format."""
+    if df.is_empty():
+        return "No data available"
+
+    # Get column names
+    columns = df.columns
+
+    # Build header
+    header = "| " + " | ".join(columns) + " |"
+    separator = "| " + " | ".join(["---"] * len(columns)) + " |"
+
+    # Build rows
+    rows = []
+    for row in df.iter_rows(named=False):
+        row_str = "| " + " | ".join(str(val) if val is not None else "" for val in row) + " |"
+        rows.append(row_str)
+
+    return "\n".join([header, separator] + rows)
+
+
 class ReadmeGenerator:
     """Main class for generating the README.md file."""
 
@@ -167,79 +181,49 @@ class ReadmeGenerator:
         if df_.is_empty():
             return df_
 
-        # Convert to pandas for this complex operation that's mainly for display
-        import pandas as pd
+        # Convert all columns to string for display
+        df_ = df_.with_columns([pl.col(c).cast(pl.Utf8) for c in df_.columns])
 
-        df_pd = df_.to_pandas()
+        total_rows = df_.height
+        num_chunks = (total_rows // n_splits) + (1 if total_rows % n_splits else 0)
 
-        # reset_index may return a view in some edge-cases; work on an explicit copy
-        df_pd = df_pd.reset_index().copy()
-        # Create converted columns in a separate DataFrame and concat them back to
-        # avoid assigning object-dtype data into existing numeric columns which
-        # can trigger FutureWarnings about incompatible dtype setting.
-        if "result" in df_pd.columns and "count" in df_pd.columns:
-            converted = pd.DataFrame(
-                {
-                    "result": df_pd["result"].apply(lambda x: str(x)).astype(object),
-                    "count": df_pd["count"].apply(lambda x: str(x)).astype(object),
-                },
-                index=df_pd.index,
-            )
-            # drop original columns then concat converted ones to preserve order
-            left = df_pd.drop(columns=["result", "count"])
-            df_pd = pd.concat([left, converted], axis=1)
+        if num_chunks <= 1:
+            return df_
 
-        final = None
+        # Create chunks
+        result_frames = []
 
-        for i in range(len(df_pd) // n_splits + 1):
-            dd = df_pd.iloc[i * n_splits : (i + 1) * n_splits]
+        for i in range(num_chunks):
+            start_idx = i * n_splits
+            end_idx = min((i + 1) * n_splits, total_rows)
+            chunk = df_.slice(start_idx, end_idx - start_idx)
 
-            if dd.empty:
-                continue
-
-            if final is None:
-                final = dd
+            if i == 0:
+                result_frames.append(chunk)
             else:
-                final = pd.concat(
-                    [
-                        final.reset_index(drop=True),
-                        pd.DataFrame([None] * len(dd), columns=["-"]).add_prefix(str(i)),
-                        dd.reset_index(drop=True).add_prefix(str(i)),
-                    ],
-                    axis="columns",
-                )
+                # Add separator column
+                separator = pl.DataFrame({f"-{i}": [""] * chunk.height})
+                # Rename chunk columns to add prefix
+                chunk_renamed = chunk.select([pl.col(c).alias(f"{i}{c}") for c in chunk.columns])
+                result_frames.extend([separator, chunk_renamed])
 
-        if final is not None:
-            # ensure we operate on an explicit copy before filling
-            final = final.copy().fillna("")
+        # Combine horizontally - pad shorter frames with empty strings
+        max_height = max(frame.height for frame in result_frames)
 
-            # Guarantee unique, string-based column names before conversion
-            seen: dict[str, int] = {}
-            renamed_columns = []
-            for col in final.columns:
-                col_str = str(col)
-                if col_str in seen:
-                    seen[col_str] += 1
-                    col_str = f"{col_str}_{seen[col_str]}"
-                else:
-                    seen[col_str] = 0
-                renamed_columns.append(col_str)
-            final.columns = renamed_columns
+        padded_frames = []
+        for frame in result_frames:
+            if frame.height < max_height:
+                # Create padding rows
+                padding_rows = max_height - frame.height
+                padding_data = {col: [""] * padding_rows for col in frame.columns}
+                padding_df = pl.DataFrame(padding_data)
+                frame = pl.concat([frame, padding_df])
+            padded_frames.append(frame)
 
-            # Convert everything to string for display to avoid numeric columns with empty strings
-            data = {}
-            for col in final.columns:
-                col_values = []
-                for value in final[col].tolist():
-                    if value == "":
-                        col_values.append("")
-                    else:
-                        col_values.append(str(value))
-                data[col] = col_values
+        # Concatenate horizontally
+        result = pl.concat(padded_frames, how="horizontal")
 
-            return pl.DataFrame(data)
-        else:
-            return pl.DataFrame()
+        return result
 
     def _load_lottery_data(self, product: str) -> pl.DataFrame:
         """Load and prepare lottery data for analysis."""
@@ -286,8 +270,9 @@ class ReadmeGenerator:
 
         df_explode = df.explode("result")
         stats = df_explode.group_by("result").agg(pl.count("id").alias("count"))
-        total_count = len(df_explode)
+        total_count = df_explode.height
         stats = stats.with_columns(((pl.col("count") / total_count * 100).round(2)).alias("%"))
+        stats = stats.sort("result")
         return stats
 
     def _get_data_overview(self) -> str:
@@ -314,65 +299,9 @@ class ReadmeGenerator:
                 logger.warning(f"Could not load stats for {product}: {e}")
 
         if data_stats:
-            import pandas as pd
-
-            return pd.DataFrame(data_stats).to_markdown(index=False)
+            df_stats = pl.DataFrame(data_stats)
+            return df_to_markdown(df_stats)
         return "No data available"
-
-    def _generate_predictions_section(self, df: pl.DataFrame) -> str:
-        """Generate predictions analysis section."""
-        if df.is_empty():
-            return "## 🔮 Prediction Models\n\n> No data available for predictions.\n"
-
-        try:
-            import pandas as pd
-
-            # Convert to pandas for the model (if it expects pandas)
-            df_pd = df.to_pandas()
-
-            ticket_per_days = 20
-            random_model = RandomModel(df_pd, ticket_per_days)
-            random_model.backtest()
-            random_model.evaluate()
-
-            # Coerce `correct_num` to integer safely before applying threshold
-            if "correct_num" in random_model.df_backtest_evaluate.columns:
-
-                def _to_int(v):
-                    try:
-                        return int(v)
-                    except Exception:
-                        try:
-                            return len(v)
-                        except Exception:
-                            return 0
-
-                s_correct = random_model.df_backtest_evaluate["correct_num"].apply(_to_int)
-                df_correct = random_model.df_backtest_evaluate[s_correct >= 5][["date", "result", "predicted"]]
-            else:
-                import pandas as _pd
-
-                df_correct = _pd.DataFrame()
-
-            cost_per_day = 10000 * ticket_per_days
-
-            return f"""## 🔮 Prediction Models
-
-> ⚠️ **Disclaimer**: These are experimental models for educational purposes only. Lottery outcomes are random and cannot be predicted reliably.
-
-### 🎲 Random Strategy Backtest
-
-- **Strategy**: Random number selection
-- **Tickets per day**: {ticket_per_days}
-- **Daily cost**: {cost_per_day:,} VND
-- **Results with 5+ matches**:
-
-{df_correct.to_markdown(index=False) if not df_correct.empty else "No significant matches found in backtest period."}
-
-"""
-        except Exception as e:
-            logger.error(f"Error generating predictions: {e}")
-            return "## 🔮 Prediction Models\n\n> Error generating prediction analysis.\n"
 
     def _generate_power655_analysis(self, df: pl.DataFrame) -> str:
         """Generate detailed Power 6/55 analysis section."""
@@ -396,40 +325,36 @@ class ReadmeGenerator:
 
             recent_results = df.head(10)
 
-            # Convert to pandas for markdown display
-            import pandas as pd
-
-            recent_results_pd = recent_results.to_pandas()
-            stats_all_pd = stats_all.to_pandas() if not stats_all.is_empty() else pd.DataFrame()
-            stats_30d_pd = stats_30d.to_pandas() if not stats_30d.is_empty() else pd.DataFrame()
-            stats_60d_pd = stats_60d.to_pandas() if not stats_60d.is_empty() else pd.DataFrame()
-            stats_90d_pd = stats_90d.to_pandas() if not stats_90d.is_empty() else pd.DataFrame()
+            # Convert to markdown
+            recent_results_md = df_to_markdown(recent_results)
+            stats_all_md = df_to_markdown(stats_all)
+            stats_30d_md = df_to_markdown(stats_30d)
+            stats_60d_md = df_to_markdown(stats_60d)
+            stats_90d_md = df_to_markdown(stats_90d)
 
             return f"""## 📈 Power 6/55 Analysis
 
 ### 📅 Recent Results (Last 10 draws)
-{recent_results_pd.to_markdown(index=False)}
+{recent_results_md}
 
 ### 🎲 Number Frequency (All Time)
-{stats_all_pd.to_markdown(index=False) if not stats_all_pd.empty else "No data available"}
+{stats_all_md}
 
 ### 📊 Frequency Analysis by Period
 
 #### Last 30 Days
-{stats_30d_pd.to_markdown(index=False) if not stats_30d_pd.empty else "No data available"}
+{stats_30d_md}
 
 #### Last 60 Days
-{stats_60d_pd.to_markdown(index=False) if not stats_60d_pd.empty else "No data available"}
+{stats_60d_md}
 
 #### Last 90 Days
-{stats_90d_pd.to_markdown(index=False) if not stats_90d_pd.empty else "No data available"}
+{stats_90d_md}
 
 """
         except Exception as e:
-            logger.exception(f"EError generating Power 6/55 analysis: {e}")
+            logger.exception(f"Error generating Power 6/55 analysis: {e}")
             return "## 📈 Power 6/55 Analysis\n\n> Error generating analysis.\n"
-
-    # Removed Power 5/35 Analysis section as requested.
 
     def generate_readme(self) -> str:
         """Generate the complete README content."""
@@ -442,7 +367,6 @@ class ReadmeGenerator:
         header = self.templates.get_header()
         toc = self.templates.get_toc()
         data_overview = self._get_data_overview()
-        predictions = self._generate_predictions_section(df_power655)
         power655_analysis = self._generate_power655_analysis(df_power655)
         how_it_works = self.templates.get_how_it_works()
         install_section = self.templates.get_install_section()
@@ -455,8 +379,6 @@ class ReadmeGenerator:
 ## 📊 Data Statistics
 
 {data_overview}
-
-{predictions}
 
 {power655_analysis}
 
