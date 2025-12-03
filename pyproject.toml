@@ -7,7 +7,7 @@ where = ["src"] # list of folders that contain the packages (["."] by default)
 
 [project]
 name = "vietlott-data"
-version = "0.2.0"
+version = "0.2.5"
 description = "crawl & store vietlott data"
 authors = [{ name = "Viet Vu", email = "vietvudanh@gmail.com" }]
 dependencies = [
@@ -22,7 +22,6 @@ dependencies = [
     "requests",
     "tabulate",
     "loguru",
-    "pandas",
 ]
 requires-python = ">=3.11,<3.14"
 readme = "README.md"
@@ -35,6 +34,7 @@ Issues = "https://github.com/vietvudanh/vietlott-data/issues"
 
 [project.optional-dependencies]
 dev = ["pytest", "ruff", "build", "setuptools", "wheel","twine"]
+ml = ["numpy", "scikit-learn", "matplotlib", "pandas"]
 
 [project.scripts]
 vietlott-crawl = "vietlott.cli.crawl:crawl"
