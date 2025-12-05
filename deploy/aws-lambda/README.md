@@ -61,30 +61,17 @@ The Lambda function replicates the functionality of `bin/github_data.sh`:
    chmod +x build_and_deploy.sh
    ```
 
-2. Create the Lambda execution role (if not exists):
-   ```bash
-   aws iam create-role \
-       --role-name lambda-execution-role \
-       --assume-role-policy-document '{
-           "Version": "2012-10-17",
-           "Statement": [{
-               "Effect": "Allow",
-               "Principal": {"Service": "lambda.amazonaws.com"},
-               "Action": "sts:AssumeRole"
-           }]
-       }'
-   
-   aws iam attach-role-policy \
-       --role-name lambda-execution-role \
-       --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-   ```
-
-3. Run the deployment:
+2. Run the deployment (the script will create the IAM role automatically if needed):
    ```bash
    ./build_and_deploy.sh --create
    ```
 
-4. Set environment variables:
+   Optionally, specify a custom IAM role name:
+   ```bash
+   AWS_LAMBDA_ROLE=my-custom-role ./build_and_deploy.sh --create
+   ```
+
+3. Set environment variables:
    ```bash
    aws lambda update-function-configuration \
        --function-name vietlott-data-crawler \

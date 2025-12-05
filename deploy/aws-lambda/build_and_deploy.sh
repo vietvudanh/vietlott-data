@@ -26,6 +26,7 @@ RUNTIME="python3.11"
 HANDLER="lambda_function.lambda_handler"
 TIMEOUT=900  # 15 minutes
 MEMORY_SIZE=1024  # 1GB
+IAM_ROLE_NAME="${AWS_LAMBDA_ROLE:-lambda-execution-role}"
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -93,6 +94,30 @@ zip -r9 "../lambda_layer.zip" .
 
 cd "$SCRIPT_DIR"
 
+# Check if IAM role exists, create if needed
+echo "Checking IAM role..."
+ROLE_EXISTS=$(aws iam get-role --role-name "$IAM_ROLE_NAME" 2>&1 || true)
+if [[ "$ROLE_EXISTS" == *"NoSuchEntity"* ]]; then
+    echo "Creating IAM role: $IAM_ROLE_NAME..."
+    aws iam create-role \
+        --role-name "$IAM_ROLE_NAME" \
+        --assume-role-policy-document '{
+            "Version": "2012-10-17",
+            "Statement": [{
+                "Effect": "Allow",
+                "Principal": {"Service": "lambda.amazonaws.com"},
+                "Action": "sts:AssumeRole"
+            }]
+        }'
+    
+    aws iam attach-role-policy \
+        --role-name "$IAM_ROLE_NAME" \
+        --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    
+    echo "IAM role created. Waiting for role to be available..."
+    sleep 10
+fi
+
 # Check if function exists
 FUNCTION_EXISTS=$(aws lambda get-function --function-name "$FUNCTION_NAME" --region "$REGION" 2>&1 || true)
 
@@ -116,7 +141,7 @@ if [[ "$FUNCTION_EXISTS" == *"ResourceNotFoundException"* ]] || [[ "$CREATE_FUNC
         --function-name "$FUNCTION_NAME" \
         --runtime "$RUNTIME" \
         --handler "$HANDLER" \
-        --role "arn:aws:iam::$(aws sts get-caller-identity --query Account --output text):role/lambda-execution-role" \
+        --role "arn:aws:iam::$(aws sts get-caller-identity --query Account --output text):role/$IAM_ROLE_NAME" \
         --zip-file "fileb://lambda_function.zip" \
         --timeout "$TIMEOUT" \
         --memory-size "$MEMORY_SIZE" \
