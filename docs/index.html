@@ -73,7 +73,7 @@
         <section class="section">
             <div class="card">
                 <h2 data-vi="📊 Giới thiệu Dự án" data-en="📊 About This Project">📊 Giới thiệu Dự án</h2>
-                <p><span data-vi="Dự án này tự động thu thập và phân tích dữ liệu xổ số Việt Nam từ" data-en="This project automatically crawls and analyzes Vietnamese lottery data from">Dự án này tự động thu thập và phân tích dữ liệu xổ số Việt Nam từ</span> <a href="https://vietlott.vn/" target="_blank">vietlott.vn</a><span data-vi=", cung cấp thống kê và phân tích toàn diện cho tất cả các sản phẩm xổ số chính." data-en=", providing comprehensive statistics and insights for all major lottery products.">, cung cấp thống kê và phân tích toàn diện cho tất cả các sản phẩm xổ số chính.</span></p>
+                <p data-vi="Dự án này tự động thu thập và phân tích dữ liệu xổ số Việt Nam từ vietlott.vn, cung cấp thống kê và phân tích toàn diện cho tất cả các sản phẩm xổ số chính." data-en="This project automatically crawls and analyzes Vietnamese lottery data from vietlott.vn, providing comprehensive statistics and insights for all major lottery products.">Dự án này tự động thu thập và phân tích dữ liệu xổ số Việt Nam từ <a href="https://vietlott.vn/" target="_blank">vietlott.vn</a>, cung cấp thống kê và phân tích toàn diện cho tất cả các sản phẩm xổ số chính.</p>
             </div>
         </section>
 
@@ -318,7 +318,7 @@
                 </a>
             </p>
             <p class="footer-text">
-                <span data-vi="Được cấp phép theo Giấy phép MIT |" data-en="Licensed under MIT License |">Được cấp phép theo Giấy phép MIT |</span>
+                <span data-vi="Được cấp phép theo Giấy phép MIT" data-en="Licensed under MIT License">Được cấp phép theo Giấy phép MIT</span> |
                 <a href="https://github.com/vietvudanh/vietlott-data/blob/main/LICENSE" target="_blank" data-vi="Xem Giấy phép" data-en="View License">Xem Giấy phép</a>
             </p>
         </footer>
@@ -346,12 +346,17 @@
             // Update all elements with data-vi and data-en attributes
             document.querySelectorAll('[data-vi][data-en]').forEach(element => {
                 const text = element.getAttribute('data-' + lang);
+                // Fallback to default language (vi) if translation is missing
+                const fallbackText = text || element.getAttribute('data-vi');
+                
+                if (!fallbackText) return; // Skip if no translation available
+                
                 if (element.tagName === 'TITLE') {
-                    element.textContent = text;
+                    element.textContent = fallbackText;
                 } else if (element.tagName === 'META') {
-                    element.setAttribute('content', text);
+                    element.setAttribute('content', fallbackText);
                 } else {
-                    element.textContent = text;
+                    element.textContent = fallbackText;
                 }
             });
             
