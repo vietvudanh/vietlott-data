@@ -39,7 +39,7 @@
     <link rel="stylesheet" href="styles.css">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎰</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎰</text></svg>">
 </head>
 <body>
     <div class="container">
@@ -73,7 +73,7 @@
         <section class="section">
             <div class="card">
                 <h2 data-vi="📊 Giới thiệu Dự án" data-en="📊 About This Project">📊 Giới thiệu Dự án</h2>
-                <p data-vi="Dự án này tự động thu thập và phân tích dữ liệu xổ số Việt Nam từ vietlott.vn, cung cấp thống kê và phân tích toàn diện cho tất cả các sản phẩm xổ số chính." data-en="This project automatically crawls and analyzes Vietnamese lottery data from vietlott.vn, providing comprehensive statistics and insights for all major lottery products.">Dự án này tự động thu thập và phân tích dữ liệu xổ số Việt Nam từ <a href="https://vietlott.vn/" target="_blank">vietlott.vn</a>, cung cấp thống kê và phân tích toàn diện cho tất cả các sản phẩm xổ số chính.</p>
+                <p><span data-vi="Dự án này tự động thu thập và phân tích dữ liệu xổ số Việt Nam từ" data-en="This project automatically crawls and analyzes Vietnamese lottery data from">Dự án này tự động thu thập và phân tích dữ liệu xổ số Việt Nam từ</span> <a href="https://vietlott.vn/" target="_blank">vietlott.vn</a><span data-vi=", cung cấp thống kê và phân tích toàn diện cho tất cả các sản phẩm xổ số chính." data-en=", providing comprehensive statistics and insights for all major lottery products.">, cung cấp thống kê và phân tích toàn diện cho tất cả các sản phẩm xổ số chính.</span></p>
             </div>
         </section>
 
@@ -281,7 +281,7 @@
                 <div class="code-block">
                     <code>pip install -i https://test.pypi.org/simple/ vietlott-data</code>
                 </div>
-                <p style="margin-top: 0.5rem; font-size: 0.9rem;"><em data-vi="Kiểm tra phiên bản mới nhất tại" data-en="Check releases for the latest version">Kiểm tra <a href="https://github.com/vietvudanh/vietlott-data/releases" target="_blank">releases</a> để biết phiên bản mới nhất</em></p>
+                <p style="margin-top: 0.5rem; font-size: 0.9rem;"><em><span data-vi="Kiểm tra" data-en="Check">Kiểm tra</span> <a href="https://github.com/vietvudanh/vietlott-data/releases" target="_blank">releases</a> <span data-vi="để biết phiên bản mới nhất" data-en="for the latest version">để biết phiên bản mới nhất</span></em></p>
 
                 <h3 data-vi="💻 Giao diện Dòng lệnh" data-en="💻 Command Line Interface">💻 Giao diện Dòng lệnh</h3>
                 <div class="cli-examples">
@@ -346,12 +346,10 @@
             // Update all elements with data-vi and data-en attributes
             document.querySelectorAll('[data-vi][data-en]').forEach(element => {
                 const text = element.getAttribute('data-' + lang);
-                if (element.tagName === 'TITLE' || element.tagName === 'META') {
-                    if (element.hasAttribute('content')) {
-                        element.setAttribute('content', text);
-                    } else {
-                        element.textContent = text;
-                    }
+                if (element.tagName === 'TITLE') {
+                    element.textContent = text;
+                } else if (element.tagName === 'META') {
+                    element.setAttribute('content', text);
                 } else {
                     element.textContent = text;
                 }

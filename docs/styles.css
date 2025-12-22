@@ -74,7 +74,6 @@ body {
     font-size: 0.95rem;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
-    text-transform: uppercase;
 }
 
 .lang-btn:hover {
