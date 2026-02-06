@@ -39,6 +39,8 @@ ml = ["numpy", "scikit-learn", "matplotlib", "pandas"]
 [project.scripts]
 vietlott-crawl = "vietlott.cli.crawl:crawl"
 vietlott-missing = "vietlott.cli.missing:detect_missing_data"
+vietlott-render-readme = "render_readme:main"
+vietlott-render-docs = "render_docs:main"
 
 [tool.ruff]
 line-length = 120

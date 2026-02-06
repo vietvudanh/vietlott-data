@@ -2,6 +2,18 @@
 
 This repository includes a GitHub Pages site with neobrutalism design that displays lottery data statistics.
 
+## Keeping Data Up to Date
+
+The data statistics displayed on the GitHub Pages site are automatically synchronized with the data in the `data/` folder using the `render_docs.py` script:
+
+```bash
+python src/render_docs.py
+# or using the CLI command:
+vietlott-render-docs
+```
+
+This script should be run after updating the data to ensure the GitHub Pages site displays current information.
+
 ## Enabling GitHub Pages
 
 To enable GitHub Pages for this repository, follow these steps:
