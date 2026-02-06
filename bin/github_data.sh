@@ -35,6 +35,7 @@ python src/vietlott/cli/crawl.py bingo18
 python src/vietlott/cli/missing.py bingo18
 
 python src/render_readme.py
+python src/render_docs.py
 
 #if [[ ! -d "$FOLDER" ]] ; then
 #  git clone $URL $FOLDER
@@ -52,5 +53,6 @@ git config user.email "\'$EMAIl\'"
 git status
 git add $DATA_FOLDER
 git add readme.md
+git add docs/index.html
 git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`"
 git push github main
