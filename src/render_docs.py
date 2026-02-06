@@ -6,6 +6,7 @@ This script updates the docs/index.html file with current data statistics
 from the data folder, keeping the HTML structure and styling intact.
 """
 
+import re
 from pathlib import Path
 
 import polars as pl
@@ -128,8 +129,6 @@ class DocsRenderer:
 
             # Find and replace the tbody content
             # Look for <tbody> ... </tbody> pattern
-            import re
-
             pattern = r"(<tbody>).*?(</tbody>)"
             replacement = f"\\1\n{new_rows}\n                            \\2"
 
