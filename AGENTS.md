@@ -47,14 +47,24 @@ vietlott-crawl <PRODUCT_NAME>
 ```
 Example: `vietlott-crawl keno`
 
-### Generating README (project frontpage)
-This repository includes a script that generates an updated `readme.md` for the project's frontpage. The `uv` task alias used in the docs may not be defined in all environments — run the script directly with Python:
+### Generating README and Docs (project frontpage and GitHub Pages)
+This repository includes scripts that generate updated documentation with current data:
 
+1. **Generate README** (project frontpage):
 ```bash
 python src/render_readme.py
+# or using the CLI command:
+vietlott-render-readme
 ```
 
-If you prefer a shortcut you can add a script entry to `pyproject.toml` under `[project.scripts]` or create a `uv` task. The recommended script name is `vietlott-render-readme`.
+2. **Generate docs/index.html** (GitHub Pages):
+```bash
+python src/render_docs.py
+# or using the CLI command:
+vietlott-render-docs
+```
+
+Both scripts read data from the `data/` folder and update their respective files with current statistics. This ensures the documentation stays synchronized with the actual data.
 
 ### Running Tests
 ```bash
