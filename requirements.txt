@@ -32,7 +32,7 @@ pendulum==3.1.0
     # via vietlott-data (pyproject.toml)
 python-dateutil==2.9.0.post0
     # via pendulum
-requests==2.32.5
+requests==2.32.4
     # via vietlott-data (pyproject.toml)
 six==1.17.0
     # via python-dateutil
