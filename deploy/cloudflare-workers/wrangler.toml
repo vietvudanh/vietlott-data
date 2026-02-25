@@ -1,0 +1,38 @@
+name = "vietlott-crawler-trigger"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Account ID (uncomment and set when deploying)
+# account_id = "your-account-id"
+
+# Environment variables (set via `wrangler secret put`)
+# GITHUB_TOKEN - GitHub personal access token
+# TRIGGER_SECRET - Secret for GET request authentication
+
+[vars]
+GITHUB_REPO = "vietvudanh/vietlott-data"
+GITHUB_WORKFLOW = "crawl.yaml"
+
+# Scheduled triggers (Cron Triggers)
+# Runs daily at 00:00 UTC (7:00 AM Vietnam time)
+[triggers]
+crons = ["0 0 * * *"]
+
+# Development environment
+[env.dev]
+name = "vietlott-crawler-trigger-dev"
+
+[env.dev.vars]
+GITHUB_REPO = "vietvudanh/vietlott-data"
+GITHUB_WORKFLOW = "crawl.yaml"
+
+# Production environment
+[env.production]
+name = "vietlott-crawler-trigger"
+
+[env.production.vars]
+GITHUB_REPO = "vietvudanh/vietlott-data"
+GITHUB_WORKFLOW = "crawl.yaml"
+
+[env.production.triggers]
+crons = ["0 0 * * *"]

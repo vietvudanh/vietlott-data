@@ -1,0 +1,86 @@
+---
+name: crawl
+
+"on":
+  schedule:
+    # Run daily at 00:00 UTC (7:00 AM Vietnam time)
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      triggered_by:
+        description: 'Source of the trigger'
+        required: false
+        default: 'manual'
+      timestamp:
+        description: 'Timestamp of the trigger'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -e .
+
+      - name: Run crawler
+        env:
+          PYTHONPATH: src
+          LOGURU_LEVEL: INFO
+        run: |
+          echo "Triggered by: ${{ github.event.inputs.triggered_by }}"
+          echo "Timestamp: ${{ github.event.inputs.timestamp }}"
+
+          # Crawl all products
+          python src/vietlott/cli/crawl.py keno
+          python src/vietlott/cli/missing.py keno
+
+          python src/vietlott/cli/crawl.py power_655
+          python src/vietlott/cli/missing.py power_655
+
+          python src/vietlott/cli/crawl.py power_645
+          python src/vietlott/cli/missing.py power_645
+
+          python src/vietlott/cli/crawl.py power_535
+          python src/vietlott/cli/missing.py power_535
+
+          python src/vietlott/cli/crawl.py 3d
+          python src/vietlott/cli/missing.py 3d
+
+          python src/vietlott/cli/crawl.py 3d_pro
+          python src/vietlott/cli/missing.py 3d_pro
+
+          python src/vietlott/cli/crawl.py bingo18
+          python src/vietlott/cli/missing.py bingo18
+
+      - name: Render README
+        env:
+          PYTHONPATH: src
+        run: python src/render_readme.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add data/
+          git add readme.md
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "update data @ $(date +%Y-%m-%d\ %H:%M:%S)"
+            git push
+          fi
