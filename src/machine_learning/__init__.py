@@ -11,6 +11,7 @@ Install with: pip install vietlott-data[ml]
 from .backtest import BacktestResult, ParameterTuner, StrategyBacktester, StrategyComparator
 from .base import PredictModel
 from .frequency import ColdNumbersStrategy, FrequencyStrategy, HotNumbersStrategy
+from .long_absence import LongAbsenceStrategy
 from .not_repeat import NotRepeatStrategy
 from .pattern import PatternStrategy
 from .random_strategy import RandomModel
@@ -25,6 +26,7 @@ __all__ = [
     "HotNumbersStrategy",
     "ColdNumbersStrategy",
     "PatternStrategy",
+    "LongAbsenceStrategy",
     # Backtesting and tuning
     "StrategyBacktester",
     "ParameterTuner",

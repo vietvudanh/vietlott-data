@@ -14,6 +14,7 @@ try:
     from machine_learning.backtest import BacktestResult, ParameterTuner, StrategyBacktester, StrategyComparator
     from machine_learning.base import PredictModel
     from machine_learning.frequency import ColdNumbersStrategy, FrequencyStrategy, HotNumbersStrategy
+    from machine_learning.long_absence import LongAbsenceStrategy
     from machine_learning.not_repeat import NotRepeatStrategy
     from machine_learning.pattern import PatternStrategy
     from machine_learning.random_strategy import RandomModel
@@ -28,6 +29,7 @@ try:
         "HotNumbersStrategy",
         "ColdNumbersStrategy",
         "PatternStrategy",
+        "LongAbsenceStrategy",
         # Backtesting and tuning
         "StrategyBacktester",
         "ParameterTuner",
