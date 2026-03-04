@@ -152,9 +152,9 @@ class BaseProduct:
 
             df_final = df_final.with_columns(
                 pl.col("date").map_elements(
-                    lambda x: datetime.fromisoformat(x).date()
-                    if "-" in x
-                    else datetime.fromtimestamp(int(x) / 1000).date(),
+                    lambda x: (
+                        datetime.fromisoformat(x).date() if "-" in x else datetime.fromtimestamp(int(x) / 1000).date()
+                    ),
                     return_dtype=pl.Date,
                 )
             )

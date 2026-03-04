@@ -14,6 +14,20 @@ from loguru import logger
 
 from vietlott.config.products import get_config
 
+BLOG_POST_URL = "https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the"
+BLOG_POST_BADGE = f"""
+                    <a
+                        href="{BLOG_POST_URL}"
+                        class="badge"
+                        target="_blank"
+                    >
+                        <span
+                            data-vi="📝 Bài viết Blog"
+                            data-en="📝 Blog Post"
+                            >📝 Bài viết Blog</span
+                        >
+                    </a>"""
+
 
 class DocsRenderer:
     """Main class for updating the docs/index.html file with current data."""
@@ -101,10 +115,10 @@ class DocsRenderer:
             name = product_name_map.get(stat["name"], stat["name"])
             row = f"""                                <tr>
                                     <td><strong>{name}</strong></td>
-                                    <td>{self._format_number(stat['total_draws'])}</td>
-                                    <td>{stat['start_date']}</td>
-                                    <td>{stat['end_date']}</td>
-                                    <td>{self._format_number(stat['total_records'])}</td>
+                                    <td>{self._format_number(stat["total_draws"])}</td>
+                                    <td>{stat["start_date"]}</td>
+                                    <td>{stat["end_date"]}</td>
+                                    <td>{self._format_number(stat["total_records"])}</td>
                                 </tr>"""
             rows.append(row)
 
@@ -133,6 +147,16 @@ class DocsRenderer:
             replacement = f"\\1\n{new_rows}\n                            \\2"
 
             updated_html = re.sub(pattern, replacement, html_content, flags=re.DOTALL)
+
+            # Ensure blog post badge is present in the badges section
+            if BLOG_POST_URL not in updated_html:
+                badges_pattern = r'(<div class="badges">.*?)(</div>)'
+                updated_html = re.sub(
+                    badges_pattern,
+                    f"\\1{BLOG_POST_BADGE}\n                \\2",
+                    updated_html,
+                    flags=re.DOTALL,
+                )
 
             # Save the updated HTML
             with html_path.open("w", encoding="utf-8") as f:
