@@ -1,10 +1,11 @@
 import random
+from collections import Counter
 from datetime import date, timedelta
 from typing import Dict, List
 
 import pandas as pd
 
-from vietlott.model.strategy.base import PredictModel
+from machine_learning.strategies.base import PredictModel
 
 
 class FrequencyStrategy(PredictModel):
@@ -39,6 +40,7 @@ class FrequencyStrategy(PredictModel):
         self.lookback_days = lookback_days
         self.strategy_type = strategy_type
         self.selection_weight = selection_weight
+        self._frequency_cache: Dict[date, Dict[int, int]] = {}
         self._prepare_historical_data()
 
     def _prepare_historical_data(self):
@@ -49,32 +51,21 @@ class FrequencyStrategy(PredictModel):
         """
         Get frequency count for each number in the lookback period.
 
-        Args:
-            target_date: The date for which we're making predictions
-
-        Returns:
-            Dictionary mapping number to frequency count
+        Results are cached per target_date to avoid redundant computation
+        when ``time_predict > 1``.
         """
+        if target_date in self._frequency_cache:
+            return self._frequency_cache[target_date]
+
         start_date = target_date - timedelta(days=self.lookback_days)
-
-        # Filter data for the lookback period
         mask = (self.df_sorted["date"] >= start_date) & (self.df_sorted["date"] < target_date)
-        relevant_data = self.df_sorted[mask]
+        results_list: List[List[int]] = self.df_sorted.loc[mask, "result"].tolist()
 
-        # Count frequency of each number
-        frequency_counts = {}
-        all_numbers = list(range(self.min_val, self.max_val + 1))
+        # Flatten all numbers and count with Counter — replaces iterrows loop.
+        freq = Counter(n for nums in results_list for n in nums)
+        frequency_counts = {n: freq.get(n, 0) for n in range(self.min_val, self.max_val + 1)}
 
-        # Initialize all numbers with 0 count
-        for num in all_numbers:
-            frequency_counts[num] = 0
-
-        # Count actual frequencies
-        for _, row in relevant_data.iterrows():
-            for num in row["result"]:
-                if num in frequency_counts:
-                    frequency_counts[num] += 1
-
+        self._frequency_cache[target_date] = frequency_counts
         return frequency_counts
 
     def _create_weighted_selection_pool(self, frequency_data: Dict[int, int]) -> List[int]:

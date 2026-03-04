@@ -28,6 +28,8 @@ BLOG_POST_BADGE = f"""
                         >
                     </a>"""
 
+ML_README_URL = "https://github.com/vietvudanh/vietlott-data/blob/main/src/machine_learning/readme.md"
+
 
 class DocsRenderer:
     """Main class for updating the docs/index.html file with current data."""
@@ -259,6 +261,32 @@ class DocsRenderer:
                     updated_html,
                     flags=re.DOTALL,
                 )
+
+            ml_section = f"""<!-- BEGIN_MACHINE_LEARNING_SECTION -->
+            <section class="section">
+                <h2
+                    class="section-title"
+                    data-vi="🔮 Phân tích Machine Learning"
+                    data-en="🔮 Machine Learning Predictions"
+                >
+                    🔮 Phân tích Machine Learning
+                </h2>
+                <div class="card">
+                    <p
+                        data-vi="Các dự đoán máy học chi tiết nằm trong README Machine Learning."
+                        data-en="Detailed machine learning predictions live in the Machine Learning README."
+                    >
+                        Các dự đoán máy học chi tiết nằm trong
+                        <a href="{ML_README_URL}" target="_blank" rel="noreferrer"
+                            >README Machine Learning</a
+                        >.
+                    </p>
+                </div>
+            </section>
+            <!-- END_MACHINE_LEARNING_SECTION -->"""
+            ml_pattern = r"<!-- BEGIN_MACHINE_LEARNING_SECTION -->.*?<!-- END_MACHINE_LEARNING_SECTION -->"
+            if re.search(ml_pattern, updated_html, flags=re.DOTALL):
+                updated_html = re.sub(ml_pattern, ml_section, updated_html, flags=re.DOTALL)
 
             # Save the updated HTML
             with html_path.open("w", encoding="utf-8") as f:

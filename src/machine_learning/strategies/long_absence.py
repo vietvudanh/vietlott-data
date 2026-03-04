@@ -4,7 +4,7 @@ from typing import List
 
 import pandas as pd
 
-from machine_learning.base import PredictModel
+from machine_learning.strategies.base import PredictModel
 
 
 class LongAbsenceStrategy(PredictModel):
@@ -39,6 +39,7 @@ class LongAbsenceStrategy(PredictModel):
         """
         super().__init__(df, time_predict, min_val, max_val)
         self.top_n = top_n
+        self._absence_cache: dict = {}
         self._prepare_historical_data()
 
     def _prepare_historical_data(self):
@@ -49,15 +50,11 @@ class LongAbsenceStrategy(PredictModel):
         """
         Return numbers sorted by days-since-last-appearance (most absent first).
 
-        Only draws strictly before *target_date* are considered so that there is
-        no look-ahead bias.
-
-        Args:
-            target_date: The date for which we are making predictions.
-
-        Returns:
-            List of all numbers sorted descending by days absent.
+        Results are cached per target_date.
         """
+        if target_date in self._absence_cache:
+            return self._absence_cache[target_date]
+
         past_data = self.df_sorted[self.df_sorted["date"] < target_date]
 
         # Build mapping: number -> most recent date it appeared (vectorised)
@@ -70,11 +67,13 @@ class LongAbsenceStrategy(PredictModel):
 
         def _days_absent(n: int) -> float:
             if n not in last_seen:
-                return float("inf")  # never appeared → treat as most absent
+                return float("inf")
             delta = target_date - last_seen[n]
             return delta.days
 
-        return sorted(all_numbers, key=_days_absent, reverse=True)
+        result = sorted(all_numbers, key=_days_absent, reverse=True)
+        self._absence_cache[target_date] = result
+        return result
 
     def predict(self, target_date: date) -> List[int]:
         """
