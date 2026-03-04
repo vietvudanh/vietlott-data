@@ -413,9 +413,9 @@ class ReadmeGenerator:
 
 ## Predictions
 
-Predicitons models are at [/src/predictions](./src/machine_learning/prediction_summary.md).
+Predicitons models are at [/src/predictions](./src/machine_learning/).
 
-For background on these models, see the [Machine Learning README](./src/machine_learning/readme.md).
+For background on these models, see the [Machine Learning README](./src/machine_learning/).
 
 ## 📊 Data Statistics
 

@@ -28,7 +28,7 @@ BLOG_POST_BADGE = f"""
                         >
                     </a>"""
 
-ML_README_URL = "https://github.com/vietvudanh/vietlott-data/blob/main/src/machine_learning/readme.md"
+ML_README_URL = "https://github.com/vietvudanh/vietlott-data/blob/main/src/machine_learning"
 
 
 class DocsRenderer:
