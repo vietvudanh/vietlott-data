@@ -4,7 +4,7 @@ from typing import List
 
 import pandas as pd
 
-from vietlott.model.strategy.base import PredictModel
+from machine_learning.strategies.base import PredictModel
 
 
 class NotRepeatStrategy(PredictModel):
@@ -36,26 +36,24 @@ class NotRepeatStrategy(PredictModel):
         super().__init__(df, time_predict, min_val, max_val)
         self.lookback_days = lookback_days
         self.avoid_weight = avoid_weight
+        self._recent_cache: dict = {}
         self._prepare_historical_data()
 
     def _prepare_historical_data(self):
         """Prepare historical data for quick lookups."""
-        self.df_sorted = self.df.sort_values("date")
-        # Create a dictionary for fast date-based lookups
-        self.date_to_results = {}
-        for _, row in self.df_sorted.iterrows():
-            self.date_to_results[row["date"]] = row["result"]
+        self.df_sorted = self.df.sort_values("date").reset_index(drop=True)
+        # Build date→results mapping without iterrows.
+        self.date_to_results = dict(zip(self.df_sorted["date"], self.df_sorted["result"]))
 
     def _get_recent_numbers(self, target_date: date) -> set:
         """
         Get numbers that appeared in recent draws before the target date.
 
-        Args:
-            target_date: The date for which we're making predictions
-
-        Returns:
-            Set of recently drawn numbers
+        Results are cached per target_date.
         """
+        if target_date in self._recent_cache:
+            return self._recent_cache[target_date]
+
         recent_numbers = set()
         start_date = target_date - timedelta(days=self.lookback_days)
 
@@ -63,6 +61,7 @@ class NotRepeatStrategy(PredictModel):
             if start_date <= draw_date < target_date:
                 recent_numbers.update(results)
 
+        self._recent_cache[target_date] = recent_numbers
         return recent_numbers
 
     def predict(self, target_date: date) -> List[int]:

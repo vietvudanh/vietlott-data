@@ -1,4 +1,4 @@
-from vietlott.model.strategy.base import PredictModel
+from machine_learning.strategies.base import PredictModel
 
 
 class RandomModel(PredictModel):

@@ -38,6 +38,8 @@
   - [📅 Recent Results](#-recent-results)
   - [🎲 Number Frequency (All Time)](#-number-frequency-all-time)
   - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period)
+  - [⏳ Top 10 Numbers by Days Since Last Appearance](#-top-10-số-lâu-chưa-xuất-hiện-top-10-numbers-by-days-since-last-appearance)
+  - [📆 Days Since Last Appearance - All Numbers](#-số-ngày-từ-lần-xuất-hiện-cuối-cùng-days-since-last-appearance---all-numbers)
 - [⚙️ How It Works](#️-how-it-works)
 - [🚀 Installation & Usage](#-installation--usage)
 - [📄 License](#-license)
@@ -45,7 +47,9 @@
 
 ## Predictions
 
-Predicitons models are at [/src/predictions](./src/machine_learning/prediction_summary.md)
+Predicitons models are at [/src/predictions](./src/machine_learning/prediction_summary.md).
+
+For background on these models, see the [Machine Learning README](./src/machine_learning/readme.md).
 
 ## 📊 Data Statistics
 
@@ -172,6 +176,79 @@ Predicitons models are at [/src/predictions](./src/machine_learning/prediction_s
 | 18 | 4 | 1.5 |  | 38 | 7 | 2.63 |  |  |  |  |
 | 19 | 1 | 0.38 |  | 39 | 4 | 1.5 |  |  |  |  |
 | 20 | 6 | 2.26 |  | 40 | 3 | 1.13 |  |  |  |  |
+
+### ⏳ Top 10 số lâu chưa xuất hiện (Top 10 Numbers by Days Since Last Appearance)
+| result | last_date | days_since |
+| --- | --- | --- |
+| 6 | 2025-12-25 | 68 |
+| 40 | 2025-12-27 | 66 |
+| 47 | 2026-01-08 | 54 |
+| 33 | 2026-01-10 | 52 |
+| 38 | 2026-01-10 | 52 |
+| 52 | 2026-01-13 | 49 |
+| 23 | 2026-01-17 | 45 |
+| 37 | 2026-01-20 | 42 |
+| 24 | 2026-01-24 | 38 |
+| 35 | 2026-01-24 | 38 |
+
+### 📆 Số ngày từ lần xuất hiện cuối cùng (Days Since Last Appearance - All Numbers)
+| result | last_date | days_since |
+| --- | --- | --- |
+| 1 | 2026-02-26 | 5 |
+| 2 | 2026-02-14 | 17 |
+| 3 | 2026-02-07 | 24 |
+| 4 | 2026-01-31 | 31 |
+| 5 | 2026-02-24 | 7 |
+| 6 | 2025-12-25 | 68 |
+| 7 | 2026-03-03 | 0 |
+| 8 | 2026-02-24 | 7 |
+| 9 | 2026-02-05 | 26 |
+| 10 | 2026-02-26 | 5 |
+| 11 | 2026-01-31 | 31 |
+| 12 | 2026-02-21 | 10 |
+| 13 | 2026-03-03 | 0 |
+| 14 | 2026-01-31 | 31 |
+| 15 | 2026-02-07 | 24 |
+| 16 | 2026-02-05 | 26 |
+| 17 | 2026-02-12 | 19 |
+| 18 | 2026-02-24 | 7 |
+| 19 | 2026-02-12 | 19 |
+| 20 | 2026-02-10 | 21 |
+| 21 | 2026-02-26 | 5 |
+| 22 | 2026-02-28 | 3 |
+| 23 | 2026-01-17 | 45 |
+| 24 | 2026-01-24 | 38 |
+| 25 | 2026-03-03 | 0 |
+| 26 | 2026-02-21 | 10 |
+| 27 | 2026-03-03 | 0 |
+| 28 | 2026-01-29 | 33 |
+| 29 | 2026-03-03 | 0 |
+| 30 | 2026-02-24 | 7 |
+| 31 | 2026-02-28 | 3 |
+| 32 | 2026-02-14 | 17 |
+| 33 | 2026-01-10 | 52 |
+| 34 | 2026-01-29 | 33 |
+| 35 | 2026-01-24 | 38 |
+| 36 | 2026-02-28 | 3 |
+| 37 | 2026-01-20 | 42 |
+| 38 | 2026-01-10 | 52 |
+| 39 | 2026-02-24 | 7 |
+| 40 | 2025-12-27 | 66 |
+| 41 | 2026-02-21 | 10 |
+| 42 | 2026-02-14 | 17 |
+| 43 | 2026-03-03 | 0 |
+| 44 | 2026-02-28 | 3 |
+| 45 | 2026-02-21 | 10 |
+| 46 | 2026-02-26 | 5 |
+| 47 | 2026-01-08 | 54 |
+| 48 | 2026-02-19 | 12 |
+| 49 | 2026-01-31 | 31 |
+| 50 | 2026-03-03 | 0 |
+| 51 | 2026-02-28 | 3 |
+| 52 | 2026-01-13 | 49 |
+| 53 | 2026-02-03 | 28 |
+| 54 | 2026-02-28 | 3 |
+| 55 | 2026-02-10 | 21 |
 
 
 

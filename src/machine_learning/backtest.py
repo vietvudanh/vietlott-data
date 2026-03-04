@@ -17,7 +17,7 @@ except ImportError:
     HAS_MATPLOTLIB = False
     logger.warning("Matplotlib not available. Visualization features will be disabled.")
 
-from machine_learning.base import PredictModel
+from machine_learning.strategies.base import PredictModel
 
 
 @dataclass
