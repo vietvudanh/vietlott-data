@@ -34,6 +34,11 @@ class ReadmeTemplates:
 >
 > This project automatically crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing comprehensive statistics and insights for all major lottery products.
 
+## 🔗 Links
+
+- 🌐 [Website](https://vietvudanh.github.io/vietlott-data/) - Interactive data visualization
+- 📝 [Blog Post](https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the) - About this project
+
 ## 🎯 Supported Lottery Products
 
 | Product | Link | Description |
@@ -52,6 +57,7 @@ class ReadmeTemplates:
         """Get table of contents."""
         return """## 📋 Table of Contents
 
+- [🔗 Links](#-links)
 - [🎯 Supported Lottery Products](#-supported-lottery-products)
 - [Predictions](#-predictions)
 - [📊 Data Statistics](#-data-statistics)
