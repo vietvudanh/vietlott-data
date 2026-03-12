@@ -34,6 +34,11 @@ class ReadmeTemplates:
 >
 > This project automatically crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing comprehensive statistics and insights for all major lottery products.
 
+## 🔗 Links
+
+- 🌐 [Website](https://vietvudanh.github.io/vietlott-data/) - Interactive data visualization
+- 📝 [Blog Post](https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the) - About this project
+
 ## 🎯 Supported Lottery Products
 
 | Product | Link | Description |
@@ -52,6 +57,7 @@ class ReadmeTemplates:
         """Get table of contents."""
         return """## 📋 Table of Contents
 
+- [🔗 Links](#-links)
 - [🎯 Supported Lottery Products](#-supported-lottery-products)
 - [Predictions](#-predictions)
 - [📊 Data Statistics](#-data-statistics)
@@ -59,6 +65,8 @@ class ReadmeTemplates:
   - [📅 Recent Results](#-recent-results)
   - [🎲 Number Frequency (All Time)](#-number-frequency-all-time)
   - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period)
+  - [⏳ Top 10 Numbers by Days Since Last Appearance](#-top-10-số-lâu-chưa-xuất-hiện-top-10-numbers-by-days-since-last-appearance)
+  - [📆 Days Since Last Appearance - All Numbers](#-số-ngày-từ-lần-xuất-hiện-cuối-cùng-days-since-last-appearance---all-numbers)
 - [⚙️ How It Works](#️-how-it-works)
 - [🚀 Installation & Usage](#-installation--usage)
 - [📄 License](#-license)
@@ -276,6 +284,20 @@ class ReadmeGenerator:
         stats = stats.sort("result")
         return stats
 
+    def _calculate_days_since_last_appearance(self, df: pl.DataFrame) -> pl.DataFrame:
+        """Calculate days since last appearance for each number."""
+        if df.is_empty():
+            return pl.DataFrame()
+
+        latest_date = df["date"].max()
+        df_explode = df.explode("result")
+        last_appearance = df_explode.group_by("result").agg(pl.col("date").max().alias("last_date"))
+        last_appearance = last_appearance.with_columns(
+            (pl.lit(latest_date) - pl.col("last_date")).dt.total_days().alias("days_since")
+        )
+        last_appearance = last_appearance.sort("days_since", descending=True)
+        return last_appearance
+
     def _get_data_overview(self) -> str:
         """Generate overview statistics for all products."""
         products = ["power_655", "power_645", "power_535", "keno", "3d", "3d_pro", "bingo18"]
@@ -326,12 +348,18 @@ class ReadmeGenerator:
 
             recent_results = df.head(10)
 
+            # Days since last appearance
+            days_since_all = self._calculate_days_since_last_appearance(df)
+            top10_days_since = days_since_all.head(10)
+
             # Convert to markdown
             recent_results_md = df_to_markdown(recent_results)
             stats_all_md = df_to_markdown(stats_all)
             stats_30d_md = df_to_markdown(stats_30d)
             stats_60d_md = df_to_markdown(stats_60d)
             stats_90d_md = df_to_markdown(stats_90d)
+            top10_days_since_md = df_to_markdown(top10_days_since)
+            days_since_all_md = df_to_markdown(days_since_all.sort("result"))
 
             return f"""## 📈 Power 6/55 Analysis
 
@@ -351,6 +379,12 @@ class ReadmeGenerator:
 
 #### Last 90 Days
 {stats_90d_md}
+
+### ⏳ Top 10 số lâu chưa xuất hiện (Top 10 Numbers by Days Since Last Appearance)
+{top10_days_since_md}
+
+### 📆 Số ngày từ lần xuất hiện cuối cùng (Days Since Last Appearance - All Numbers)
+{days_since_all_md}
 
 """
         except Exception as e:
@@ -379,7 +413,9 @@ class ReadmeGenerator:
 
 ## Predictions
 
-Predicitons models are at [/src/predictions](./src/machine_learning/prediction_summary.md)
+Predicitons models are at [/src/predictions](./src/machine_learning/).
+
+For background on these models, see the [Machine Learning README](./src/machine_learning/).
 
 ## 📊 Data Statistics
 
