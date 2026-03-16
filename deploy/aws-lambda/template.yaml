@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Vietlott Data Crawler Lambda Function
+  Crawls Vietnamese lottery data and commits to GitHub repository
+
+Globals:
+  Function:
+    Timeout: 900
+    MemorySize: 1024
+    Runtime: python3.11
+
+Parameters:
+  GithubToken:
+    Type: String
+    NoEcho: true
+    Description: GitHub Personal Access Token with repo write permissions
+  GithubRepo:
+    Type: String
+    Default: vietvudanh/vietlott-data
+    Description: GitHub repository in format 'owner/repo'
+  GitUserName:
+    Type: String
+    Default: Lambda Bot
+    Description: Git commit author name
+  GitUserEmail:
+    Type: String
+    Default: lambda@example.com
+    Description: Git commit author email
+  ScheduleExpression:
+    Type: String
+    Default: rate(1 day)
+    Description: CloudWatch Events schedule expression for triggering the crawler
+
+Resources:
+  VietlottCrawlerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: vietlott-data-crawler
+      CodeUri: .
+      Handler: lambda_function.lambda_handler
+      Description: Crawls Vietlott lottery data and pushes to GitHub
+      Environment:
+        Variables:
+          GITHUB_TOKEN: !Ref GithubToken
+          GITHUB_REPO: !Ref GithubRepo
+          GIT_USER_NAME: !Ref GitUserName
+          GIT_USER_EMAIL: !Ref GitUserEmail
+          PYTHONPATH: /opt/python:/var/task/src
+          LOGURU_LEVEL: INFO
+      Layers:
+        - !Ref VietlottDepsLayer
+      Events:
+        ScheduledCrawl:
+          Type: Schedule
+          Properties:
+            Schedule: !Ref ScheduleExpression
+            Description: Daily trigger for Vietlott data crawl
+            Enabled: true
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: '*'
+
+  VietlottDepsLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: vietlott-deps
+      Description: Python dependencies for Vietlott data crawler
+      ContentUri: layer/
+      CompatibleRuntimes:
+        - python3.11
+      RetentionPolicy: Delete
+
+  CrawlerLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${VietlottCrawlerFunction}
+      RetentionInDays: 14
+
+Outputs:
+  VietlottCrawlerFunctionArn:
+    Description: ARN of the Vietlott crawler Lambda function
+    Value: !GetAtt VietlottCrawlerFunction.Arn
+  VietlottCrawlerFunctionName:
+    Description: Name of the Vietlott crawler Lambda function
+    Value: !Ref VietlottCrawlerFunction
