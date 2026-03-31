@@ -33,7 +33,7 @@ Issues = "https://github.com/vietvudanh/vietlott-data/issues"
 
 
 [project.optional-dependencies]
-dev = ["pytest", "ruff", "build", "setuptools", "wheel","twine"]
+dev = ["pytest", "ruff", "build", "setuptools", "wheel", "twine", "pre-commit"]
 ml = ["numpy", "scikit-learn", "matplotlib", "pandas"]
 
 [project.scripts]

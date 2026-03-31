@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # commit to csv_data
 
+set -euo pipefail
+
 URL=https://github.com/vietvudanh/vietlott-data.git
 FOLDER=vietlott-data
 DATA_FOLDER=data
@@ -13,26 +15,18 @@ if [ -n "$VENV" ]; then
   source "$VENV/bin/activate"
 fi
 
+git pull --rebase --autostash origin main
+
 # generate data file
 echo "pwd $(pwd)"
 
 export PYTHONPATH="src"
 export LOGURU_LEVEL="INFO"
 
-python src/vietlott/cli/crawl.py keno
-python src/vietlott/cli/missing.py keno
-python src/vietlott/cli/crawl.py power_655
-python src/vietlott/cli/missing.py power_655
-python src/vietlott/cli/crawl.py power_645
-python src/vietlott/cli/missing.py power_645
-python src/vietlott/cli/crawl.py power_535
-python src/vietlott/cli/missing.py power_535
-python src/vietlott/cli/crawl.py 3d
-python src/vietlott/cli/missing.py 3d
-python src/vietlott/cli/crawl.py 3d_pro
-python src/vietlott/cli/missing.py 3d_pro
-python src/vietlott/cli/crawl.py bingo18
-python src/vietlott/cli/missing.py bingo18
+for product in keno power_655 power_645 power_535 3d 3d_pro bingo18; do
+  python src/vietlott/cli/crawl.py "$product"
+  python src/vietlott/cli/missing.py "$product"
+done
 
 python src/render_readme.py
 python src/render_docs.py
@@ -47,7 +41,6 @@ python src/render_docs.py
 #git pull
 
 # commit and push
-git remote add github git@github.com:vietvudanh/vietlott-data.git
 git config user.name "\'$USER\'"
 git config user.email "\'$EMAIl\'"
 git status
@@ -55,4 +48,4 @@ git add $DATA_FOLDER
 git add readme.md
 git add docs/index.html
 git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`"
-git push github main
+git push origin main
