@@ -74,7 +74,7 @@ pygments==2.19.2
     #   rich
 pyproject-hooks==1.2.0
     # via build
-pytest==8.4.2
+pytest==9.0.3
     # via vietlott-data (pyproject.toml)
 python-dateutil==2.9.0.post0
     # via
