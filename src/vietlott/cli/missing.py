@@ -4,6 +4,7 @@ import click
 import pendulum
 import polars as pl
 from loguru import logger
+from tabulate import tabulate
 
 from vietlott.config.map_class import map_class_name
 from vietlott.config.products import ProductConfig, product_config_map
@@ -44,9 +45,8 @@ def detect_missing_data(ctx, product, limit):
     )
     df_missing_process = df_missing.reverse().slice(1, limit)
 
-    # Convert to pandas for markdown display (tabulate doesn't support polars well yet)
-    df_display = df_missing_process.select(["date", "id", "id_next", "diff", "index", "index_next"]).to_pandas()
-    logger.info("\n" + df_display.to_markdown())
+    df_display = df_missing_process.select(["date", "id", "id_next", "diff", "index", "index_next"])
+    logger.info("\n" + tabulate(df_display.iter_rows(), headers=df_display.columns, tablefmt="github"))
 
     run_date = pendulum.now(tz="Asia/Ho_Chi_Minh").to_date_string()
     product_obj: BaseProduct = map_class_name[product]()
