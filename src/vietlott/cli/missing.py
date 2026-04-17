@@ -54,11 +54,16 @@ def detect_missing_data(ctx, product, limit):
         if (row["index"] - row["index_next"]) > 50:
             step = 20
             for i in range(int(math.floor(row["index_next"])), int(math.ceil(row["index"])), step):
-                product_obj.crawl(
+                has_results = product_obj.crawl(
                     run_date_str=run_date,
                     index_from=i,
                     index_to=i + step,
                 )
+                if not has_results:
+                    logger.info(
+                        f"Stop backfill for this range at index {i}->{i + step} because crawler returned no results."
+                    )
+                    break
         else:
             product_obj.crawl(
                 run_date_str=run_date,
