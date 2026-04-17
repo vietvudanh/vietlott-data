@@ -4,6 +4,7 @@ import click
 import pendulum
 import polars as pl
 from loguru import logger
+from tabulate import tabulate
 
 from vietlott.config.map_class import map_class_name
 from vietlott.config.products import ProductConfig, product_config_map
@@ -44,9 +45,8 @@ def detect_missing_data(ctx, product, limit):
     )
     df_missing_process = df_missing.reverse().slice(1, limit)
 
-    # Convert to pandas for markdown display (tabulate doesn't support polars well yet)
-    df_display = df_missing_process.select(["date", "id", "id_next", "diff", "index", "index_next"]).to_pandas()
-    logger.info("\n" + df_display.to_markdown())
+    df_display = df_missing_process.select(["date", "id", "id_next", "diff", "index", "index_next"])
+    logger.info("\n" + tabulate(df_display.iter_rows(), headers=df_display.columns, tablefmt="github"))
 
     run_date = pendulum.now(tz="Asia/Ho_Chi_Minh").to_date_string()
     product_obj: BaseProduct = map_class_name[product]()
@@ -54,11 +54,16 @@ def detect_missing_data(ctx, product, limit):
         if (row["index"] - row["index_next"]) > 50:
             step = 20
             for i in range(int(math.floor(row["index_next"])), int(math.ceil(row["index"])), step):
-                product_obj.crawl(
+                has_results = product_obj.crawl(
                     run_date_str=run_date,
                     index_from=i,
                     index_to=i + step,
                 )
+                if not has_results:
+                    logger.info(
+                        f"Stop backfill for this range at index {i}->{i + step} because crawler returned no results."
+                    )
+                    break
         else:
             product_obj.crawl(
                 run_date_str=run_date,

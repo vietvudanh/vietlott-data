@@ -56,7 +56,7 @@ class BaseProduct:
     def process_result(self, params, body, res_json, task_data):
         pass
 
-    def crawl(self, run_date_str: str, index_from: int = 0, index_to: int = 1):
+    def crawl(self, run_date_str: str, index_from: int = 0, index_to: int = 1) -> bool:
         """
         spawn multiple worker to get data from vietlott
         each worker craw a list of dates
@@ -116,7 +116,7 @@ class BaseProduct:
             list_data += date_items
         if len(list_data) == 0:
             logger.info("No results")
-            return
+            return False
         df_crawled = pl.DataFrame(list_data)
         df_crawled = df_crawled.with_columns(pl.col("id").cast(pl.Utf8))
         logger.info(
@@ -165,3 +165,4 @@ class BaseProduct:
         )
         df_final.write_ndjson(self.product_config.raw_path.absolute())
         logger.info(f"wrote to file {self.product_config.raw_path.absolute()}")
+        return True
