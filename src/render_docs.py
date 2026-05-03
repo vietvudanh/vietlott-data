@@ -264,24 +264,18 @@ class DocsRenderer:
 
             ml_section = f"""<!-- BEGIN_MACHINE_LEARNING_SECTION -->
             <section class="section">
-                <h2
-                    class="section-title"
-                    data-vi="🔮 Phân tích Machine Learning"
-                    data-en="🔮 Machine Learning Predictions"
-                >
-                    🔮 Phân tích Machine Learning
+                <h2 class="section-title">
+                    <a
+                        href="{ML_README_URL}"
+                        target="_blank"
+                        rel="noreferrer"
+                        style="color: inherit; text-decoration: none; display: block;"
+                    ><span
+                            data-vi="🔮 Phân tích Machine Learning"
+                            data-en="🔮 Machine Learning Analysis"
+                        >🔮 Phân tích Machine Learning</span
+                    > →</a>
                 </h2>
-                <div class="card">
-                    <p
-                        data-vi="Các dự đoán máy học chi tiết nằm trong README Machine Learning."
-                        data-en="Detailed machine learning predictions live in the Machine Learning README."
-                    >
-                        Các dự đoán máy học chi tiết nằm trong
-                        <a href="{ML_README_URL}" target="_blank" rel="noreferrer"
-                            >README Machine Learning</a
-                        >.
-                    </p>
-                </div>
             </section>
             <!-- END_MACHINE_LEARNING_SECTION -->"""
             ml_pattern = r"<!-- BEGIN_MACHINE_LEARNING_SECTION -->.*?<!-- END_MACHINE_LEARNING_SECTION -->"

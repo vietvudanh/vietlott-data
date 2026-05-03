@@ -17,11 +17,11 @@
     --color-pink: #FFB3D9;
     
     /* Spacing */
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 1.5rem;
-    --spacing-lg: 2rem;
-    --spacing-xl: 3rem;
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
     
     /* Border */
     --border-width: 4px;
@@ -125,8 +125,8 @@ a:hover {
 /* Header */
 .header {
     text-align: center;
-    margin-bottom: var(--spacing-xl);
-    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-lg);
     background-color: var(--bg-white);
     border: var(--border-width) solid var(--border-primary);
     box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
@@ -175,13 +175,13 @@ a:hover {
 
 /* Section */
 .section {
-    margin-bottom: var(--spacing-xl);
+    margin-bottom: var(--spacing-lg);
 }
 
 .section-title {
     text-align: center;
-    margin-bottom: var(--spacing-lg);
-    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-md);
     background-color: var(--color-yellow);
     border: var(--border-width) solid var(--border-primary);
     box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
@@ -201,15 +201,15 @@ a:hover {
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-lg);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
 }
 
 .product-card {
     background-color: var(--bg-white);
     border: var(--border-width) solid var(--border-primary);
     box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--shadow-color);
-    padding: var(--spacing-lg);
+    padding: var(--spacing-md);
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
