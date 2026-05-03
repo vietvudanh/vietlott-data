@@ -421,7 +421,12 @@ tbody tr:nth-child(odd) {
     animation: bounce 2s ease-in-out infinite;
 }
 
-/* Print Styles */
+/* Section title link (ML section) */
+.section-title-link {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+}
 @media print {
     body {
         background-color: white;

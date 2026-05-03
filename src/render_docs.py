@@ -269,12 +269,12 @@ class DocsRenderer:
                         href="{ML_README_URL}"
                         target="_blank"
                         rel="noreferrer"
-                        style="color: inherit; text-decoration: none; display: block;"
+                        class="section-title-link"
                     ><span
-                            data-vi="🔮 Phân tích Machine Learning"
-                            data-en="🔮 Machine Learning Analysis"
-                        >🔮 Phân tích Machine Learning</span
-                    > →</a>
+                            data-vi="🔮 Phân tích Machine Learning →"
+                            data-en="🔮 Machine Learning Analysis →"
+                        >🔮 Phân tích Machine Learning →</span
+                    ></a>
                 </h2>
             </section>
             <!-- END_MACHINE_LEARNING_SECTION -->"""
