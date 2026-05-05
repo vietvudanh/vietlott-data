@@ -47,6 +47,7 @@ from collections import defaultdict
 from datetime import date, timedelta
 from typing import Dict, List, Optional, Tuple
 
+import numpy as np
 import pandas as pd
 
 from machine_learning.strategies.base import PredictModel
@@ -182,21 +183,16 @@ class MarkovChainStrategy(PredictModel):
             return sorted(random.sample(all_numbers, self.number_predict))
 
         # Aggregate transition scores for each candidate number.
-        scores: List[float] = []
-        for n in all_numbers:
-            score = sum(matrix[s].get(n, 0.0) for s in prev_draw if self.min_val <= s <= self.max_val)
-            scores.append(score + self.smoothing)
+        raw_scores = np.array(
+            [
+                sum(matrix[s].get(n, 0.0) for s in prev_draw if self.min_val <= s <= self.max_val) + self.smoothing
+                for n in all_numbers
+            ]
+        )
 
-        # Weighted sampling without replacement.
-        predicted: List[int] = []
-        remaining_numbers = all_numbers[:]
-        remaining_scores = scores[:]
-
-        while len(predicted) < self.number_predict and remaining_numbers:
-            chosen = random.choices(remaining_numbers, weights=remaining_scores)[0]
-            predicted.append(chosen)
-            idx = remaining_numbers.index(chosen)
-            remaining_numbers.pop(idx)
-            remaining_scores.pop(idx)
+        # Normalise to a probability distribution and sample without replacement.
+        probs = raw_scores / raw_scores.sum()
+        chosen_indices = np.random.choice(len(all_numbers), size=self.number_predict, replace=False, p=probs)
+        predicted = [all_numbers[i] for i in chosen_indices]
 
         return sorted(predicted)
