@@ -15,6 +15,7 @@ from .strategies import (
     FrequencyStrategy,
     HotNumbersStrategy,
     LongAbsenceStrategy,
+    MarkovChainStrategy,
     NotRepeatStrategy,
     PairFrequencyStrategy,
     PatternStrategy,
@@ -35,6 +36,7 @@ __all__ = [
     "LongAbsenceStrategy",
     "ExponentialDecayStrategy",
     "PairFrequencyStrategy",
+    "MarkovChainStrategy",
     # Backtesting and tuning
     "StrategyBacktester",
     "ParameterTuner",

@@ -31,12 +31,18 @@ ExponentialDecayStrategy
 PairFrequencyStrategy
     Builds a co-occurrence matrix and greedily selects numbers that
     historically appear together, capturing second-order correlations.
+MarkovChainStrategy
+    Models first-order sequential dependencies between consecutive draws.
+    Builds a transition matrix T[a][b] counting how often number ``a``
+    in draw ``t`` was followed by number ``b`` in draw ``t+1``, then
+    scores candidates based on the previous draw's composition.
 """
 
 from .base import PredictModel
 from .exponential_decay import ExponentialDecayStrategy
 from .frequency import ColdNumbersStrategy, FrequencyStrategy, HotNumbersStrategy
 from .long_absence import LongAbsenceStrategy
+from .markov_chain import MarkovChainStrategy
 from .not_repeat import NotRepeatStrategy
 from .pair_frequency import PairFrequencyStrategy
 from .pattern import PatternStrategy
@@ -53,4 +59,5 @@ __all__ = [
     "LongAbsenceStrategy",
     "ExponentialDecayStrategy",
     "PairFrequencyStrategy",
+    "MarkovChainStrategy",
 ]

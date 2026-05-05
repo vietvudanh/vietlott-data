@@ -18,6 +18,7 @@ from machine_learning.strategies import (
     ExponentialDecayStrategy,
     HotNumbersStrategy,
     LongAbsenceStrategy,
+    MarkovChainStrategy,
     NotRepeatStrategy,
     PairFrequencyStrategy,
     PatternStrategy,
@@ -73,14 +74,23 @@ class PredictionSummaryGenerator:
     # Strategy runner
     # ------------------------------------------------------------------
 
-    def _build_and_run_strategies(self, df_pd) -> List[_StrategyEntry]:
+    def _build_and_run_strategies(self, df_pd, date_from=None, date_to=None) -> List[_StrategyEntry]:
         """
         Instantiate, backtest, and evaluate all strategies.
+
+        Parameters
+        ----------
+        df_pd:
+            Full historical data as a pandas DataFrame.
+        date_from:
+            Optional start date (inclusive) for the backtest period.
+        date_to:
+            Optional end date (inclusive) for the backtest period.
 
         Returns a list of ``(name, tickets_per_day, model)`` tuples where
         each model has already been backtested and evaluated.
         """
-        tpd = 20  # tickets per day for all strategies
+        tpd = 30  # tickets per day for all strategies
 
         strategy_defs = [
             ("Random Strategy", RandomModel(df_pd, tpd)),
@@ -100,12 +110,16 @@ class PredictionSummaryGenerator:
                 ExponentialDecayStrategy(df_pd, time_predict=tpd, half_life_days=90, hot=True, selection_weight=0.8),
             ),
             ("Pair Frequency Strategy", PairFrequencyStrategy(df_pd, time_predict=tpd, lookback_days=365)),
+            (
+                "Markov Chain Strategy",
+                MarkovChainStrategy(df_pd, time_predict=tpd, lookback_days=365, smoothing=0.5),
+            ),
         ]
 
         results: List[_StrategyEntry] = []
         for name, model in strategy_defs:
             logger.info(f"Running {name}...")
-            model.backtest()
+            model.backtest(date_from=date_from, date_to=date_to)
             model.evaluate()
             results.append((name, tpd, model))
 
@@ -322,6 +336,25 @@ class PredictionSummaryGenerator:
             "exploiting second-order correlations that all single-number strategies ignore.\n\n"
             "**Key parameter**: `lookback_days` (default 365)."
         ),
+        "Markov Chain Strategy": (
+            "**How it works**: Models **first-order sequential dependencies** between "
+            "consecutive draws — a dimension completely ignored by every other strategy.\n\n"
+            "A transition matrix ``T[a][b]`` is built from the lookback window: "
+            "``T[a][b]`` counts the number of times number ``a`` appeared in draw ``t`` "
+            "**and** number ``b`` appeared in the *next* draw ``t+1``.  "
+            "This captures cross-draw temporal correlations.\n\n"
+            "To predict for date ``d``:\n\n"
+            "1. Identify the most-recent draw before ``d`` — this is the **Markov state**.\n"
+            "2. For each candidate number ``n``, compute an aggregate score by summing "
+            "``T[s][n]`` over every number ``s`` in the state draw.\n"
+            "3. Sample ``number_predict`` numbers without replacement, weighted by "
+            "(score + Laplace smoothing) to retain a non-zero chance for all numbers.\n\n"
+            "**Key parameters**: `lookback_days` (default 365), `smoothing` (default 0.5).\n\n"
+            "**Why this is novel**: Unlike Pair Frequency Strategy (which counts numbers "
+            "that appear *together in the same draw*), Markov Chain counts numbers that "
+            "appeared in *successive draws*.  If any temporal autocorrelation exists in "
+            "the physical lottery mechanism, this strategy is best positioned to exploit it."
+        ),
     }
 
     def _strategy_docs_section(self) -> str:
@@ -332,11 +365,115 @@ class PredictionSummaryGenerator:
         return "\n".join(lines)
 
     # ------------------------------------------------------------------
+    # Demo / usage section
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _demo_section() -> str:
+        """Return a markdown section with code examples for each strategy."""
+        return """## 💻 Usage Examples
+
+The strategies can be used independently outside this generator script.
+Below are minimal runnable examples using Power 6/55 data.
+
+### Install & load data
+
+```python
+import polars as pl
+from vietlott.config.products import get_config
+
+df_pl = pl.read_ndjson(get_config("power_655").raw_path)
+df_pl = df_pl.with_columns(pl.col("date").str.to_date(strict=False))
+df_pd = df_pl.to_pandas()
+```
+
+### Random baseline
+
+```python
+from machine_learning.strategies import RandomModel
+
+model = RandomModel(df_pd, time_predict=5)
+model.backtest()
+model.evaluate()
+cost, gain, profit = model.revenue()
+print(f"ROI: {profit / cost * 100:.2f}%")
+```
+
+### Hot Numbers (frequency-based)
+
+```python
+from machine_learning.strategies import HotNumbersStrategy
+
+model = HotNumbersStrategy(df_pd, time_predict=5, lookback_days=180, selection_weight=0.8)
+model.backtest()
+model.evaluate()
+# Predict for a specific date
+from datetime import date
+print(model.predict(date(2025, 6, 1)))
+```
+
+### Markov Chain (sequential dependency)
+
+```python
+from machine_learning.strategies import MarkovChainStrategy
+
+model = MarkovChainStrategy(df_pd, time_predict=5, lookback_days=365, smoothing=0.5)
+model.backtest()
+model.evaluate()
+cost, gain, profit = model.revenue()
+print(f"ROI: {profit / cost * 100:.2f}%")
+```
+
+### Backtest with a date range
+
+```python
+from machine_learning.strategies import PairFrequencyStrategy
+from datetime import date
+
+model = PairFrequencyStrategy(df_pd, time_predict=10, lookback_days=365)
+# Only evaluate predictions for 2024 draws; full history is still used for lookups
+model.backtest(date_from=date(2024, 1, 1), date_to=date(2024, 12, 31))
+model.evaluate()
+cost, gain, profit = model.revenue()
+print(f"2024 ROI: {profit / cost * 100:.2f}%")
+```
+
+### Compare strategies head-to-head
+
+```python
+from machine_learning.strategies import (
+    RandomModel, MarkovChainStrategy, PairFrequencyStrategy,
+)
+
+strategies = {
+    "Random":       RandomModel(df_pd, time_predict=20),
+    "Markov":       MarkovChainStrategy(df_pd, time_predict=20),
+    "PairFreq":     PairFrequencyStrategy(df_pd, time_predict=20),
+}
+
+for name, model in strategies.items():
+    model.backtest()
+    model.evaluate()
+    cost, gain, profit = model.revenue()
+    print(f"{name:20s}  ROI={profit / cost * 100:+.1f}%")
+```
+"""
+
+    # ------------------------------------------------------------------
     # Summary assembly
     # ------------------------------------------------------------------
 
-    def generate_prediction_summary(self) -> str:
-        """Generate the complete prediction summary content."""
+    def generate_prediction_summary(self, date_from=None, date_to=None) -> str:
+        """
+        Generate the complete prediction summary content.
+
+        Parameters
+        ----------
+        date_from:
+            Optional start date (inclusive) for the backtest period.
+        date_to:
+            Optional end date (inclusive) for the backtest period.
+        """
         logger.info("Starting prediction summary generation...")
 
         df_power655 = self._load_lottery_data("power_655")
@@ -344,10 +481,11 @@ class PredictionSummaryGenerator:
             return "# Error\n\nNo data available.\n"
 
         df_pd = df_power655.to_pandas()
-        strategies = self._build_and_run_strategies(df_pd)
+        strategies = self._build_and_run_strategies(df_pd, date_from=date_from, date_to=date_to)
 
         roi_table = self._roi_comparison_table(strategies)
         strategy_docs = self._strategy_docs_section()
+        demo = self._demo_section()
         predictions = self._generate_predictions_section(strategies)
 
         return f"""# 🔮 Vietlott Power 655 Prediction Summary
@@ -361,6 +499,8 @@ class PredictionSummaryGenerator:
 
 {strategy_docs}
 
+{demo}
+
 {predictions}
 
 ---
@@ -370,13 +510,23 @@ class PredictionSummaryGenerator:
 This prediction summary is for educational and research purposes only. Lottery outcomes are random and cannot be reliably predicted. Never gamble more than you can afford to lose.
 """
 
-    def save_prediction_summary(self, output_path: Optional[Path] = None) -> None:
-        """Generate and save prediction summary to file."""
+    def save_prediction_summary(self, output_path: Optional[Path] = None, date_from=None, date_to=None) -> None:
+        """Generate and save prediction summary to file.
+
+        Parameters
+        ----------
+        output_path:
+            Destination file path.  Defaults to ``<this directory>/readme.md``.
+        date_from:
+            Optional start date (inclusive) for the backtest period.
+        date_to:
+            Optional end date (inclusive) for the backtest period.
+        """
         if output_path is None:
             output_path = Path(__file__).parent / "readme.md"
 
         try:
-            summary_content = self.generate_prediction_summary()
+            summary_content = self.generate_prediction_summary(date_from=date_from, date_to=date_to)
 
             with output_path.open("w", encoding="utf-8") as ofile:
                 ofile.write(summary_content)
