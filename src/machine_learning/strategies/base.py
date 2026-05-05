@@ -132,17 +132,32 @@ class PredictModel:
         """
         pass
 
-    def backtest(self):
+    def backtest(self, date_from=None, date_to=None):
         """
-        Run the strategy over every row in ``self.df``.
+        Run the strategy over rows in ``self.df``.
 
         For each row the strategy generates ``time_predict`` tickets.  Each
         ticket is compared against the actual draw result and the outcome is
         stored as a list of dicts under the ``predict_metadata`` column.
 
         Results are saved to ``self.df_backtest``.
+
+        Parameters
+        ----------
+        date_from:
+            Optional start date (inclusive) for the backtest period.  Only
+            rows with ``date >= date_from`` are evaluated.  The full
+            ``self.df`` is still available to strategies for historical
+            lookups; this only limits *which* dates are evaluated.
+        date_to:
+            Optional end date (inclusive) for the backtest period.  Only
+            rows with ``date <= date_to`` are evaluated.
         """
         _df = self.df.copy()
+        if date_from is not None:
+            _df = _df[_df["date"] >= date_from]
+        if date_to is not None:
+            _df = _df[_df["date"] <= date_to]
 
         def fn_apply(row):
             predicted = []
