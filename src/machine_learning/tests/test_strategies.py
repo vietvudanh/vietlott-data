@@ -83,9 +83,9 @@ class TestRandomModel:
     def test_predict_includes_max_val(self, df):
         """max_val (55) must be reachable — regression for off-by-one bug."""
         model = RandomModel(df, time_predict=1)
-        # Run many predictions; 55 should appear with high probability
+        # 150 iterations: P(55 not seen) = (54/55)^(6*150) ≈ 5e-8
         all_nums = set()
-        for _ in range(500):
+        for _ in range(150):
             all_nums.update(model.predict(date(2023, 6, 1)))
         assert MAX_VAL in all_nums, (
             f"max_val ({MAX_VAL}) was never predicted — "
@@ -96,7 +96,7 @@ class TestRandomModel:
         """min_val (1) must be reachable."""
         model = RandomModel(df, time_predict=1)
         all_nums = set()
-        for _ in range(500):
+        for _ in range(150):
             all_nums.update(model.predict(date(2023, 6, 1)))
         assert MIN_VAL in all_nums
 
