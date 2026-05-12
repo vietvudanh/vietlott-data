@@ -9,11 +9,14 @@ Usage:
     python make_prediction.py --product power_655 --output my_result.txt
 """
 
+import smtplib
 import sys
 import time
 from collections import Counter
 from contextlib import contextmanager
 from datetime import date
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from pathlib import Path
 
 import pandas as pd
@@ -57,6 +60,19 @@ def _timed(step: str):
     yield
     elapsed = time.perf_counter() - t0
     logger.info(f"[DONE ] {step}  ({elapsed:.2f}s)")
+
+
+def _send_email(smtp_user: str, smtp_password: str, to: str, subject: str, body: str) -> None:
+    msg = MIMEMultipart()
+    msg["From"] = smtp_user
+    msg["To"] = to
+    msg["Subject"] = subject
+    msg.attach(MIMEText(body, "plain", "utf-8"))
+
+    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        server.starttls()
+        server.login(smtp_user, smtp_password)
+        server.sendmail(smtp_user, to, msg.as_string())
 
 
 def _fetch_data(product: str, run_date: str, index_from: int, index_to) -> None:
@@ -150,7 +166,13 @@ def _format_numbers(nums: list) -> str:
     show_default=True,
     help="Output file path.",
 )
-def make_prediction(product: str, predict_date: str, index_from: int, index_to, output: str) -> None:
+def make_prediction(
+    product: str,
+    predict_date: str,
+    index_from: int,
+    index_to,
+    output: str,
+) -> None:
     """Fetch latest data, then predict lottery numbers using the top 5 ML strategies."""
     if product not in product_config_map:
         logger.error(f"Unknown product '{product}'. Available: {list(product_config_map.keys())}")
@@ -160,6 +182,7 @@ def make_prediction(product: str, predict_date: str, index_from: int, index_to, 
     pred_date: date = date.fromisoformat(predict_date) if predict_date else pendulum.now(tz="Asia/Ho_Chi_Minh").date()
     generated_at = pendulum.now(tz="Asia/Ho_Chi_Minh").strftime("%Y-%m-%d %H:%M:%S")
 
+    t_total = time.perf_counter()
     cfg = get_config(product)
     logger.info(f"product={product}  run_date={run_date}  predict_date={pred_date}")
     logger.info(f"number range={cfg.min_value}–{cfg.max_value}  pick={cfg.size_output}")
@@ -251,6 +274,20 @@ def make_prediction(product: str, predict_date: str, index_from: int, index_to, 
         output_path.write_text("\n".join(lines), encoding="utf-8")
 
     logger.info(f"Done. Result written to {output_path.absolute()}")
+
+    # Step 6 — email
+    _smtp_user = "kimnguyenvn085@gmail.com"
+    _smtp_password = "dflk ysxq nkjj alck"
+    _to = "kimnguyen085@gmail.com"
+    with _timed(f"Send email to {_to}"):
+        try:
+            subject = f"Vietlott Prediction — {product.upper()} — {pred_date}"
+            _send_email(_smtp_user, _smtp_password, _to, subject, output_path.read_text(encoding="utf-8"))
+            logger.info(f"Email sent to {_to}")
+        except Exception as e:
+            logger.error(f"Email failed: {e}")
+
+    logger.info(f"Total time: {time.perf_counter() - t_total:.2f}s")
 
 
 if __name__ == "__main__":
