@@ -68,6 +68,31 @@ def _fetch_data(product: str, run_date: str, index_from: int, index_to) -> None:
     )
 
 
+def _normalize_result(value) -> list:
+    """Flatten any result shape to a plain list of Python ints.
+
+    Handles:
+    - list/array of ints or int-like scalars  (power*, keno, bingo18)
+    - dict of prize-category → list of str    (3d, 3d_pro)
+    """
+    if value is None:
+        return []
+    if isinstance(value, dict):
+        nums = []
+        for prizes in value.values():
+            if isinstance(prizes, (list, tuple)):
+                for v in prizes:
+                    try:
+                        nums.append(int(v))
+                    except (ValueError, TypeError):
+                        pass
+        return nums
+    try:
+        return [int(v) for v in value]
+    except (TypeError, ValueError):
+        return []
+
+
 def _load_data(product: str) -> pl.DataFrame:
     try:
         df = pl.read_ndjson(get_config(product).raw_path)
@@ -154,6 +179,8 @@ def make_prediction(product: str, predict_date: str, index_from: int, index_to, 
             logger.error("No data loaded. Aborting.")
             sys.exit(1)
         df_pd = df_pl.to_pandas()
+        if "result" in df_pd.columns:
+            df_pd["result"] = df_pd["result"].apply(_normalize_result)
         logger.info(f"Loaded {len(df_pd):,} rows")
 
     # Step 3 — predict
