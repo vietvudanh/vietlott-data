@@ -48,3 +48,7 @@ tzdata==2025.2
     # via pendulum
 urllib3==2.5.0
     # via requests
+numpy==2.2.3
+    # via vietlott-data (pyproject.toml)
+pandas==2.2.3
+    # via vietlott-data (pyproject.toml)
