@@ -1,0 +1,82 @@
+name: Crawl and Predict
+
+on:
+  schedule:
+    - cron: "0 1 * * *" # 08:00 ICT (UTC+7) daily
+  workflow_dispatch:
+    inputs:
+      product:
+        description: "Lottery product"
+        required: true
+        default: "power_655"
+      index_to:
+        description: "Crawl up to page index (default: 3 for daily update)"
+        required: false
+        default: "3"
+
+jobs:
+  crawl-build-predict:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Crawl latest data
+        run: |
+          uv run vietlott-crawl ${{ github.event.inputs.product || 'power_535' }} \
+            --index_from 0 \
+            --index_to ${{ github.event.inputs.index_to || '3' }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push Docker image with fresh data
+        id: build
+        env:
+          IMAGE_URI: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY }}:latest
+        run: |
+          docker build -t $IMAGE_URI .
+          docker push $IMAGE_URI
+          echo "image=$IMAGE_URI" >> $GITHUB_OUTPUT
+
+      - name: Register new task definition revision with updated image
+        id: task-def
+        env:
+          IMAGE_URI: ${{ steps.build.outputs.image }}
+        run: |
+          aws ecs describe-task-definition \
+            --task-definition ${{ secrets.ECS_TASK_DEFINITION }} \
+            --query taskDefinition \
+            --output json \
+          | jq 'del(.taskDefinitionArn,.revision,.status,.requiresAttributes,.compatibilities,.registeredAt,.registeredBy)
+                | .containerDefinitions[0].image = env.IMAGE_URI' \
+          > updated-task-def.json
+
+          ARN=$(aws ecs register-task-definition \
+            --cli-input-json file://updated-task-def.json \
+            --query 'taskDefinition.taskDefinitionArn' \
+            --output text)
+          echo "arn=$ARN" >> $GITHUB_OUTPUT
+
+      - name: Run ECS prediction task
+        run: |
+          aws ecs run-task \
+            --cluster ${{ secrets.ECS_CLUSTER }} \
+            --task-definition ${{ steps.task-def.outputs.arn }} \
+            --launch-type FARGATE \
+            --network-configuration "awsvpcConfiguration={subnets=[${{ secrets.ECS_SUBNET }}],securityGroups=[${{ secrets.ECS_SECURITY_GROUP }}],assignPublicIp=ENABLED}"
