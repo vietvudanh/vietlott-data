@@ -20,7 +20,7 @@ idna==3.11
     # via requests
 loguru==0.7.3
     # via vietlott-data (pyproject.toml)
-lxml==6.0.2
+lxml==6.1.0
     # via vietlott-data (pyproject.toml)
 polars==1.34.0
     # via vietlott-data (pyproject.toml)
