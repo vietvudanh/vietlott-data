@@ -23,7 +23,7 @@ dependencies = [
     "tabulate",
     "loguru",
 ]
-requires-python = ">=3.11,<3.14"
+requires-python = ">=3.11"
 readme = "README.md"
 license = { text = "MIT" }
 
@@ -39,6 +39,7 @@ ml = ["numpy", "scikit-learn", "matplotlib", "pandas"]
 [project.scripts]
 vietlott-crawl = "vietlott.cli.crawl:crawl"
 vietlott-missing = "vietlott.cli.missing:detect_missing_data"
+vietlott-pick = "vietlott.cli.pick:pick"
 vietlott-render-readme = "src.render_readme:main"
 vietlott-render-docs = "src.render_docs:main"
 
