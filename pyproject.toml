@@ -41,6 +41,7 @@ vietlott-crawl = "vietlott.cli.crawl:crawl"
 vietlott-missing = "vietlott.cli.missing:detect_missing_data"
 vietlott-pick = "vietlott.cli.pick:pick"
 vietlott-analyze = "vietlott.cli.analyze:analyze_days_since"
+vietlott-smart-pick = "vietlott.cli.smart_pick:smart_pick"
 vietlott-render-readme = "src.render_readme:main"
 vietlott-render-docs = "src.render_docs:main"
 
