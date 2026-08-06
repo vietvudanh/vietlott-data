@@ -84324,3 +84324,15 @@
 {"date":"2026-08-05","id":"0180151","result":[5,2,3],"total":10,"large_small":"Hòa","process_time":"2026-08-06T00:04:05.700088+07:00"}
 {"date":"2026-08-05","id":"0180153","result":[4,6,4],"total":14,"large_small":"Lớn","process_time":"2026-08-06T00:04:05.700088+07:00"}
 {"date":"2026-08-05","id":"0180156","result":[6,4,1],"total":11,"large_small":"Hòa","process_time":"2026-08-06T00:04:05.700088+07:00"}
+{"date":"2026-08-06","id":"0180205","result":[6,1,3],"total":10,"large_small":"Hòa","process_time":"2026-08-06T12:02:55.522472+07:00"}
+{"date":"2026-08-06","id":"0180206","result":[2,6,3],"total":11,"large_small":"Hòa","process_time":"2026-08-06T12:02:55.522472+07:00"}
+{"date":"2026-08-06","id":"0180207","result":[6,1,1],"total":8,"large_small":"Nhỏ","process_time":"2026-08-06T12:02:55.522472+07:00"}
+{"date":"2026-08-06","id":"0180208","result":[3,2,1],"total":6,"large_small":"Nhỏ","process_time":"2026-08-06T12:02:55.522472+07:00"}
+{"date":"2026-08-06","id":"0180209","result":[2,2,4],"total":8,"large_small":"Nhỏ","process_time":"2026-08-06T12:02:55.522472+07:00"}
+{"date":"2026-08-06","id":"0180210","result":[3,3,4],"total":10,"large_small":"Hòa","process_time":"2026-08-06T12:02:55.522472+07:00"}
+{"date":"2026-08-06","id":"0180211","result":[2,1,3],"total":6,"large_small":"Nhỏ","process_time":"2026-08-06T12:02:55.496307+07:00"}
+{"date":"2026-08-06","id":"0180212","result":[3,2,4],"total":9,"large_small":"Nhỏ","process_time":"2026-08-06T12:02:55.496307+07:00"}
+{"date":"2026-08-06","id":"0180213","result":[3,3,5],"total":11,"large_small":"Hòa","process_time":"2026-08-06T12:02:55.496307+07:00"}
+{"date":"2026-08-06","id":"0180214","result":[4,1,6],"total":11,"large_small":"Hòa","process_time":"2026-08-06T12:02:55.496307+07:00"}
+{"date":"2026-08-06","id":"0180215","result":[5,6,1],"total":12,"large_small":"Lớn","process_time":"2026-08-06T12:02:55.496307+07:00"}
+{"date":"2026-08-06","id":"0180216","result":[2,1,2],"total":5,"large_small":"Nhỏ","process_time":"2026-08-06T12:02:55.496307+07:00"}
