@@ -253,74 +253,37 @@ For background on these models, see the [Machine Learning README](./src/machine_
 
 ## How It Works
 
-### Automated Data Collection
+Vietlott blocks non-Vietnam IPs ([issue #13](https://github.com/vietvudanh/vietlott-data/issues/13)), so crawling runs on a scheduled local runner (`bin/github_data.sh`) and commits updated data back to GitHub.
 
-Data crawling runs on a scheduled local runner because the Vietlott website blocks non-Vietnam IP addresses (see [issue #13](https://github.com/vietvudanh/vietlott-data/issues/13)).
-
-- **Schedule**: Scheduled runs execute regularly
-- **Process**: Fetches latest results -> Processes data -> Commits to repository
-- **Analysis**: Generates statistics and updates documentation
-
-### Data Crawling Method
-
-1. **Network Analysis**: Inspects official website requests and response schemas
-2. **Python Crawler**: Fetches and parses draw result pages
-3. **Structured Storage**: Saves results in NDJSON format for analysis
-4. **Automated Sync**: Updates documentation and statistics with fresh data
-
-> **Note**: This is purely for educational and research purposes. No gambling advice is provided.
+For architecture and runner setup, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 
 ## Installation & Usage
 
-### Install via pip
+### CLI Usage (using uv)
 
 ```bash
-pip install vietlott-data
+# Crawl latest data
+uv run vietlott-crawl keno
+
+# Backfill missing data
+uv run vietlott-missing power_655
+
+# Available products: power_655, power_645, power_535, keno, 3d, 3d_pro, bingo18
 ```
-
-### Command Line Interface
-
-#### Crawl Data
-
-```bash
-vietlott-crawl [OPTIONS] PRODUCT
-
-# Options:
-#   --run-date TEXT       Specific date to crawl (default: current date)
-#   --index-from INTEGER  Starting page index (default: 0)
-#   --index-to INTEGER    Ending page index (default: None)
-#   --help               Show help message
-```
-
-#### Backfill Missing Data
-
-```bash
-vietlott-missing [OPTIONS] PRODUCT
-
-# Options:
-#   --limit INTEGER  Number of pages to process (default: 20)
-#   --help          Show help message
-```
-
-> **Available Products**: power_655, power_645, power_535, keno, 3d, 3d_pro, bingo18
 
 ### Development Setup
 
 ```bash
-# Clone the repository
-git clone https://github.com/vietvudanh/vietlott-data.git ; cd vietlott-data
-
-# Install dependencies (recommend using uv and virtual environment)
+git clone https://github.com/vietvudanh/vietlott-data.git
+cd vietlott-data
 uv sync --dev
-
-# Run tests
 uv run pytest
 ```
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see [LICENSE](LICENSE).
 
 ---
 

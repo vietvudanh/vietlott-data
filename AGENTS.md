@@ -22,7 +22,7 @@ Key points:
 - Data is fetched by pages, with missing-data detection and backfilling handled in `missing.py`.
 
 ### Runner
-The crawler runs via a scheduled local runner (`bin/github_data.sh` / `Procfile`) and commits new data to GitHub. GitHub Actions is no longer used for crawling due to Vietlott IP geo-blocking.
+The crawler runs via a scheduled local runner (`bin/github_data.sh` / `Procfile`) and commits new data to GitHub. GitHub Actions is no longer used for crawling due to Vietlott IP geo-blocking. See `docs/DEPLOYMENT.md` for full deployment details.
 
 ## Development Setup
 1.  **Clone the repository:**
@@ -33,17 +33,16 @@ The crawler runs via a scheduled local runner (`bin/github_data.sh` / `Procfile`
 
 2.  **Create a virtual environment and install dependencies:**
     ```bash
-    make requirements-dev
+    uv sync --dev
     ```
 
 ### Running the Crawler
 The primary entry point for data crawling is the `vietlott-crawl` command.
 To crawl data for a specific product:
 ```bash
-source .venv/bin/activate
-vietlott-crawl <PRODUCT_NAME>
+uv run vietlott-crawl <PRODUCT_NAME>
 ```
-Example: `vietlott-crawl keno`
+Example: `uv run vietlott-crawl keno`
 
 ### Generating README and Docs (project frontpage and GitHub Pages)
 This repository includes scripts that generate updated documentation with current data:
