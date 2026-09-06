@@ -57,12 +57,11 @@ def df():
 # Helpers
 # ---------------------------------------------------------------------------
 
+
 def _assert_valid_prediction(pred, model: PredictModel):
     """Assert that a prediction is a sorted list of valid distinct numbers."""
     assert isinstance(pred, list), "predict() must return a list"
-    assert len(pred) == model.number_predict, (
-        f"Expected {model.number_predict} numbers, got {len(pred)}"
-    )
+    assert len(pred) == model.number_predict, f"Expected {model.number_predict} numbers, got {len(pred)}"
     assert len(set(pred)) == model.number_predict, "Predicted numbers must be distinct"
     assert all(model.min_val <= n <= model.max_val for n in pred), (
         f"All numbers must be in [{model.min_val}, {model.max_val}]"
@@ -73,6 +72,7 @@ def _assert_valid_prediction(pred, model: PredictModel):
 # ---------------------------------------------------------------------------
 # RandomModel: correctness and full-range coverage
 # ---------------------------------------------------------------------------
+
 
 class TestRandomModel:
     def test_predict_returns_valid_numbers(self, df):
@@ -87,10 +87,7 @@ class TestRandomModel:
         all_nums = set()
         for _ in range(150):
             all_nums.update(model.predict(date(2023, 6, 1)))
-        assert MAX_VAL in all_nums, (
-            f"max_val ({MAX_VAL}) was never predicted — "
-            f"off-by-one bug in range() call"
-        )
+        assert MAX_VAL in all_nums, f"max_val ({MAX_VAL}) was never predicted — off-by-one bug in range() call"
 
     def test_predict_includes_min_val(self, df):
         """min_val (1) must be reachable."""
@@ -122,6 +119,7 @@ class TestRandomModel:
 # ---------------------------------------------------------------------------
 # MarkovChainStrategy
 # ---------------------------------------------------------------------------
+
 
 class TestMarkovChainStrategy:
     def test_predict_valid(self, df):
@@ -241,6 +239,7 @@ def test_all_strategies_backtest_pipeline(factory, name, df):
 # ---------------------------------------------------------------------------
 # PredictModel.backtest: date filtering works for base class
 # ---------------------------------------------------------------------------
+
 
 class TestBacktestDateFilter:
     def test_no_filter_uses_all_rows(self, df):

@@ -23,7 +23,7 @@ def test_power535_config():
     assert config.min_value == 1, f"Expected min_value 1, got {config.min_value}"
     assert config.max_value == 35, f"Expected max_value 35, got {config.max_value}"
     assert config.size_output == 5, f"Expected size_output 5, got {config.size_output}"
-    print(f"✓ Config loaded successfully: {config.name}")
+    print(f"Config loaded successfully: {config.name}")
     print(f"  - Min value: {config.min_value}")
     print(f"  - Max value: {config.max_value}")
     print(f"  - Size output: {config.size_output}")
@@ -36,7 +36,7 @@ def test_power535_config():
     assert product_class.__name__ == "ProductPower535", (
         f"Expected class name 'ProductPower535', got '{product_class.__name__}'"
     )
-    print(f"✓ Product class found: {product_class.__name__}")
+    print(f"Product class found: {product_class.__name__}")
 
     # Test instantiation
     instance = product_class()
@@ -48,9 +48,9 @@ def test_power535_config():
     assert len(instance.stored_data_dtype) >= 4, (
         f"Expected at least 4 data type fields, got {len(instance.stored_data_dtype)}"
     )
-    print("✓ Product instance created successfully")
+    print("Product instance created successfully")
     print(f"  - Name: {instance.name}")
     print(f"  - URL: {instance.url}")
     print(f"  - Data types: {instance.stored_data_dtype}")
 
-    print("\n✓ All tests passed! Power 535 is configured correctly.")
+    print("\nAll tests passed! Power 535 is configured correctly.")

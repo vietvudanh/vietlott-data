@@ -1,11 +1,11 @@
-# 🔮 Vietlott Power 655 Prediction Summary
+# Vietlott Power 655 Prediction Summary
 
 > **Generated**: 2026-05-05 15:09:43
 >
 > This document contains machine learning predictions for Vietnamese lottery data.
 > This is an experimental module for educational purposes only.
 
-## 📊 Strategy Performance Comparison
+## Strategy Performance Comparison
 
 > Sorted by ROI (best → worst).  All strategies backtested with **30 tickets/draw**.
 > Note: All ROIs are deeply negative — lottery odds make profit impossible at scale.
@@ -13,9 +13,9 @@
 
 | Rank | Strategy | Total Cost (VND) | Total Gain (VND) | Net Profit (VND) | ROI |
 |------|----------|-----------------|-----------------|-----------------|-----|
-| 🥇 1 | Pattern Strategy | 402,000,000 | 15,064,500,000 | 14,662,500,000 | 3647.39% |
-| 🥈 2 | Markov Chain Strategy | 402,000,000 | 10,070,050,000 | 9,668,050,000 | 2404.99% |
-| 🥉 3 | Not Repeat Strategy | 402,000,000 | 5,073,600,000 | 4,671,600,000 | 1162.09% |
+| 1 | Pattern Strategy | 402,000,000 | 15,064,500,000 | 14,662,500,000 | 3647.39% |
+| 2 | Markov Chain Strategy | 402,000,000 | 10,070,050,000 | 9,668,050,000 | 2404.99% |
+| 3 | Not Repeat Strategy | 402,000,000 | 5,073,600,000 | 4,671,600,000 | 1162.09% |
 |    4 | Pair Frequency Strategy | 402,000,000 | 5,071,100,000 | 4,669,100,000 | 1161.47% |
 |    5 | Exponential Decay Strategy | 402,000,000 | 5,067,000,000 | 4,665,000,000 | 1160.45% |
 |    6 | Random Strategy | 402,000,000 | 5,066,650,000 | 4,664,650,000 | 1160.36% |
@@ -24,7 +24,7 @@
 |    9 | Cold Numbers Strategy | 402,000,000 | 66,000,000 | -336,000,000 | -83.58% |
 
 
-## 📚 Strategy Descriptions
+## Strategy Descriptions
 
 ### Random Strategy
 
@@ -113,7 +113,7 @@ To predict for date ``d``:
 **Why this is novel**: Unlike Pair Frequency Strategy (which counts numbers that appear *together in the same draw*), Markov Chain counts numbers that appeared in *successive draws*.  If any temporal autocorrelation exists in the physical lottery mechanism, this strategy is best positioned to exploit it.
 
 
-## 💻 Usage Examples
+## Usage Examples
 
 The strategies can be used independently outside this generator script.
 Below are minimal runnable examples using Power 6/55 data.
@@ -201,11 +201,11 @@ for name, model in strategies.items():
 ```
 
 
-## 🔮 Prediction Models
+## Prediction Models
 
-> ⚠️ **Disclaimer**: These are experimental models for educational purposes only. Lottery outcomes are random and cannot be predicted reliably.
+> **Disclaimer**: These are experimental models for educational purposes only. Lottery outcomes are random and cannot be predicted reliably.
 
-### 🎲 Random Strategy
+### Random Strategy
 
 #### Configuration
 | Parameter | Value |
@@ -245,7 +245,7 @@ for name, model in strategies.items():
 |:--------------------|:----------------------------|:------------------------|--------------:|
 | 2018-10-18 00:00:00 | [1, 11, 22, 34, 42, 47, 30] | [1, 22, 30, 37, 42, 47] |             5 |
 
-### 🎲 Long Absence Strategy
+### Long Absence Strategy
 
 #### Configuration
 | Parameter | Value |
@@ -282,7 +282,7 @@ for name, model in strategies.items():
 #### Best Results (5+ matches)
 No results with 5+ matches found.
 
-### 🎲 Pattern Strategy
+### Pattern Strategy
 
 #### Configuration
 | Parameter | Value |
@@ -324,7 +324,7 @@ No results with 5+ matches found.
 | 2025-05-10 00:00:00 | [7, 16, 19, 28, 34, 51, 15] | [10, 15, 16, 19, 28, 34] |             5 |
 | 2024-08-24 00:00:00 | [2, 17, 20, 21, 22, 23, 38] | [2, 20, 21, 22, 23, 45]  |             5 |
 
-### 🎲 Hot Numbers Strategy
+### Hot Numbers Strategy
 
 #### Configuration
 | Parameter | Value |
@@ -361,7 +361,7 @@ No results with 5+ matches found.
 #### Best Results (5+ matches)
 No results with 5+ matches found.
 
-### 🎲 Cold Numbers Strategy
+### Cold Numbers Strategy
 
 #### Configuration
 | Parameter | Value |
@@ -398,7 +398,7 @@ No results with 5+ matches found.
 #### Best Results (5+ matches)
 No results with 5+ matches found.
 
-### 🎲 Not Repeat Strategy
+### Not Repeat Strategy
 
 #### Configuration
 | Parameter | Value |
@@ -438,7 +438,7 @@ No results with 5+ matches found.
 |:--------------------|:----------------------------|:------------------------|--------------:|
 | 2021-09-18 00:00:00 | [3, 14, 15, 21, 47, 52, 54] | [3, 15, 21, 29, 52, 54] |             5 |
 
-### 🎲 Exponential Decay Strategy
+### Exponential Decay Strategy
 
 #### Configuration
 | Parameter | Value |
@@ -478,7 +478,7 @@ No results with 5+ matches found.
 |:--------------------|:-----------------------------|:-------------------------|--------------:|
 | 2025-06-14 00:00:00 | [11, 12, 22, 26, 41, 47, 24] | [11, 12, 26, 41, 47, 55] |             5 |
 
-### 🎲 Pair Frequency Strategy
+### Pair Frequency Strategy
 
 #### Configuration
 | Parameter | Value |
@@ -518,7 +518,7 @@ No results with 5+ matches found.
 |:--------------------|:----------------------------|:------------------------|--------------:|
 | 2018-06-05 00:00:00 | [11, 21, 26, 32, 51, 52, 5] | [5, 11, 21, 26, 52, 55] |             5 |
 
-### 🎲 Markov Chain Strategy
+### Markov Chain Strategy
 
 #### Configuration
 | Parameter | Value |
@@ -564,6 +564,6 @@ No results with 5+ matches found.
 
 ---
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 This prediction summary is for educational and research purposes only. Lottery outcomes are random and cannot be reliably predicted. Never gamble more than you can afford to lose.

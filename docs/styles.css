@@ -250,8 +250,10 @@ a:hover {
     box-shadow: 6px 6px 0 var(--shadow-color);
 }
 
-.feature-icon {
-    font-size: 3rem;
+.feature-icon,
+.feature-number {
+    font-size: 2rem;
+    font-weight: 900;
     margin-bottom: var(--spacing-sm);
 }
 

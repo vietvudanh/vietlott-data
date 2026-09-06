@@ -27,10 +27,10 @@ To enable GitHub Pages for this repository, follow these steps:
 
 ## How It Works
 
-- The workflow file `.github/workflows/deploy-pages.yml` automatically builds and deploys the site
-- The workflow triggers on every push to the `main` branch
-- The site content is in the `docs/` directory
-- The page will be available at: `https://vietvudanh.github.io/vietlott-data/`
+- The workflow `.github/workflows/deploy-pages.yml` builds and deploys the static documentation site
+- It runs on a daily schedule and can be triggered via workflow dispatch
+- Site content is located in the `docs/` directory
+- Published URL: `https://vietvudanh.github.io/vietlott-data/`
 
 ## Manual Deployment
 

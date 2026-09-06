@@ -22,9 +22,9 @@ BLOG_POST_BADGE = f"""
                         target="_blank"
                     >
                         <span
-                            data-vi="📝 Bài viết Blog"
-                            data-en="📝 Blog Post"
-                            >📝 Bài viết Blog</span
+                            data-vi="Bài viết Blog"
+                            data-en="Blog Post"
+                            >Bài viết Blog</span
                         >
                     </a>"""
 
@@ -169,17 +169,17 @@ class DocsRenderer:
             <section class="section">
                 <h2
                     class="section-title"
-                    data-vi="⏳ Phân tích Power 6/55 - Số ngày vắng mặt"
-                    data-en="⏳ Power 6/55 - Days Since Last Appearance"
+                    data-vi="Phân tích Power 6/55 - Số ngày vắng mặt"
+                    data-en="Power 6/55 - Days Since Last Appearance"
                 >
-                    ⏳ Power 6/55 - Days Since Last Appearance
+                    Power 6/55 - Days Since Last Appearance
                 </h2>
                 <div class="card">
                     <h3
-                        data-vi="🔟 Top 10 số lâu chưa xuất hiện"
-                        data-en="🔟 Top 10 Numbers by Days Since Last Appearance"
+                        data-vi="Top 10 số lâu chưa xuất hiện"
+                        data-en="Top 10 Numbers by Days Since Last Appearance"
                     >
-                        🔟 Top 10 số lâu chưa xuất hiện
+                        Top 10 số lâu chưa xuất hiện
                     </h3>
                     <div class="stats-table">
                         <table>
@@ -198,10 +198,10 @@ class DocsRenderer:
                 </div>
                 <div class="card" style="margin-top:1rem">
                     <h3
-                        data-vi="📆 Số ngày từ lần xuất hiện cuối cùng (tất cả các số)"
-                        data-en="📆 Days Since Last Appearance (All Numbers)"
+                        data-vi="Số ngày từ lần xuất hiện cuối cùng (tất cả các số)"
+                        data-en="Days Since Last Appearance (All Numbers)"
                     >
-                        📆 Số ngày từ lần xuất hiện cuối cùng (tất cả các số)
+                        Số ngày từ lần xuất hiện cuối cùng (tất cả các số)
                     </h3>
                     <div class="stats-table">
                         <table>
@@ -271,9 +271,9 @@ class DocsRenderer:
                         rel="noreferrer"
                         class="section-title-link"
                     ><span
-                            data-vi="🔮 Phân tích Machine Learning →"
-                            data-en="🔮 Machine Learning Analysis →"
-                        >🔮 Phân tích Machine Learning →</span
+                            data-vi="Phân tích Machine Learning →"
+                            data-en="Machine Learning Analysis →"
+                        >Phân tích Machine Learning →</span
                     ></a>
                 </h2>
             </section>

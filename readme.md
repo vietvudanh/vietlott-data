@@ -1,57 +1,56 @@
-# 🎰 Vietlott Data
+# Vietlott Data
 
-[![GitHub Actions](https://github.com/vietvudanh/vietlott-data/workflows/crawl/badge.svg)](https://github.com/vietvudanh/vietlott-data/actions)
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Data Updated](https://img.shields.io/badge/data-daily%20updated-brightgreen.svg)](https://github.com/vietvudanh/vietlott-data/commits/main)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-blue)](https://vietvudanh.github.io/vietlott-data/)
 
-> 📊 **Automated Vietnamese Lottery Data Collection & Analysis**
+> **Automated Vietnamese Lottery Data Collection & Analysis**
 >
-> This project automatically crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing comprehensive statistics and insights for all major lottery products.
+> This project crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing statistics and insights for all major lottery products.
 
-## 🔗 Links
+## Links
 
-- 🌐 [Website](https://vietvudanh.github.io/vietlott-data/) - Interactive data visualization
-- 📝 [Blog Post](https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the) - About this project
+- [Website](https://vietvudanh.github.io/vietlott-data/) - Interactive data visualization
+- [Blog Post](https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the) - About this project
 
-## 🎯 Supported Lottery Products
+## Supported Lottery Products
 
 | Product | Link | Description |
 |---------|------|-------------|
-| **Power 6/55** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | Choose 6 numbers from 1-55 |
-| **Power 6/45** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | Choose 6 numbers from 1-45 |
-| **Power 5/35** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535) | Choose 5 numbers from 1-35 |
-| **Keno** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
-| **Max 3D** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
-| **Max 3D Pro** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
-| **Bingo18** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18) | 3 numbers from 0-9 game |
+| **Power 6/55** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | Choose 6 numbers from 1-55 |
+| **Power 6/45** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | Choose 6 numbers from 1-45 |
+| **Power 5/35** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535) | Choose 5 numbers from 1-35 |
+| **Keno** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
+| **Max 3D** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
+| **Max 3D Pro** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
+| **Bingo18** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18) | 3 numbers from 0-9 game |
 
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [🔗 Links](#-links)
-- [🎯 Supported Lottery Products](#-supported-lottery-products)
-- [Predictions](#-predictions)
-- [📊 Data Statistics](#-data-statistics)
-- [📈 Power 6/55 Analysis](#-power-655-analysis)
-  - [📅 Recent Results](#-recent-results)
-  - [🎲 Number Frequency (All Time)](#-number-frequency-all-time)
-  - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period)
-  - [⏳ Top 10 Numbers by Days Since Last Appearance](#-top-10-số-lâu-chưa-xuất-hiện-top-10-numbers-by-days-since-last-appearance)
-  - [📆 Days Since Last Appearance - All Numbers](#-số-ngày-từ-lần-xuất-hiện-cuối-cùng-days-since-last-appearance---all-numbers)
-- [⚙️ How It Works](#️-how-it-works)
-- [🚀 Installation & Usage](#-installation--usage)
-- [📄 License](#-license)
+- [Links](#links)
+- [Supported Lottery Products](#supported-lottery-products)
+- [Predictions](#predictions)
+- [Data Statistics](#data-statistics)
+- [Power 6/55 Analysis](#power-655-analysis)
+  - [Recent Results](#recent-results-last-10-draws)
+  - [Number Frequency (All Time)](#number-frequency-all-time)
+  - [Frequency Analysis by Period](#frequency-analysis-by-period)
+  - [Top 10 Numbers by Days Since Last Appearance](#top-10-numbers-by-days-since-last-appearance)
+  - [Days Since Last Appearance - All Numbers](#days-since-last-appearance---all-numbers)
+- [How It Works](#how-it-works)
+- [Installation & Usage](#installation--usage)
+- [License](#license)
 
 
 ## Predictions
 
-Predicitons models are at [/src/predictions](./src/machine_learning/).
+Prediction models are at [/src/machine_learning](./src/machine_learning/).
 
 For background on these models, see the [Machine Learning README](./src/machine_learning/).
 
-## 📊 Data Statistics
+## Data Statistics
 
 | Product | Total Draws | Start Date | End Date | Total Records | First ID | Latest ID |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -63,9 +62,9 @@ For background on these models, see the [Machine Learning README](./src/machine_
 | 3D Pro | 771 | 2021-09-14 | 2026-09-05 | 771 | 00001 | 00775 |
 | Bingo18 | 641 | 2024-12-03 | 2026-09-06 | 89261 | 0083123 | 0185145 |
 
-## 📈 Power 6/55 Analysis
+## Power 6/55 Analysis
 
-### 📅 Recent Results (Last 10 draws)
+### Recent Results (Last 10 draws)
 | date | id | result | process_time |
 | --- | --- | --- | --- |
 | 2026-09-05 | 01394 | [9, 11, 24, 31, 33, 47, 21] | 2026-09-06T00:01:37.018893 |
@@ -79,7 +78,7 @@ For background on these models, see the [Machine Learning README](./src/machine_
 | 2026-08-18 | 01386 | [3, 15, 18, 38, 41, 48, 30] | 2026-08-19T00:01:15.794745 |
 | 2026-08-15 | 01385 | [16, 20, 25, 27, 30, 50, 2] | 2026-08-16T11:07:54.645332 |
 
-### 🎲 Number Frequency (All Time)
+### Number Frequency (All Time)
 | result | count | % | -1 | 1result | 1count | 1% | -2 | 2result | 2count | 2% |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 1 | 188 | 1.93 |  | 21 | 175 | 1.79 |  | 41 | 206 | 2.11 |
@@ -103,7 +102,7 @@ For background on these models, see the [Machine Learning README](./src/machine_
 | 19 | 174 | 1.78 |  | 39 | 172 | 1.76 |  |  |  |  |
 | 20 | 189 | 1.94 |  | 40 | 194 | 1.99 |  |  |  |  |
 
-### 📊 Frequency Analysis by Period
+### Frequency Analysis by Period
 
 #### Last 30 Days
 | result | count | % | -1 | 1result | 1count | 1% | -2 | 2result | 2count | 2% |
@@ -177,7 +176,7 @@ For background on these models, see the [Machine Learning README](./src/machine_
 | 19 | 4 | 1.47 |  | 39 | 5 | 1.83 |  |  |  |  |
 | 20 | 5 | 1.83 |  | 40 | 8 | 2.93 |  |  |  |  |
 
-### ⏳ Top 10 số lâu chưa xuất hiện (Top 10 Numbers by Days Since Last Appearance)
+### Top 10 Numbers by Days Since Last Appearance
 | result | last_date | days_since |
 | --- | --- | --- |
 | 52 | 2026-06-27 | 70 |
@@ -191,7 +190,7 @@ For background on these models, see the [Machine Learning README](./src/machine_
 | 28 | 2026-07-30 | 37 |
 | 54 | 2026-08-04 | 32 |
 
-### 📆 Số ngày từ lần xuất hiện cuối cùng (Days Since Last Appearance - All Numbers)
+### Days Since Last Appearance - All Numbers
 | result | last_date | days_since |
 | --- | --- | --- |
 | 1 | 2026-09-01 | 4 |
@@ -252,38 +251,37 @@ For background on these models, see the [Machine Learning README](./src/machine_
 
 
 
-## ⚙️ How It Works
+## How It Works
 
-### 🤖 Automated Data Collection
+### Automated Data Collection
 
-This project runs completely automatically using **GitHub Actions** - no server required!
+Data crawling runs on a scheduled local runner because the Vietlott website blocks non-Vietnam IP addresses (see [issue #13](https://github.com/vietvudanh/vietlott-data/issues/13)).
 
-- **⏰ Schedule**: Runs daily via [GitHub Actions workflow](.github/workflows/crawl.yaml)
-- **🔄 Process**: Fetches latest results → Processes data → Commits to repository
-- **📊 Analysis**: Generates statistics and updates README automatically
+- **Schedule**: Scheduled runs execute regularly
+- **Process**: Fetches latest results -> Processes data -> Commits to repository
+- **Analysis**: Generates statistics and updates documentation
 
-### 🕵️ Data Crawling Method
+### Data Crawling Method
 
-The data collection works by:
-1. **🔍 Network Analysis**: Inspecting browser-server communication
-2. **🐍 Python Replication**: Recreating the data fetch logic in Python
-3. **📋 Structured Storage**: Saving results in JSONL format for easy analysis
-4. **🔄 Continuous Updates**: Daily automated runs ensure fresh data
+1. **Network Analysis**: Inspects official website requests and response schemas
+2. **Python Crawler**: Fetches and parses draw result pages
+3. **Structured Storage**: Saves results in NDJSON format for analysis
+4. **Automated Sync**: Updates documentation and statistics with fresh data
 
 > **Note**: This is purely for educational and research purposes. No gambling advice is provided.
 
 
-## 🚀 Installation & Usage
+## Installation & Usage
 
-### 📦 Install via pip
+### Install via pip
 
 ```bash
-pip install -i vietlott-data
+pip install vietlott-data
 ```
 
-### 💻 Command Line Interface
+### Command Line Interface
 
-#### 🔍 Crawl Data
+#### Crawl Data
 
 ```bash
 vietlott-crawl [OPTIONS] PRODUCT
@@ -295,7 +293,7 @@ vietlott-crawl [OPTIONS] PRODUCT
 #   --help               Show help message
 ```
 
-#### 🔧 Backfill Missing Data
+#### Backfill Missing Data
 
 ```bash
 vietlott-missing [OPTIONS] PRODUCT
@@ -307,7 +305,7 @@ vietlott-missing [OPTIONS] PRODUCT
 
 > **Available Products**: power_655, power_645, power_535, keno, 3d, 3d_pro, bingo18
 
-### 🛠️ Development Setup
+### Development Setup
 
 ```bash
 # Clone the repository
@@ -320,13 +318,13 @@ uv sync --dev
 uv run pytest
 ```
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
 <div align="center">
-  <strong>⭐ If you find this project useful, please consider giving it a star!</strong>
+  <strong>If you find this project useful, please consider giving it a star!</strong>
 </div>
 
