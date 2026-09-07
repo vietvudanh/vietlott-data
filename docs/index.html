@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="vi">
+<html lang="vi" data-theme="light">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -78,11 +78,11 @@
             href="https://vietvudanh.github.io/vietlott-data/"
         />
 
-        <!-- Fonts -->
+        <!-- Google Fonts: Figtree (Astryx Sans) & JetBrains Mono -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;900&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
             rel="stylesheet"
         />
 
@@ -108,122 +108,167 @@
             dataLayer.push(arguments);
         }
         gtag("js", new Date());
-
         gtag("config", "G-BQHSD144BE");
     </script>
 
     <body>
-        <div class="container">
-            <!-- Language Toggle -->
-            <div class="language-toggle">
-                <button class="lang-btn" data-lang="vi">Tiếng Việt</button>
-                <button class="lang-btn" data-lang="en">English</button>
-            </div>
+        <!-- Astryx Ambient Background Glow -->
+        <div class="ambient-glow" aria-hidden="true"></div>
 
-            <!-- Header -->
-            <header class="header">
-                <h1 class="title">Vietlott Data</h1>
+        <!-- Sticky Top Navigation -->
+        <header class="top-nav-wrapper">
+            <div class="container">
+                <nav class="top-nav" aria-label="Main Navigation">
+                    <!-- Brand -->
+                    <a href="#" class="brand-link">
+                        <div class="brand-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+                            </svg>
+                        </div>
+                        <span>Vietlott Data</span>
+                        <span class="brand-version">v0.2.0</span>
+                    </a>
+
+                    <!-- Navigation Links -->
+                    <ul class="nav-menu">
+                        <li>
+                            <a href="#overview" class="nav-link" data-vi="Tổng quan" data-en="Overview">Tổng quan</a>
+                        </li>
+                        <li>
+                            <a href="#statistics" class="nav-link" data-vi="Thống kê" data-en="Statistics">Thống kê</a>
+                        </li>
+                        <li>
+                            <a href="#products" class="nav-link" data-vi="Sản phẩm" data-en="Products">Sản phẩm</a>
+                        </li>
+                        <li>
+                            <a href="#analysis" class="nav-link" data-vi="Phân tích" data-en="Analysis">Phân tích</a>
+                        </li>
+                        <li>
+                            <a href="#cli" class="nav-link" data-vi="CLI & Cài đặt" data-en="CLI & Install">CLI & Cài đặt</a>
+                        </li>
+                    </ul>
+
+                    <!-- Controls: Language, Theme, GitHub -->
+                    <div class="nav-actions">
+                        <!-- Language Toggle -->
+                        <div class="segmented-control" role="group" aria-label="Language">
+                            <button class="segmented-btn lang-btn active" data-lang="vi">VI</button>
+                            <button class="segmented-btn lang-btn" data-lang="en">EN</button>
+                        </div>
+
+                        <!-- Theme Toggle -->
+                        <button class="icon-btn theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle dark mode" title="Chuyển chế độ sáng / tối">
+                            <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                            </svg>
+                            <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="4"></circle>
+                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+                            </svg>
+                        </button>
+
+                        <!-- GitHub Link -->
+                        <a href="https://github.com/vietvudanh/vietlott-data" target="_blank" rel="noreferrer" class="icon-btn" aria-label="GitHub Repository" title="GitHub Repository">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z" />
+                            </svg>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-pill">
+                    <span class="status-dot"></span>
+                    <span data-vi="Nền tảng Dữ liệu Xổ số Mở" data-en="Open Lottery Data Platform">Nền tảng Dữ liệu Xổ số Mở</span>
+                </div>
+                <h1 class="hero-title">Vietlott Data</h1>
                 <p
-                    class="subtitle"
-                    data-vi="Thu thập và Phân tích Dữ liệu Xổ số Việt Nam Tự động"
-                    data-en="Automated Vietnamese Lottery Data Collection & Analysis"
+                    class="hero-subtitle"
+                    data-vi="Thu thập, chuẩn hóa và phân tích dữ liệu xổ số Việt Nam tự động hàng ngày"
+                    data-en="Automated Vietnamese lottery data collection, normalization & analytics pipeline"
                 >
-                    Thu thập và Phân tích Dữ liệu Xổ số Việt Nam Tự động
+                    Thu thập, chuẩn hóa và phân tích dữ liệu xổ số Việt Nam tự động hàng ngày
                 </p>
+
+                <!-- Badges -->
                 <div class="badges">
-                    <a href="https://www.python.org/downloads/" class="badge">
-                        <span>Python 3.8+</span>
+                    <a href="https://www.python.org/downloads/" class="badge" target="_blank">
+                        <span>Python 3.11+</span>
                     </a>
                     <a
                         href="https://github.com/vietvudanh/vietlott-data/blob/main/LICENSE"
                         class="badge"
+                        target="_blank"
                     >
                         <span>MIT License</span>
                     </a>
                     <span class="badge badge-green">
-                        <span
-                            data-vi="Cập nhật hàng ngày"
-                            data-en="Daily Updated"
-                            >Cập nhật hàng ngày</span
-                        >
+                        <span data-vi="Cập nhật hàng ngày" data-en="Daily Updated">Cập nhật hàng ngày</span>
                     </span>
-
                     <a
                         href="https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the"
                         class="badge"
                         target="_blank"
                     >
-                        <span data-vi="Bài viết Blog" data-en="Blog Post"
-                            >Bài viết Blog</span
-                        >
+                        <span data-vi="Bài viết Blog" data-en="Blog Post">Bài viết Blog</span>
+                    </a>
+                    <span class="badge">
+                        <span>Polars Powered</span>
+                    </span>
+                </div>
+
+                <!-- Hero Actions -->
+                <div class="hero-actions">
+                    <a href="#statistics" class="btn btn-primary">
+                        <span data-vi="Xem Thống kê Dữ liệu" data-en="Explore Statistics">Xem Thống kê Dữ liệu</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="https://github.com/vietvudanh/vietlott-data" target="_blank" class="btn btn-secondary">
+                        <span data-vi="Mã nguồn GitHub" data-en="GitHub Repository">Mã nguồn GitHub</span>
                     </a>
                 </div>
-            </header>
+            </section>
 
-            <!-- Description -->
-            <section class="section">
+            <!-- Project Overview Card -->
+            <section class="section" id="overview">
                 <div class="card">
-                    <h2
-                        data-vi="Giới thiệu Dự án"
-                        data-en="About This Project"
-                    >
-                        Giới thiệu Dự án
-                    </h2>
+                    <div class="section-header" style="margin-bottom: 0.75rem;">
+                        <span class="section-eyebrow" data-vi="Giới thiệu Dự án" data-en="About This Project">Giới thiệu Dự án</span>
+                        <h2 data-vi="Dữ liệu Xổ số Minh bạch & Toàn diện" data-en="Transparent & Comprehensive Lottery Data">Dữ liệu Xổ số Minh bạch & Toàn diện</h2>
+                    </div>
                     <p
-                        data-vi="Dự án này tự động thu thập và phân tích dữ liệu xổ số Việt Nam từ vietlott.vn, cung cấp thống kê và phân tích toàn diện cho tất cả các sản phẩm xổ số chính."
-                        data-en="This project automatically crawls and analyzes Vietnamese lottery data from vietlott.vn, providing comprehensive statistics and insights for all major lottery products."
+                        data-vi="Dự án tự động thu thập và phân tích dữ liệu xổ số Việt Nam từ vietlott.vn, cung cấp thống kê và phân tích toàn diện cho tất cả các sản phẩm xổ số chính. Dữ liệu được lưu trữ dạng NDJSON chuẩn, sẵn sàng cho phân tích thống kê, mô hình máy học và ứng dụng khai phá dữ liệu."
+                        data-en="This project automatically crawls and analyzes Vietnamese lottery data from vietlott.vn, providing comprehensive statistics and insights for all major lottery products. Data is stored in standard NDJSON format, ready for statistical analysis, machine learning models, and data exploration."
                     >
-                        Dự án này tự động thu thập và phân tích dữ liệu xổ số
-                        Việt Nam từ
-                        <a href="https://vietlott.vn/" target="_blank"
-                            >vietlott.vn</a
-                        >, cung cấp thống kê và phân tích toàn diện cho tất cả
-                        các sản phẩm xổ số chính.
+                        Dự án tự động thu thập và phân tích dữ liệu xổ số Việt Nam từ
+                        <a href="https://vietlott.vn/" target="_blank" rel="noreferrer">vietlott.vn</a>,
+                        cung cấp thống kê và phân tích toàn diện cho tất cả các sản phẩm xổ số chính. Dữ liệu được lưu trữ dạng NDJSON chuẩn, sẵn sàng cho phân tích thống kê, mô hình máy học và ứng dụng khai phá dữ liệu.
                     </p>
                 </div>
             </section>
 
-            <!-- Data Statistics -->
-            <section class="section">
-                <h2
-                    class="section-title"
-                    data-vi="Thống kê Dữ liệu"
-                    data-en="Data Statistics"
-                >
-                    Thống kê Dữ liệu
-                </h2>
-                <div class="card">
+            <!-- Data Statistics Section -->
+            <section class="section" id="statistics">
+                <div class="section-header">
+                    <span class="section-eyebrow" data-vi="Tổng quan Thống kê" data-en="Overview Statistics">Tổng quan Thống kê</span>
+                    <h2 class="section-title" data-vi="Thống kê Dữ liệu Các Sản phẩm" data-en="Lottery Products Statistics">Thống kê Dữ liệu Các Sản phẩm</h2>
+                    <p class="section-description" data-vi="Cập nhật tự động từ kho dữ liệu JSONL đã thu thập" data-en="Automatically synchronized with repository JSONL datasets">Cập nhật tự động từ kho dữ liệu JSONL đã thu thập</p>
+                </div>
+                <div class="card" style="padding: 0; overflow: hidden;">
                     <div class="stats-table">
                         <table>
                             <thead>
                                 <tr>
-                                    <th data-vi="Sản phẩm" data-en="Product">
-                                        Sản phẩm
-                                    </th>
-                                    <th
-                                        data-vi="Tổng số kỳ"
-                                        data-en="Total Draws"
-                                    >
-                                        Tổng số kỳ
-                                    </th>
-                                    <th
-                                        data-vi="Ngày bắt đầu"
-                                        data-en="Start Date"
-                                    >
-                                        Ngày bắt đầu
-                                    </th>
-                                    <th
-                                        data-vi="Ngày kết thúc"
-                                        data-en="End Date"
-                                    >
-                                        Ngày kết thúc
-                                    </th>
-                                    <th
-                                        data-vi="Tổng số bản ghi"
-                                        data-en="Total Records"
-                                    >
-                                        Tổng số bản ghi
-                                    </th>
+                                    <th data-vi="Sản phẩm" data-en="Product">Sản phẩm</th>
+                                    <th data-vi="Tổng số kỳ" data-en="Total Draws">Tổng số kỳ</th>
+                                    <th data-vi="Ngày bắt đầu" data-en="Start Date">Ngày bắt đầu</th>
+                                    <th data-vi="Ngày kết thúc" data-en="End Date">Ngày kết thúc</th>
+                                    <th data-vi="Tổng số bản ghi" data-en="Total Records">Tổng số bản ghi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -282,198 +327,263 @@
                 </div>
             </section>
 
-            <!-- Supported Products -->
-            <section class="section">
-                <h2
-                    class="section-title"
-                    data-vi="Các Sản phẩm Xổ số được Hỗ trợ"
-                    data-en="Supported Lottery Products"
-                >
-                    Các Sản phẩm Xổ số được Hỗ trợ
-                </h2>
+            <!-- Supported Products Grid -->
+            <section class="section" id="products">
+                <div class="section-header">
+                    <span class="section-eyebrow" data-vi="Danh mục Trò chơi" data-en="Game Catalog">Danh mục Trò chơi</span>
+                    <h2 class="section-title" data-vi="Các Sản phẩm Xổ số được Hỗ trợ" data-en="Supported Lottery Products">Các Sản phẩm Xổ số được Hỗ trợ</h2>
+                    <p class="section-description" data-vi="Xem thông tin chi tiết và liên kết tra cứu kết quả chính thức" data-en="Explore details and official results verification links">Xem thông tin chi tiết và liên kết tra cứu kết quả chính thức</p>
+                </div>
                 <div class="products-grid">
-                    <div class="product-card">
-                        <div class="product-header">
-                            <h3>Power 6/55</h3>
-                            <span class="badge">6/55</span>
+                    <!-- Power 6/55 -->
+                    <div class="product-card card-655">
+                        <div>
+                            <div class="product-header">
+                                <div class="product-title-group">
+                                    <div class="product-icon-badge">655</div>
+                                    <div>
+                                        <h3>Power 6/55</h3>
+                                        <div class="status-indicator">
+                                            <span class="status-dot"></span>
+                                            <span data-vi="Thứ 3, 5, 7" data-en="Tue, Thu, Sat">Thứ 3, 5, 7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="product-tag">6/55</span>
+                            </div>
+                            <p data-vi="Chọn 6 số từ 1 đến 55 với 2 giải Jackpot tích lũy giá trị cao." data-en="Pick 6 numbers from 1 to 55 with 2 cumulative high-value Jackpots.">
+                                Chọn 6 số từ 1 đến 55 với 2 giải Jackpot tích lũy giá trị cao.
+                            </p>
                         </div>
-                        <p
-                            data-vi="Chọn 6 số từ 1-55"
-                            data-en="Choose 6 numbers from 1-55"
-                        >
-                            Chọn 6 số từ 1-55
-                        </p>
-                        <a
-                            href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655"
-                            class="btn btn-primary"
-                            target="_blank"
-                        >
-                            <span
-                                data-vi="Xem Kết quả →"
-                                data-en="View Results →"
-                                >Xem Kết quả →</span
+                        <div class="product-footer">
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655"
+                                class="btn btn-primary btn-sm"
+                                target="_blank"
+                                rel="noreferrer"
                             >
-                        </a>
+                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="product-card">
-                        <div class="product-header">
-                            <h3>Power 6/45</h3>
-                            <span class="badge">6/45</span>
+                    <!-- Power 6/45 -->
+                    <div class="product-card card-645">
+                        <div>
+                            <div class="product-header">
+                                <div class="product-title-group">
+                                    <div class="product-icon-badge">645</div>
+                                    <div>
+                                        <h3>Mega 6/45</h3>
+                                        <div class="status-indicator">
+                                            <span class="status-dot"></span>
+                                            <span data-vi="Thứ 4, 6, CN" data-en="Wed, Fri, Sun">Thứ 4, 6, CN</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="product-tag">6/45</span>
+                            </div>
+                            <p data-vi="Chọn 6 số từ 1 đến 45 với Jackpot khởi điểm từ 12 tỷ đồng." data-en="Pick 6 numbers from 1 to 45 with Jackpot starting at 12 billion VND.">
+                                Chọn 6 số từ 1 đến 45 với Jackpot khởi điểm từ 12 tỷ đồng.
+                            </p>
                         </div>
-                        <p
-                            data-vi="Chọn 6 số từ 1-45"
-                            data-en="Choose 6 numbers from 1-45"
-                        >
-                            Chọn 6 số từ 1-45
-                        </p>
-                        <a
-                            href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645"
-                            class="btn btn-primary"
-                            target="_blank"
-                        >
-                            <span
-                                data-vi="Xem Kết quả →"
-                                data-en="View Results →"
-                                >Xem Kết quả →</span
+                        <div class="product-footer">
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645"
+                                class="btn btn-primary btn-sm"
+                                target="_blank"
+                                rel="noreferrer"
                             >
-                        </a>
+                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="product-card">
-                        <div class="product-header">
-                            <h3>Power 5/35</h3>
-                            <span class="badge">5/35</span>
+                    <!-- Power 5/35 -->
+                    <div class="product-card card-535">
+                        <div>
+                            <div class="product-header">
+                                <div class="product-title-group">
+                                    <div class="product-icon-badge">535</div>
+                                    <div>
+                                        <h3>Power 5/35</h3>
+                                        <div class="status-indicator">
+                                            <span class="status-dot"></span>
+                                            <span data-vi="Hàng ngày" data-en="Daily">Hàng ngày</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="product-tag">5/35</span>
+                            </div>
+                            <p data-vi="Chọn 5 số từ 1 đến 35 với tần suất quay số hàng ngày nhanh chóng." data-en="Pick 5 numbers from 1 to 35 with daily rapid draw frequency.">
+                                Chọn 5 số từ 1 đến 35 với tần suất quay số hàng ngày nhanh chóng.
+                            </p>
                         </div>
-                        <p
-                            data-vi="Chọn 5 số từ 1-35"
-                            data-en="Choose 5 numbers from 1-35"
-                        >
-                            Chọn 5 số từ 1-35
-                        </p>
-                        <a
-                            href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535"
-                            class="btn btn-primary"
-                            target="_blank"
-                        >
-                            <span
-                                data-vi="Xem Kết quả →"
-                                data-en="View Results →"
-                                >Xem Kết quả →</span
+                        <div class="product-footer">
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535"
+                                class="btn btn-primary btn-sm"
+                                target="_blank"
+                                rel="noreferrer"
                             >
-                        </a>
+                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="product-card">
-                        <div class="product-header">
-                            <h3>Keno</h3>
-                            <span class="badge">Keno</span>
+                    <!-- Keno -->
+                    <div class="product-card card-keno">
+                        <div>
+                            <div class="product-header">
+                                <div class="product-title-group">
+                                    <div class="product-icon-badge">KENO</div>
+                                    <div>
+                                        <h3>Keno</h3>
+                                        <div class="status-indicator">
+                                            <span class="status-dot"></span>
+                                            <span data-vi="10 phút / kỳ" data-en="Every 10 mins">10 phút / kỳ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="product-tag">Keno</span>
+                            </div>
+                            <p data-vi="Xổ số quay nhanh 10 phút một lần, 96 kỳ mỗi ngày từ 06:00 đến 21:50." data-en="Fast-paced lottery drawn every 10 minutes, 96 draws daily from 06:00 to 21:50.">
+                                Xổ số quay nhanh 10 phút một lần, 96 kỳ mỗi ngày từ 06:00 đến 21:50.
+                            </p>
                         </div>
-                        <p
-                            data-vi="Trò chơi số nhanh"
-                            data-en="Fast-pace number game"
-                        >
-                            Trò chơi số nhanh
-                        </p>
-                        <a
-                            href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno"
-                            class="btn btn-primary"
-                            target="_blank"
-                        >
-                            <span
-                                data-vi="Xem Kết quả →"
-                                data-en="View Results →"
-                                >Xem Kết quả →</span
+                        <div class="product-footer">
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno"
+                                class="btn btn-primary btn-sm"
+                                target="_blank"
+                                rel="noreferrer"
                             >
-                        </a>
+                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="product-card">
-                        <div class="product-header">
-                            <h3>Max 3D</h3>
-                            <span class="badge">3D</span>
+                    <!-- Max 3D -->
+                    <div class="product-card card-3d">
+                        <div>
+                            <div class="product-header">
+                                <div class="product-title-group">
+                                    <div class="product-icon-badge">3D</div>
+                                    <div>
+                                        <h3>Max 3D</h3>
+                                        <div class="status-indicator">
+                                            <span class="status-dot"></span>
+                                            <span data-vi="Thứ 2, 4, 6" data-en="Mon, Wed, Fri">Thứ 2, 4, 6</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="product-tag">3D</span>
+                            </div>
+                            <p data-vi="Trò chơi xổ số 3 chữ số quen thuộc với nhiều hạng giải thưởng hấp dẫn." data-en="Classic 3-digit lottery game with multiple exciting prize tiers.">
+                                Trò chơi xổ số 3 chữ số quen thuộc với nhiều hạng giải thưởng hấp dẫn.
+                            </p>
                         </div>
-                        <p
-                            data-vi="Trò chơi xổ số 3 chữ số"
-                            data-en="3-digit lottery game"
-                        >
-                            Trò chơi xổ số 3 chữ số
-                        </p>
-                        <a
-                            href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d"
-                            class="btn btn-primary"
-                            target="_blank"
-                        >
-                            <span
-                                data-vi="Xem Kết quả →"
-                                data-en="View Results →"
-                                >Xem Kết quả →</span
+                        <div class="product-footer">
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d"
+                                class="btn btn-primary btn-sm"
+                                target="_blank"
+                                rel="noreferrer"
                             >
-                        </a>
+                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="product-card">
-                        <div class="product-header">
-                            <h3>Max 3D Pro</h3>
-                            <span class="badge">3D Pro</span>
+                    <!-- Max 3D Pro -->
+                    <div class="product-card card-3dpro">
+                        <div>
+                            <div class="product-header">
+                                <div class="product-title-group">
+                                    <div class="product-icon-badge">PRO</div>
+                                    <div>
+                                        <h3>Max 3D Pro</h3>
+                                        <div class="status-indicator">
+                                            <span class="status-dot"></span>
+                                            <span data-vi="Thứ 3, 5, 7" data-en="Tue, Thu, Sat">Thứ 3, 5, 7</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="product-tag">3D Pro</span>
+                            </div>
+                            <p data-vi="Phiên bản nâng cấp của Max 3D với cơ hội trúng giải đặc biệt lên tới hàng tỷ đồng." data-en="Enhanced Max 3D edition with special prize potential up to billions of VND.">
+                                Phiên bản nâng cấp của Max 3D với cơ hội trúng giải đặc biệt lên tới hàng tỷ đồng.
+                            </p>
                         </div>
-                        <p
-                            data-vi="Xổ số 3D nâng cao"
-                            data-en="Enhanced 3D lottery"
-                        >
-                            Xổ số 3D nâng cao
-                        </p>
-                        <a
-                            href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro"
-                            class="btn btn-primary"
-                            target="_blank"
-                        >
-                            <span
-                                data-vi="Xem Kết quả →"
-                                data-en="View Results →"
-                                >Xem Kết quả →</span
+                        <div class="product-footer">
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro"
+                                class="btn btn-primary btn-sm"
+                                target="_blank"
+                                rel="noreferrer"
                             >
-                        </a>
+                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="product-card">
-                        <div class="product-header">
-                            <h3>Bingo18</h3>
-                            <span class="badge">Bingo18</span>
+                    <!-- Bingo18 -->
+                    <div class="product-card card-bingo18">
+                        <div>
+                            <div class="product-header">
+                                <div class="product-title-group">
+                                    <div class="product-icon-badge">B18</div>
+                                    <div>
+                                        <h3>Bingo18</h3>
+                                        <div class="status-indicator">
+                                            <span class="status-dot"></span>
+                                            <span data-vi="10 phút / kỳ" data-en="Every 10 mins">10 phút / kỳ</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="product-tag">Bingo18</span>
+                            </div>
+                            <p data-vi="Trò chơi số nhanh dựa trên 3 số từ 1 đến 6 với xác suất trúng thưởng cao." data-en="Fast number game drawn from 1 to 6 with frequent prize opportunities.">
+                                Trò chơi số nhanh dựa trên 3 số từ 1 đến 6 với xác suất trúng thưởng cao.
+                            </p>
                         </div>
-                        <p
-                            data-vi="Trò chơi 3 số từ 0-9"
-                            data-en="3 numbers from 0-9 game"
-                        >
-                            Trò chơi 3 số từ 0-9
-                        </p>
-                        <a
-                            href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18"
-                            class="btn btn-primary"
-                            target="_blank"
-                        >
-                            <span
-                                data-vi="Xem Kết quả →"
-                                data-en="View Results →"
-                                >Xem Kết quả →</span
+                        <div class="product-footer">
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18"
+                                class="btn btn-primary btn-sm"
+                                target="_blank"
+                                rel="noreferrer"
                             >
-                        </a>
+                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- Days Since Last Appearance (Power 6/55) -->
             <!-- BEGIN_DAYS_SINCE_SECTION -->
-            <section class="section">
-                <h2
-                    class="section-title"
-                    data-vi="Phân tích Power 6/55 - Số ngày vắng mặt"
-                    data-en="Power 6/55 - Days Since Last Appearance"
-                >
-                    Power 6/55 - Days Since Last Appearance
-                </h2>
+            <section class="section" id="analysis">
+                <div class="section-header">
+                    <span class="section-eyebrow" data-vi="Phân tích Thống kê" data-en="Statistical Analysis">Phân tích Thống kê</span>
+                    <h2
+                        class="section-title"
+                        data-vi="Phân tích Power 6/55 - Số ngày vắng mặt"
+                        data-en="Power 6/55 - Days Since Last Appearance"
+                    >
+                        Power 6/55 - Days Since Last Appearance
+                    </h2>
+                </div>
                 <div class="card">
                     <h3
+                        style="margin-bottom: 1rem"
                         data-vi="Top 10 số lâu chưa xuất hiện"
                         data-en="Top 10 Numbers by Days Since Last Appearance"
                     >
@@ -525,12 +635,12 @@
                                     <td>37</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>28</strong></td>
+                                    <td><strong>43</strong></td>
                                     <td>2026-07-30</td>
                                     <td>37</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>43</strong></td>
+                                    <td><strong>28</strong></td>
                                     <td>2026-07-30</td>
                                     <td>37</td>
                                 </tr>
@@ -543,8 +653,9 @@
                         </table>
                     </div>
                 </div>
-                <div class="card" style="margin-top:1rem">
+                <div class="card" style="margin-top: 1.25rem">
                     <h3
+                        style="margin-bottom: 1rem"
                         data-vi="Số ngày từ lần xuất hiện cuối cùng (tất cả các số)"
                         data-en="Days Since Last Appearance (All Numbers)"
                     >
@@ -844,290 +955,221 @@
 
             <!-- BEGIN_MACHINE_LEARNING_SECTION -->
             <section class="section">
-                <h2 class="section-title">
-                    <a
-                        href="https://github.com/vietvudanh/vietlott-data/blob/main/src/machine_learning"
-                        target="_blank"
-                        rel="noreferrer"
-                        class="section-title-link"
-                    ><span
-                            data-vi="Phân tích Machine Learning →"
-                            data-en="Machine Learning Analysis →"
-                        >Phân tích Machine Learning →</span
-                    ></a>
-                </h2>
+                <a
+                    href="https://github.com/vietvudanh/vietlott-data/blob/main/src/machine_learning"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="ml-card-banner"
+                >
+                    <div class="ml-card-content">
+                        <div class="ml-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                        </div>
+                        <div class="ml-card-text">
+                            <h3 data-vi="Phân tích Machine Learning →" data-en="Machine Learning Analysis →">Phân tích Machine Learning →</h3>
+                            <p data-vi="Khám phá các mô hình dự đoán và backtest dữ liệu xổ số Vietlott" data-en="Explore prediction models and backtesting for Vietlott lottery data">Khám phá các mô hình dự đoán và backtest dữ liệu xổ số Vietlott</p>
+                        </div>
+                    </div>
+                    <div class="ml-card-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                </a>
             </section>
             <!-- END_MACHINE_LEARNING_SECTION -->
 
-            <!-- How It Works -->
+            <!-- Key Features / How It Works -->
             <section class="section">
-                <h2
-                    class="section-title"
-                    data-vi="Cách Hoạt động"
-                    data-en="How It Works"
-                >
-                    Cách Hoạt động
-                </h2>
+                <div class="section-header">
+                    <span class="section-eyebrow" data-vi="Kiến trúc Dự án" data-en="Architecture">Kiến trúc Dự án</span>
+                    <h2 class="section-title" data-vi="Tính năng Nổi bật" data-en="Key Features">Tính năng Nổi bật</h2>
+                    <p class="section-description" data-vi="Quy trình tự động hóa thu thập và xử lý dữ liệu mạnh mẽ" data-en="Robust automated collection and data processing pipeline">Quy trình tự động hóa thu thập và xử lý dữ liệu mạnh mẽ</p>
+                </div>
                 <div class="features-grid">
                     <div class="feature-card">
-                        <div class="feature-number">01</div>
-                        <h3
-                            data-vi="Lịch trình Tự động"
-                            data-en="Automated Schedule"
-                        >
-                            Lịch trình Tự động
-                        </h3>
-                        <p
-                            data-vi="Chạy định kỳ tự động và cập nhật dữ liệu mới nhất vào kho lưu trữ."
-                            data-en="Scheduled automated runs fetch and update latest data in the repository."
-                        >
-                            Chạy định kỳ tự động và cập nhật dữ liệu mới nhất vào kho lưu trữ.
+                        <div class="feature-icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                        </div>
+                        <h3 data-vi="Tự động Hóa Định kỳ" data-en="Automated Scheduling">Tự động Hóa Định kỳ</h3>
+                        <p data-vi="Bộ thu thập chạy định kỳ theo lịch trình chính thức của Vietlott, cập nhật kết quả mới nhất ngay sau mỗi kỳ quay." data-en="Crawler runs on schedule matching official Vietlott draws, fetching fresh results right after every draw.">
+                            Bộ thu thập chạy định kỳ theo lịch trình chính thức của Vietlott, cập nhật kết quả mới nhất ngay sau mỗi kỳ quay.
                         </p>
                     </div>
 
                     <div class="feature-card">
-                        <div class="feature-number">02</div>
-                        <h3 data-vi="Xử lý Dữ liệu" data-en="Data Processing">
-                            Xử lý Dữ liệu
-                        </h3>
-                        <p
-                            data-vi="Lấy kết quả mới nhất, xử lý dữ liệu và commit vào repository"
-                            data-en="Fetches latest results, processes data, and commits to repository"
-                        >
-                            Lấy kết quả mới nhất, xử lý dữ liệu và commit vào
-                            repository
+                        <div class="feature-icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        </div>
+                        <h3 data-vi="Định dạng NDJSON Chuẩn" data-en="Standard NDJSON Format">Định dạng NDJSON Chuẩn</h3>
+                        <p data-vi="Dữ liệu được lưu trữ dạng Newline Delimited JSON, tối ưu cho xử lý stream, append liên tục và tương thích Polars/Pandas." data-en="Data stored as Newline Delimited JSON, optimized for stream processing, clean appends, and Polars/Pandas.">
+                            Dữ liệu được lưu trữ dạng Newline Delimited JSON, tối ưu cho xử lý stream, append liên tục và tương thích Polars/Pandas.
                         </p>
                     </div>
 
                     <div class="feature-card">
-                        <div class="feature-number">03</div>
-                        <h3 data-vi="Phân tích" data-en="Analysis">
-                            Phân tích
-                        </h3>
-                        <p
-                            data-vi="Tạo thống kê và tự động cập nhật README"
-                            data-en="Generates statistics and updates README automatically"
-                        >
-                            Tạo thống kê và tự động cập nhật README
-                        </p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-number">04</div>
-                        <h3 data-vi="Phân tích Mạng" data-en="Network Analysis">
-                            Phân tích Mạng
-                        </h3>
-                        <p
-                            data-vi="Kiểm tra giao tiếp trình duyệt-máy chủ để hiểu luồng dữ liệu"
-                            data-en="Inspects browser-server communication to understand data flow"
-                        >
-                            Kiểm tra giao tiếp trình duyệt-máy chủ để hiểu luồng
-                            dữ liệu
-                        </p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-number">05</div>
-                        <h3
-                            data-vi="Sao chép Python"
-                            data-en="Python Replication"
-                        >
-                            Sao chép Python
-                        </h3>
-                        <p
-                            data-vi="Tái tạo logic lấy dữ liệu bằng Python để tự động hóa"
-                            data-en="Recreates data fetch logic in Python for automation"
-                        >
-                            Tái tạo logic lấy dữ liệu bằng Python để tự động hóa
-                        </p>
-                    </div>
-
-                    <div class="feature-card">
-                        <div class="feature-number">06</div>
-                        <h3
-                            data-vi="Lưu trữ có Cấu trúc"
-                            data-en="Structured Storage"
-                        >
-                            Lưu trữ có Cấu trúc
-                        </h3>
-                        <p
-                            data-vi="Lưu kết quả dưới định dạng JSONL để phân tích dễ dàng"
-                            data-en="Saves results in JSONL format for easy analysis"
-                        >
-                            Lưu kết quả dưới định dạng JSONL để phân tích dễ
-                            dàng
+                        <div class="feature-icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                        </div>
+                        <h3 data-vi="Giao diện CLI Tiện lợi" data-en="Convenient CLI Tools">Giao diện CLI Tiện lợi</h3>
+                        <p data-vi="Cung cấp sẵn các lệnh CLI vietlott-crawl và vietlott-missing để dễ dàng cào dữ liệu mới hoặc bù đắp các kỳ thiếu." data-en="Built-in CLI commands vietlott-crawl and vietlott-missing to easily fetch data or backfill gaps.">
+                            Cung cấp sẵn các lệnh CLI vietlott-crawl và vietlott-missing để dễ dàng cào dữ liệu mới hoặc bù đắp các kỳ thiếu.
                         </p>
                     </div>
                 </div>
             </section>
 
-            <!-- Installation -->
-            <section class="section">
-                <h2
-                    class="section-title"
-                    data-vi="Cài đặt & Sử dụng"
-                    data-en="Installation & Usage"
-                >
-                    Cài đặt & Sử dụng
-                </h2>
+            <!-- Installation & CLI Section -->
+            <section class="section" id="cli">
+                <div class="section-header">
+                    <span class="section-eyebrow" data-vi="Hướng dẫn Sử dụng" data-en="Usage Guide">Hướng dẫn Sử dụng</span>
+                    <h2 class="section-title" data-vi="Cài đặt & Giao diện Dòng lệnh" data-en="Installation & CLI Guide">Cài đặt & Giao diện Dòng lệnh</h2>
+                    <p class="section-description" data-vi="Tích hợp vào project Python hoặc chạy trực tiếp bằng công cụ dòng lệnh" data-en="Integrate into your Python pipeline or run standalone CLI tools">Tích hợp vào project Python hoặc chạy trực tiếp bằng công cụ dòng lệnh</p>
+                </div>
+
                 <div class="card">
-                    <h3
-                        data-vi="Cài đặt qua pip"
-                        data-en="Install via pip"
-                    >
-                        Cài đặt qua pip
-                    </h3>
-                    <div class="code-block">
-                        <code
-                            >pip install -i https://test.pypi.org/simple/
-                            vietlott-data</code
-                        >
+                    <h3 data-vi="Cài đặt thư viện" data-en="Package Installation" style="margin-bottom: 0.5rem;">Cài đặt thư viện</h3>
+                    <p data-vi="Cài đặt thông qua uv (khuyến nghị) hoặc pip:" data-en="Install using uv (recommended) or pip:">Cài đặt thông qua uv (khuyến nghị) hoặc pip:</p>
+
+                    <div class="code-card">
+                        <div class="code-card-header">
+                            <div class="code-dots">
+                                <span class="code-dot dot-red"></span>
+                                <span class="code-dot dot-yellow"></span>
+                                <span class="code-dot dot-green"></span>
+                            </div>
+                            <span class="code-card-title">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this, code-install)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                <span>Copy</span>
+                            </button>
+                        </div>
+                        <pre class="code-block"><code id="code-install"><span class="code-comment"># Khuyến nghị sử dụng uv</span>
+<span class="code-prompt">$</span><span class="code-cmd">uv add vietlott-data</span>
+
+<span class="code-comment"># Hoặc sử dụng pip thông thường</span>
+<span class="code-prompt">$</span><span class="code-cmd">pip install vietlott-data</span></code></pre>
                     </div>
-                    <p style="margin-top: 0.5rem; font-size: 0.9rem">
-                        <em
-                            ><span data-vi="Kiểm tra" data-en="Check"
-                                >Kiểm tra</span
-                            >
-                            <a
-                                href="https://github.com/vietvudanh/vietlott-data/releases"
-                                target="_blank"
-                                >releases</a
-                            >
-                            <span
-                                data-vi="để biết phiên bản mới nhất"
-                                data-en="for the latest version"
-                                >để biết phiên bản mới nhất</span
-                            ></em
-                        >
-                    </p>
 
-                    <h3
-                        data-vi="Giao diện Dòng lệnh"
-                        data-en="Command Line Interface"
-                    >
-                        Giao diện Dòng lệnh
-                    </h3>
-                    <div class="cli-examples">
-                        <div class="cli-example">
-                            <h4
-                                data-vi="Thu thập Dữ liệu"
-                                data-en="Crawl Data"
-                            >
-                                Thu thập Dữ liệu
-                            </h4>
-                            <div class="code-block">
-                                <code>vietlott-crawl [OPTIONS] PRODUCT</code>
-                            </div>
-                        </div>
+                    <h3 data-vi="Sử dụng CLI Crawler" data-en="CLI Crawler Usage" style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Sử dụng CLI Crawler</h3>
+                    <p data-vi="Thu thập dữ liệu các sản phẩm xổ số theo tên:" data-en="Crawl lottery data by product name:">Thu thập dữ liệu các sản phẩm xổ số theo tên:</p>
 
-                        <div class="cli-example">
-                            <h4
-                                data-vi="Điền Dữ liệu Thiếu"
-                                data-en="Backfill Missing Data"
-                            >
-                                Điền Dữ liệu Thiếu
-                            </h4>
-                            <div class="code-block">
-                                <code>vietlott-missing [OPTIONS] PRODUCT</code>
+                    <div class="code-card">
+                        <div class="code-card-header">
+                            <div class="code-dots">
+                                <span class="code-dot dot-red"></span>
+                                <span class="code-dot dot-yellow"></span>
+                                <span class="code-dot dot-green"></span>
                             </div>
+                            <span class="code-card-title">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this, code-crawl)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                                <span>Copy</span>
+                            </button>
                         </div>
+                        <pre class="code-block"><code id="code-crawl"><span class="code-comment"># Thu thập kỳ mới nhất cho Power 6/55</span>
+<span class="code-prompt">$</span><span class="code-cmd">vietlott-crawl power_655</span>
+
+<span class="code-comment"># Thu thập dữ liệu Keno</span>
+<span class="code-prompt">$</span><span class="code-cmd">vietlott-crawl keno</span>
+
+<span class="code-comment"># Tìm kiếm và bù đắp các kỳ mở thưởng còn thiếu</span>
+<span class="code-prompt">$</span><span class="code-cmd">vietlott-missing power_655</span></code></pre>
                     </div>
                 </div>
             </section>
 
-            <!-- Disclaimer -->
+            <!-- Disclaimer Card -->
             <section class="section">
-                <div class="card disclaimer">
-                    <h3
-                        data-vi="Tuyên bố Miễn trừ Trách nhiệm"
-                        data-en="Disclaimer"
-                    >
-                        Tuyên bố Miễn trừ Trách nhiệm
-                    </h3>
-                    <p
-                        data-vi="Dự án này chỉ dành cho mục đích giáo dục và nghiên cứu. Kết quả xổ số là ngẫu nhiên và không thể dự đoán chính xác. Không cung cấp bất kỳ lời khuyên đánh bạc nào."
-                        data-en="This is purely for educational and research purposes. Lottery outcomes are random and cannot be predicted reliably. No gambling advice is provided."
-                    >
-                        Dự án này chỉ dành cho mục đích giáo dục và nghiên cứu.
-                        Kết quả xổ số là ngẫu nhiên và không thể dự đoán chính
-                        xác. Không cung cấp bất kỳ lời khuyên đánh bạc nào.
-                    </p>
+                <div class="disclaimer">
+                    <div class="disclaimer-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    </div>
+                    <div>
+                        <h4 data-vi="Tuyên bố Miễn trừ Trách nhiệm" data-en="Disclaimer">Tuyên bố Miễn trừ Trách nhiệm</h4>
+                        <p
+                            data-vi="Dự án này chỉ dành cho mục đích giáo dục, nghiên cứu dữ liệu và phân tích thống kê. Kết quả xổ số là hoàn toàn ngẫu nhiên và không thể dự đoán chính xác. Dự án không cung cấp bất kỳ lời khuyên đánh bạc hay bảo đảm trúng thưởng nào."
+                            data-en="This project is strictly for educational, data research, and statistical analysis purposes. Lottery outcomes are random and cannot be predicted reliably. No gambling advice or winning guarantee is provided."
+                        >
+                            Dự án này chỉ dành cho mục đích giáo dục, nghiên cứu dữ liệu và phân tích thống kê. Kết quả xổ số là hoàn toàn ngẫu nhiên và không thể dự đoán chính xác. Dự án không cung cấp bất kỳ lời khuyên đánh bạc hay bảo đảm trúng thưởng nào.
+                        </p>
+                    </div>
                 </div>
             </section>
+        </main>
 
-            <!-- Footer -->
-            <footer class="footer">
-                <p>
-                    <a
-                        href="https://github.com/vietvudanh/vietlott-data"
-                        class="btn btn-secondary"
-                        target="_blank"
-                    >
-                        <span
-                            data-vi="Star trên GitHub"
-                            data-en="Star on GitHub"
-                            >Star trên GitHub</span
-                        >
-                    </a>
-                </p>
-                <p class="footer-text">
-                    <span
-                        data-vi="Được cấp phép theo Giấy phép MIT"
-                        data-en="Licensed under MIT License"
-                        >Được cấp phép theo Giấy phép MIT</span
-                    >
-                    |
-                    <a
-                        href="https://github.com/vietvudanh/vietlott-data/blob/main/LICENSE"
-                        target="_blank"
-                        data-vi="Xem Giấy phép"
-                        data-en="View License"
-                        >Xem Giấy phép</a
-                    >
-                </p>
-            </footer>
-        </div>
+        <!-- Minimalist Astryx Footer -->
+        <footer class="footer">
+            <div class="container footer-content">
+                <div>
+                    <strong>Vietlott Data</strong> &copy; 2026.
+                    <span data-vi="Mã nguồn mở theo giấy phép MIT." data-en="Open source under MIT License.">Mã nguồn mở theo giấy phép MIT.</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com/vietvudanh/vietlott-data" target="_blank" rel="noreferrer">GitHub</a>
+                    <a href="https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the" target="_blank" rel="noreferrer">Blog</a>
+                    <a href="https://vietlott.vn" target="_blank" rel="noreferrer">vietlott.vn</a>
+                    <span class="footer-badge">
+                        Inspired by <strong style="margin-left: 2px;">Astryx</strong>
+                    </span>
+                </div>
+            </div>
+        </footer>
 
-        <!-- Language Toggle Script -->
+        <!-- Scripts: Language, Theme Toggle, Copy Code -->
         <script>
-            // Default language: Vietnamese
-            let currentLang = "vi";
-
-            // Load saved language preference
-            const savedLang = localStorage.getItem("vietlott-lang");
-            if (savedLang) {
-                currentLang = savedLang;
+            // -------------------------------------------------------------
+            // Theme Management (Light / Dark)
+            // -------------------------------------------------------------
+            function getPreferredTheme() {
+                const storedTheme = localStorage.getItem("vietlott-theme");
+                if (storedTheme) {
+                    return storedTheme;
+                }
+                const existingTheme = document.documentElement.getAttribute("data-theme");
+                if (existingTheme && existingTheme !== "auto") {
+                    return existingTheme;
+                }
+                return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "dark"
+                    : "light";
             }
 
-            // Function to switch language
+            function setTheme(theme) {
+                document.documentElement.setAttribute("data-theme", theme);
+                localStorage.setItem("vietlott-theme", theme);
+            }
+
+            // Initialize Theme
+            setTheme(getPreferredTheme());
+
+            document.getElementById("themeToggleBtn").addEventListener("click", function () {
+                const current = document.documentElement.getAttribute("data-theme") || "light";
+                const next = current === "dark" ? "light" : "dark";
+                setTheme(next);
+            });
+
+            // -------------------------------------------------------------
+            // Language Management (VI / EN)
+            // -------------------------------------------------------------
+            let currentLang = localStorage.getItem("vietlott-lang") || "vi";
+
             function switchLanguage(lang) {
                 currentLang = lang;
                 localStorage.setItem("vietlott-lang", lang);
-
-                // Update HTML lang attribute
                 document.documentElement.lang = lang;
 
-                // Update all elements with data-vi and data-en attributes
-                document
-                    .querySelectorAll("[data-vi][data-en]")
-                    .forEach((element) => {
-                        const text = element.getAttribute("data-" + lang);
-                        // Fallback to default language (vi) if translation is missing
-                        const fallbackText =
-                            text || element.getAttribute("data-vi");
+                document.querySelectorAll("[data-vi][data-en]").forEach((element) => {
+                    const text = element.getAttribute("data-" + lang) || element.getAttribute("data-vi");
+                    if (!text) return;
 
-                        if (!fallbackText) return; // Skip if no translation available
+                    if (element.tagName === "TITLE") {
+                        element.textContent = text;
+                    } else if (element.tagName === "META") {
+                        element.setAttribute("content", text);
+                    } else {
+                        element.textContent = text;
+                    }
+                });
 
-                        if (element.tagName === "TITLE") {
-                            element.textContent = fallbackText;
-                        } else if (element.tagName === "META") {
-                            element.setAttribute("content", fallbackText);
-                        } else {
-                            element.textContent = fallbackText;
-                        }
-                    });
-
-                // Update active button state
                 document.querySelectorAll(".lang-btn").forEach((btn) => {
                     if (btn.getAttribute("data-lang") === lang) {
                         btn.classList.add("active");
@@ -1136,23 +1178,15 @@
                     }
                 });
 
-                // Update og:locale
-                const ogLocale = document.querySelector(
-                    'meta[property="og:locale"]',
-                );
+                const ogLocale = document.querySelector("meta[property=\"og:locale\"]");
                 if (ogLocale) {
-                    ogLocale.setAttribute(
-                        "content",
-                        lang === "vi" ? "vi_VN" : "en_US",
-                    );
+                    ogLocale.setAttribute("content", lang === "vi" ? "vi_VN" : "en_US");
                 }
             }
 
-            // Initialize language on page load
             document.addEventListener("DOMContentLoaded", function () {
                 switchLanguage(currentLang);
 
-                // Add click handlers to language buttons
                 document.querySelectorAll(".lang-btn").forEach((btn) => {
                     btn.addEventListener("click", function () {
                         const lang = this.getAttribute("data-lang");
@@ -1160,6 +1194,30 @@
                     });
                 });
             });
+
+            // -------------------------------------------------------------
+            // Copy Code to Clipboard
+            // -------------------------------------------------------------
+            function copyCode(button, codeId) {
+                const codeEl = document.getElementById(codeId);
+                if (!codeEl) return;
+
+                const textToCopy = codeEl.innerText
+                    .split("\n")
+                    .map(line => line.replace(/^\$\s*/, "")) // remove leading prompt
+                    .join("\n");
+
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const labelSpan = button.querySelector("span");
+                    const originalText = labelSpan ? labelSpan.textContent : "Copy";
+                    if (labelSpan) labelSpan.textContent = "Copied!";
+                    setTimeout(() => {
+                        if (labelSpan) labelSpan.textContent = originalText;
+                    }, 2000);
+                }).catch(err => {
+                    console.error("Failed to copy:", err);
+                });
+            }
         </script>
     </body>
 </html>
