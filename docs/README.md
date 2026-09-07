@@ -1,6 +1,6 @@
 # GitHub Pages Setup Instructions
 
-This repository includes a GitHub Pages site with neobrutalism design that displays lottery data statistics.
+This repository includes a GitHub Pages site with a modern design inspired by Meta's Astryx design system that displays lottery data statistics.
 
 ## Keeping Data Up to Date
 
@@ -42,12 +42,13 @@ You can also manually trigger the deployment:
 
 ## Design
 
-The site features a **neobrutalism design** with:
-- Bold black borders
-- Vibrant colors (yellow, red, blue, green, purple, orange)
-- Drop shadows for depth
-- Responsive layout
-- Clean, brutalist aesthetics
+The site features a modern design system inspired by **Astryx** (Meta Design System):
+- Clean typography using Figtree and JetBrains Mono
+- Light & dark mode with smooth theme transitions
+- Glassmorphic sticky top navigation with language switcher
+- Interactive component cards with live status indicators and categorical color tokens
+- Refined tables and macOS-styled terminal code blocks
+- Fully responsive layout without any npm dependencies
 
 ## Updating Content
 
