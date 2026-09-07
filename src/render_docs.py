@@ -166,16 +166,20 @@ class DocsRenderer:
         all_rows = self._generate_days_since_rows(all_numbers)
 
         return f"""<!-- BEGIN_DAYS_SINCE_SECTION -->
-            <section class="section">
-                <h2
-                    class="section-title"
-                    data-vi="Phân tích Power 6/55 - Số ngày vắng mặt"
-                    data-en="Power 6/55 - Days Since Last Appearance"
-                >
-                    Power 6/55 - Days Since Last Appearance
-                </h2>
+            <section class="section" id="analysis">
+                <div class="section-header">
+                    <span class="section-eyebrow" data-vi="Phân tích Thống kê" data-en="Statistical Analysis">Phân tích Thống kê</span>
+                    <h2
+                        class="section-title"
+                        data-vi="Phân tích Power 6/55 - Số ngày vắng mặt"
+                        data-en="Power 6/55 - Days Since Last Appearance"
+                    >
+                        Power 6/55 - Days Since Last Appearance
+                    </h2>
+                </div>
                 <div class="card">
                     <h3
+                        style="margin-bottom: 1rem"
                         data-vi="Top 10 số lâu chưa xuất hiện"
                         data-en="Top 10 Numbers by Days Since Last Appearance"
                     >
@@ -196,8 +200,9 @@ class DocsRenderer:
                         </table>
                     </div>
                 </div>
-                <div class="card" style="margin-top:1rem">
+                <div class="card" style="margin-top: 1.25rem">
                     <h3
+                        style="margin-bottom: 1rem"
                         data-vi="Số ngày từ lần xuất hiện cuối cùng (tất cả các số)"
                         data-en="Days Since Last Appearance (All Numbers)"
                     >
@@ -264,18 +269,25 @@ class DocsRenderer:
 
             ml_section = f"""<!-- BEGIN_MACHINE_LEARNING_SECTION -->
             <section class="section">
-                <h2 class="section-title">
-                    <a
-                        href="{ML_README_URL}"
-                        target="_blank"
-                        rel="noreferrer"
-                        class="section-title-link"
-                    ><span
-                            data-vi="Phân tích Machine Learning →"
-                            data-en="Machine Learning Analysis →"
-                        >Phân tích Machine Learning →</span
-                    ></a>
-                </h2>
+                <a
+                    href="{ML_README_URL}"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="ml-card-banner"
+                >
+                    <div class="ml-card-content">
+                        <div class="ml-card-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                        </div>
+                        <div class="ml-card-text">
+                            <h3 data-vi="Phân tích Machine Learning →" data-en="Machine Learning Analysis →">Phân tích Machine Learning →</h3>
+                            <p data-vi="Khám phá các mô hình dự đoán và backtest dữ liệu xổ số Vietlott" data-en="Explore prediction models and backtesting for Vietlott lottery data">Khám phá các mô hình dự đoán và backtest dữ liệu xổ số Vietlott</p>
+                        </div>
+                    </div>
+                    <div class="ml-card-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                </a>
             </section>
             <!-- END_MACHINE_LEARNING_SECTION -->"""
             ml_pattern = r"<!-- BEGIN_MACHINE_LEARNING_SECTION -->.*?<!-- END_MACHINE_LEARNING_SECTION -->"
