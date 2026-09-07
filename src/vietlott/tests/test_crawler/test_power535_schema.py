@@ -44,4 +44,4 @@ def test_power535_schema_structure():
     assert len(rendered_object["ArrayNumbers"]) == 5  # 5 rows
     assert len(rendered_object["ArrayNumbers"][0]) == 15  # 15 columns per row
 
-    print("✓ Power 535 schema validates correctly")
+    print("Power 535 schema validates correctly")

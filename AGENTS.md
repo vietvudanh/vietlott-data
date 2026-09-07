@@ -7,24 +7,22 @@
 - **Build**: `make build` (includes lint and test)
 
 ## Project Overview
-This project is a Python-based data pipeline that automatically crawls, analyzes, and stores Vietnamese lottery data from the official Vietlott website. It provides a command-line interface (CLI) for manual data crawling and backfilling, and it is configured to run daily using GitHub Actions.
+This project is a Python-based data pipeline that crawls, analyzes, and stores Vietnamese lottery data from the official Vietlott website. It provides a CLI for crawling and backfilling data. Scheduled crawling runs on local/on-premise hardware (as Vietlott blocks non-Vietnam IP addresses) and commits data to GitHub.
 
-The project is well-structured, with clear separation of concerns between data crawling, configuration, and command-line interfaces. It uses modern Python libraries such as `requests`, `beautifulsoup4`, `pandas`, `click`, and `pendulum`.
+The project uses Python libraries including `requests`, `beautifulsoup4`, `polars`, `click`, and `pendulum`.
 
 ## Architecture
-The project is quite simple with all sources are in `/src`.
-You can start with `/src/cli` to check what are available and start there.
+The project source code is in `/src`. CLI commands are defined in `/src/vietlott/cli`.
 
 ### Product Config
-The process of adding new product is designed to be easy via a config-first approach.
-The base config is at `vietlott.config.products.ProductConfig`, with settings mostly works for all products of Vietlott.
+Adding new products uses a config-first approach centered on `vietlott.config.products.ProductConfig`.
 
 Key points:
-- Cookies used to be needed to crawl but not anymore (disabled for all products).
-- Data on website are in pages so the fetching are designed around that mechanism (also the detect missing and back-filled mechanism at `missing.py`).
+- Cookies are no longer required for crawling.
+- Data is fetched by pages, with missing-data detection and backfilling handled in `missing.py`.
 
 ### Runner
-The project uses Github Actions with config to schedule the run daily to crawl & push to itself. So no server required.
+The crawler runs via a scheduled local runner (`bin/github_data.sh` / `Procfile`) and commits new data to GitHub. GitHub Actions is no longer used for crawling due to Vietlott IP geo-blocking. See `docs/DEPLOYMENT.md` for full deployment details.
 
 ## Development Setup
 1.  **Clone the repository:**
@@ -35,17 +33,16 @@ The project uses Github Actions with config to schedule the run daily to crawl &
 
 2.  **Create a virtual environment and install dependencies:**
     ```bash
-    make requirements-dev
+    uv sync --dev
     ```
 
 ### Running the Crawler
 The primary entry point for data crawling is the `vietlott-crawl` command.
 To crawl data for a specific product:
 ```bash
-source .venv/bin/activate
-vietlott-crawl <PRODUCT_NAME>
+uv run vietlott-crawl <PRODUCT_NAME>
 ```
-Example: `vietlott-crawl keno`
+Example: `uv run vietlott-crawl keno`
 
 ### Generating README and Docs (project frontpage and GitHub Pages)
 This repository includes scripts that generate updated documentation with current data:
@@ -112,4 +109,4 @@ To publish a new version to PyPI:
 - **Modular design**: Separate concerns with crawler, model, and CLI modules
 - **Configuration**: Centralized configuration system in `src/vietlott/config`
 - **Crawling Logic**: Core logic in `src/vietlott/crawler`
-- **Automation**: GitHub Actions workflow in `.github/workflows/crawl.yaml`
+- **Automation**: Scheduled local crawler via `bin/github_data.sh` and `Procfile`

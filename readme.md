@@ -1,332 +1,293 @@
-# 🎰 Vietlott Data
+# Vietlott Data
 
-[![GitHub Actions](https://github.com/vietvudanh/vietlott-data/workflows/crawl/badge.svg)](https://github.com/vietvudanh/vietlott-data/actions)
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Data Updated](https://img.shields.io/badge/data-daily%20updated-brightgreen.svg)](https://github.com/vietvudanh/vietlott-data/commits/main)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-blue)](https://vietvudanh.github.io/vietlott-data/)
 
-> 📊 **Automated Vietnamese Lottery Data Collection & Analysis**
+> **Automated Vietnamese Lottery Data Collection & Analysis**
 >
-> This project automatically crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing comprehensive statistics and insights for all major lottery products.
+> This project crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing statistics and insights for all major lottery products.
 
-## 🔗 Links
+## Links
 
-- 🌐 [Website](https://vietvudanh.github.io/vietlott-data/) - Interactive data visualization
-- 📝 [Blog Post](https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the) - About this project
+- [Website](https://vietvudanh.github.io/vietlott-data/) - Interactive data visualization
+- [Blog Post](https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the) - About this project
 
-## 🎯 Supported Lottery Products
+## Supported Lottery Products
 
 | Product | Link | Description |
 |---------|------|-------------|
-| **Power 6/55** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | Choose 6 numbers from 1-55 |
-| **Power 6/45** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | Choose 6 numbers from 1-45 |
-| **Power 5/35** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535) | Choose 5 numbers from 1-35 |
-| **Keno** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
-| **Max 3D** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
-| **Max 3D Pro** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
-| **Bingo18** | [🔗 Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18) | 3 numbers from 0-9 game |
+| **Power 6/55** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | Choose 6 numbers from 1-55 |
+| **Power 6/45** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | Choose 6 numbers from 1-45 |
+| **Power 5/35** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535) | Choose 5 numbers from 1-35 |
+| **Keno** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
+| **Max 3D** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
+| **Max 3D Pro** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
+| **Bingo18** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18) | 3 numbers from 0-9 game |
 
 
-## 📋 Table of Contents
+## Table of Contents
 
-- [🔗 Links](#-links)
-- [🎯 Supported Lottery Products](#-supported-lottery-products)
-- [Predictions](#-predictions)
-- [📊 Data Statistics](#-data-statistics)
-- [📈 Power 6/55 Analysis](#-power-655-analysis)
-  - [📅 Recent Results](#-recent-results)
-  - [🎲 Number Frequency (All Time)](#-number-frequency-all-time)
-  - [📊 Frequency Analysis by Period](#-frequency-analysis-by-period)
-  - [⏳ Top 10 Numbers by Days Since Last Appearance](#-top-10-số-lâu-chưa-xuất-hiện-top-10-numbers-by-days-since-last-appearance)
-  - [📆 Days Since Last Appearance - All Numbers](#-số-ngày-từ-lần-xuất-hiện-cuối-cùng-days-since-last-appearance---all-numbers)
-- [⚙️ How It Works](#️-how-it-works)
-- [🚀 Installation & Usage](#-installation--usage)
-- [📄 License](#-license)
+- [Links](#links)
+- [Supported Lottery Products](#supported-lottery-products)
+- [Predictions](#predictions)
+- [Data Statistics](#data-statistics)
+- [Power 6/55 Analysis](#power-655-analysis)
+  - [Recent Results](#recent-results-last-10-draws)
+  - [Number Frequency (All Time)](#number-frequency-all-time)
+  - [Frequency Analysis by Period](#frequency-analysis-by-period)
+  - [Top 10 Numbers by Days Since Last Appearance](#top-10-numbers-by-days-since-last-appearance)
+  - [Days Since Last Appearance - All Numbers](#days-since-last-appearance---all-numbers)
+- [How It Works](#how-it-works)
+- [Installation & Usage](#installation--usage)
+- [License](#license)
 
 
 ## Predictions
 
-Predicitons models are at [/src/predictions](./src/machine_learning/).
+Prediction models are at [/src/machine_learning](./src/machine_learning/).
 
 For background on these models, see the [Machine Learning README](./src/machine_learning/).
 
-## 📊 Data Statistics
+## Data Statistics
 
 | Product | Total Draws | Start Date | End Date | Total Records | First ID | Latest ID |
 | --- | --- | --- | --- | --- | --- | --- |
-| Power 655 | 1340 | 2017-08-01 | 2026-05-02 | 1340 | 00001 | 01340 |
-| Power 645 | 1307 | 2017-10-25 | 2026-05-01 | 1307 | 00198 | 01504 |
-| Power 535 | 272 | 2025-06-29 | 2026-05-02 | 543 | 00001 | 00616 |
-| Keno | 529 | 2022-12-04 | 2026-05-03 | 67096 | #0110271 | #0279715 |
-| 3D | 1070 | 2019-04-22 | 2026-05-01 | 1070 | 00001 | 01074 |
-| 3D Pro | 717 | 2021-09-14 | 2026-05-02 | 717 | 00001 | 00721 |
-| Bingo18 | 515 | 2024-12-03 | 2026-05-03 | 66702 | 0083123 | 0165111 |
+| Power 655 | 1394 | 2017-08-01 | 2026-09-05 | 1394 | 00001 | 01394 |
+| Power 645 | 1362 | 2017-10-25 | 2026-09-06 | 1362 | 00198 | 01559 |
+| Power 535 | 399 | 2025-06-29 | 2026-09-06 | 796 | 00001 | 00870 |
+| Keno | 668 | 2022-12-04 | 2026-09-06 | 83773 | #0110271 | #0294784 |
+| 3D | 1124 | 2019-04-22 | 2026-09-04 | 1124 | 00001 | 01128 |
+| 3D Pro | 771 | 2021-09-14 | 2026-09-05 | 771 | 00001 | 00775 |
+| Bingo18 | 641 | 2024-12-03 | 2026-09-06 | 89321 | 0083123 | 0185244 |
 
-## 📈 Power 6/55 Analysis
+## Power 6/55 Analysis
 
-### 📅 Recent Results (Last 10 draws)
+### Recent Results (Last 10 draws)
 | date | id | result | process_time |
 | --- | --- | --- | --- |
-| 2026-05-02 | 01340 | [9, 21, 22, 26, 33, 51, 17] | 2026-05-02T18:53:23.258397 |
-| 2026-04-30 | 01339 | [9, 15, 21, 25, 29, 50, 16] | 2026-05-02T18:53:23.260631 |
-| 2026-04-28 | 01338 | [24, 25, 34, 51, 52, 53, 35] | 2026-05-02T18:53:23.263066 |
-| 2026-04-25 | 01337 | [4, 7, 10, 29, 41, 46, 43] | 2026-05-02T18:53:23.265527 |
-| 2026-04-23 | 01336 | [5, 16, 17, 22, 33, 53, 55] | 2026-05-02T18:53:23.268125 |
-| 2026-04-21 | 01335 | [8, 30, 36, 39, 50, 53, 15] | 2026-05-02T18:53:23.270378 |
-| 2026-04-18 | 01334 | [9, 19, 20, 28, 37, 39, 24] | 2026-05-02T18:53:23.273130 |
-| 2026-04-16 | 01333 | [2, 7, 15, 22, 47, 52, 55] | 2026-04-17T21:50:28.270537 |
-| 2026-04-14 | 01332 | [8, 16, 22, 35, 39, 47, 28] | 2026-04-17T21:50:28.272159 |
-| 2026-04-11 | 01331 | [13, 26, 29, 38, 49, 53, 7] | 2026-04-17T21:50:28.273700 |
+| 2026-09-05 | 01394 | [9, 11, 24, 31, 33, 47, 21] | 2026-09-06T00:01:37.018893 |
+| 2026-09-03 | 01393 | [8, 9, 16, 42, 46, 47, 11] | 2026-09-05T07:32:08.578861 |
+| 2026-09-01 | 01392 | [1, 17, 41, 44, 49, 55, 45] | 2026-09-05T07:32:08.578975 |
+| 2026-08-29 | 01391 | [5, 10, 15, 29, 34, 45, 24] | 2026-09-05T07:32:08.579054 |
+| 2026-08-27 | 01390 | [1, 3, 11, 21, 26, 44, 10] | 2026-08-28T00:01:17.809418 |
+| 2026-08-25 | 01389 | [5, 7, 13, 18, 31, 40, 14] | 2026-08-26T00:01:20.568482 |
+| 2026-08-22 | 01388 | [9, 18, 19, 21, 25, 36, 8] | 2026-08-23T00:01:15.219616 |
+| 2026-08-20 | 01387 | [2, 8, 29, 38, 39, 51, 47] | 2026-08-21T00:01:21.664308 |
+| 2026-08-18 | 01386 | [3, 15, 18, 38, 41, 48, 30] | 2026-08-19T00:01:15.794745 |
+| 2026-08-15 | 01385 | [16, 20, 25, 27, 30, 50, 2] | 2026-08-16T11:07:54.645332 |
 
-### 🎲 Number Frequency (All Time)
+### Number Frequency (All Time)
 | result | count | % | -1 | 1result | 1count | 1% | -2 | 2result | 2count | 2% |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 178 | 1.9 |  | 21 | 167 | 1.78 |  | 41 | 197 | 2.1 |
-| 2 | 152 | 1.62 |  | 22 | 200 | 2.13 |  | 42 | 173 | 1.84 |
-| 3 | 181 | 1.93 |  | 23 | 179 | 1.91 |  | 43 | 194 | 2.07 |
-| 4 | 140 | 1.49 |  | 24 | 170 | 1.81 |  | 44 | 174 | 1.86 |
-| 5 | 172 | 1.83 |  | 25 | 153 | 1.63 |  | 45 | 170 | 1.81 |
-| 6 | 140 | 1.49 |  | 26 | 162 | 1.73 |  | 46 | 174 | 1.86 |
-| 7 | 152 | 1.62 |  | 27 | 156 | 1.66 |  | 47 | 170 | 1.81 |
-| 8 | 181 | 1.93 |  | 28 | 150 | 1.6 |  | 48 | 182 | 1.94 |
-| 9 | 188 | 2.0 |  | 29 | 185 | 1.97 |  | 49 | 167 | 1.78 |
-| 10 | 161 | 1.72 |  | 30 | 157 | 1.67 |  | 50 | 170 | 1.81 |
-| 11 | 173 | 1.84 |  | 31 | 179 | 1.91 |  | 51 | 192 | 2.05 |
-| 12 | 178 | 1.9 |  | 32 | 179 | 1.91 |  | 52 | 175 | 1.87 |
-| 13 | 167 | 1.78 |  | 33 | 171 | 1.82 |  | 53 | 183 | 1.95 |
-| 14 | 169 | 1.8 |  | 34 | 191 | 2.04 |  | 54 | 163 | 1.74 |
-| 15 | 160 | 1.71 |  | 35 | 166 | 1.77 |  | 55 | 171 | 1.82 |
-| 16 | 166 | 1.77 |  | 36 | 162 | 1.73 |  |  |  |  |
-| 17 | 154 | 1.64 |  | 37 | 153 | 1.63 |  |  |  |  |
-| 18 | 170 | 1.81 |  | 38 | 165 | 1.76 |  |  |  |  |
-| 19 | 169 | 1.8 |  | 39 | 162 | 1.73 |  |  |  |  |
-| 20 | 182 | 1.94 |  | 40 | 184 | 1.96 |  |  |  |  |
+| 1 | 188 | 1.93 |  | 21 | 175 | 1.79 |  | 41 | 206 | 2.11 |
+| 2 | 161 | 1.65 |  | 22 | 206 | 2.11 |  | 42 | 181 | 1.86 |
+| 3 | 189 | 1.94 |  | 23 | 187 | 1.92 |  | 43 | 198 | 2.03 |
+| 4 | 144 | 1.48 |  | 24 | 178 | 1.82 |  | 44 | 182 | 1.87 |
+| 5 | 182 | 1.87 |  | 25 | 159 | 1.63 |  | 45 | 181 | 1.86 |
+| 6 | 143 | 1.47 |  | 26 | 166 | 1.7 |  | 46 | 182 | 1.87 |
+| 7 | 157 | 1.61 |  | 27 | 162 | 1.66 |  | 47 | 178 | 1.82 |
+| 8 | 195 | 2.0 |  | 28 | 158 | 1.62 |  | 48 | 190 | 1.95 |
+| 9 | 195 | 2.0 |  | 29 | 191 | 1.96 |  | 49 | 174 | 1.78 |
+| 10 | 166 | 1.7 |  | 30 | 162 | 1.66 |  | 50 | 177 | 1.81 |
+| 11 | 182 | 1.87 |  | 31 | 187 | 1.92 |  | 51 | 197 | 2.02 |
+| 12 | 180 | 1.84 |  | 32 | 186 | 1.91 |  | 52 | 177 | 1.81 |
+| 13 | 173 | 1.77 |  | 33 | 180 | 1.84 |  | 53 | 187 | 1.92 |
+| 14 | 178 | 1.82 |  | 34 | 196 | 2.01 |  | 54 | 167 | 1.71 |
+| 15 | 166 | 1.7 |  | 35 | 170 | 1.74 |  | 55 | 179 | 1.83 |
+| 16 | 175 | 1.79 |  | 36 | 167 | 1.71 |  |  |  |  |
+| 17 | 160 | 1.64 |  | 37 | 158 | 1.62 |  |  |  |  |
+| 18 | 178 | 1.82 |  | 38 | 172 | 1.76 |  |  |  |  |
+| 19 | 174 | 1.78 |  | 39 | 172 | 1.76 |  |  |  |  |
+| 20 | 189 | 1.94 |  | 40 | 194 | 1.99 |  |  |  |  |
 
-### 📊 Frequency Analysis by Period
+### Frequency Analysis by Period
 
 #### Last 30 Days
 | result | count | % | -1 | 1result | 1count | 1% | -2 | 2result | 2count | 2% |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 1 | 1.19 |  | 26 | 2 | 2.38 |  | 51 | 2 | 2.38 |
-| 2 | 1 | 1.19 |  | 28 | 2 | 2.38 |  | 52 | 2 | 2.38 |
-| 4 | 1 | 1.19 |  | 29 | 4 | 4.76 |  | 53 | 6 | 7.14 |
-| 5 | 1 | 1.19 |  | 30 | 1 | 1.19 |  | 55 | 2 | 2.38 |
-| 7 | 3 | 3.57 |  | 31 | 1 | 1.19 |  |  |  |  |
-| 8 | 2 | 2.38 |  | 32 | 1 | 1.19 |  |  |  |  |
-| 9 | 3 | 3.57 |  | 33 | 2 | 2.38 |  |  |  |  |
-| 10 | 1 | 1.19 |  | 34 | 1 | 1.19 |  |  |  |  |
-| 13 | 2 | 2.38 |  | 35 | 2 | 2.38 |  |  |  |  |
-| 15 | 3 | 3.57 |  | 36 | 1 | 1.19 |  |  |  |  |
-| 16 | 4 | 4.76 |  | 37 | 1 | 1.19 |  |  |  |  |
-| 17 | 2 | 2.38 |  | 38 | 2 | 2.38 |  |  |  |  |
-| 18 | 1 | 1.19 |  | 39 | 3 | 3.57 |  |  |  |  |
-| 19 | 1 | 1.19 |  | 41 | 2 | 2.38 |  |  |  |  |
-| 20 | 1 | 1.19 |  | 43 | 1 | 1.19 |  |  |  |  |
-| 21 | 2 | 2.38 |  | 44 | 1 | 1.19 |  |  |  |  |
-| 22 | 5 | 5.95 |  | 46 | 1 | 1.19 |  |  |  |  |
-| 23 | 1 | 1.19 |  | 47 | 2 | 2.38 |  |  |  |  |
-| 24 | 2 | 2.38 |  | 49 | 1 | 1.19 |  |  |  |  |
-| 25 | 2 | 2.38 |  | 50 | 2 | 2.38 |  |  |  |  |
+| 1 | 2 | 2.2 |  | 26 | 1 | 1.1 |  | 50 | 2 | 2.2 |
+| 2 | 3 | 3.3 |  | 27 | 2 | 2.2 |  | 51 | 1 | 1.1 |
+| 3 | 2 | 2.2 |  | 29 | 4 | 4.4 |  | 55 | 1 | 1.1 |
+| 5 | 4 | 4.4 |  | 30 | 2 | 2.2 |  |  |  |  |
+| 7 | 2 | 2.2 |  | 31 | 3 | 3.3 |  |  |  |  |
+| 8 | 3 | 3.3 |  | 33 | 2 | 2.2 |  |  |  |  |
+| 9 | 4 | 4.4 |  | 34 | 1 | 1.1 |  |  |  |  |
+| 10 | 2 | 2.2 |  | 36 | 1 | 1.1 |  |  |  |  |
+| 11 | 3 | 3.3 |  | 37 | 1 | 1.1 |  |  |  |  |
+| 13 | 1 | 1.1 |  | 38 | 3 | 3.3 |  |  |  |  |
+| 14 | 1 | 1.1 |  | 39 | 2 | 2.2 |  |  |  |  |
+| 15 | 2 | 2.2 |  | 40 | 2 | 2.2 |  |  |  |  |
+| 16 | 2 | 2.2 |  | 41 | 2 | 2.2 |  |  |  |  |
+| 17 | 1 | 1.1 |  | 42 | 2 | 2.2 |  |  |  |  |
+| 18 | 3 | 3.3 |  | 44 | 2 | 2.2 |  |  |  |  |
+| 19 | 2 | 2.2 |  | 45 | 4 | 4.4 |  |  |  |  |
+| 20 | 2 | 2.2 |  | 46 | 2 | 2.2 |  |  |  |  |
+| 21 | 3 | 3.3 |  | 47 | 3 | 3.3 |  |  |  |  |
+| 24 | 2 | 2.2 |  | 48 | 1 | 1.1 |  |  |  |  |
+| 25 | 2 | 2.2 |  | 49 | 1 | 1.1 |  |  |  |  |
 
 #### Last 60 Days
 | result | count | % | -1 | 1result | 1count | 1% | -2 | 2result | 2count | 2% |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 2 | 1.14 |  | 22 | 7 | 4.0 |  | 42 | 1 | 0.57 |
-| 2 | 1 | 0.57 |  | 23 | 2 | 1.14 |  | 43 | 4 | 2.29 |
-| 3 | 4 | 2.29 |  | 24 | 2 | 1.14 |  | 44 | 2 | 1.14 |
-| 4 | 2 | 1.14 |  | 25 | 3 | 1.71 |  | 45 | 2 | 1.14 |
-| 5 | 2 | 1.14 |  | 26 | 6 | 3.43 |  | 46 | 1 | 0.57 |
-| 6 | 1 | 0.57 |  | 27 | 1 | 0.57 |  | 47 | 5 | 2.86 |
-| 7 | 7 | 4.0 |  | 28 | 4 | 2.29 |  | 48 | 1 | 0.57 |
-| 8 | 2 | 1.14 |  | 29 | 6 | 3.43 |  | 49 | 1 | 0.57 |
-| 9 | 6 | 3.43 |  | 30 | 3 | 1.71 |  | 50 | 4 | 2.29 |
-| 10 | 3 | 1.71 |  | 31 | 3 | 1.71 |  | 51 | 3 | 1.71 |
-| 11 | 1 | 0.57 |  | 32 | 4 | 2.29 |  | 52 | 6 | 3.43 |
-| 12 | 3 | 1.71 |  | 33 | 3 | 1.71 |  | 53 | 9 | 5.14 |
-| 13 | 3 | 1.71 |  | 34 | 4 | 2.29 |  | 54 | 4 | 2.29 |
-| 15 | 4 | 2.29 |  | 35 | 2 | 1.14 |  | 55 | 4 | 2.29 |
-| 16 | 6 | 3.43 |  | 36 | 3 | 1.71 |  |  |  |  |
-| 17 | 3 | 1.71 |  | 37 | 1 | 0.57 |  |  |  |  |
-| 18 | 1 | 0.57 |  | 38 | 4 | 2.29 |  |  |  |  |
-| 19 | 2 | 1.14 |  | 39 | 5 | 2.86 |  |  |  |  |
-| 20 | 2 | 1.14 |  | 40 | 3 | 1.71 |  |  |  |  |
-| 21 | 4 | 2.29 |  | 41 | 3 | 1.71 |  |  |  |  |
+| 1 | 4 | 2.2 |  | 23 | 2 | 1.1 |  | 43 | 1 | 0.55 |
+| 2 | 5 | 2.75 |  | 24 | 5 | 2.75 |  | 44 | 4 | 2.2 |
+| 3 | 3 | 1.65 |  | 25 | 2 | 1.1 |  | 45 | 8 | 4.4 |
+| 5 | 5 | 2.75 |  | 26 | 1 | 0.55 |  | 46 | 2 | 1.1 |
+| 7 | 3 | 1.65 |  | 27 | 4 | 2.2 |  | 47 | 4 | 2.2 |
+| 8 | 5 | 2.75 |  | 28 | 1 | 0.55 |  | 48 | 5 | 2.75 |
+| 9 | 7 | 3.85 |  | 29 | 4 | 2.2 |  | 49 | 4 | 2.2 |
+| 10 | 4 | 2.2 |  | 30 | 3 | 1.65 |  | 50 | 3 | 1.65 |
+| 11 | 5 | 2.75 |  | 31 | 4 | 2.2 |  | 51 | 4 | 2.2 |
+| 12 | 1 | 0.55 |  | 32 | 1 | 0.55 |  | 53 | 1 | 0.55 |
+| 13 | 2 | 1.1 |  | 33 | 6 | 3.3 |  | 54 | 2 | 1.1 |
+| 14 | 5 | 2.75 |  | 34 | 1 | 0.55 |  | 55 | 5 | 2.75 |
+| 15 | 2 | 1.1 |  | 35 | 2 | 1.1 |  |  |  |  |
+| 16 | 4 | 2.2 |  | 36 | 2 | 1.1 |  |  |  |  |
+| 17 | 3 | 1.65 |  | 37 | 2 | 1.1 |  |  |  |  |
+| 18 | 4 | 2.2 |  | 38 | 4 | 2.2 |  |  |  |  |
+| 19 | 3 | 1.65 |  | 39 | 5 | 2.75 |  |  |  |  |
+| 20 | 4 | 2.2 |  | 40 | 5 | 2.75 |  |  |  |  |
+| 21 | 4 | 2.2 |  | 41 | 5 | 2.75 |  |  |  |  |
+| 22 | 3 | 1.65 |  | 42 | 4 | 2.2 |  |  |  |  |
 
 #### Last 90 Days
 | result | count | % | -1 | 1result | 1count | 1% | -2 | 2result | 2count | 2% |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | 5 | 1.93 |  | 21 | 6 | 2.32 |  | 41 | 4 | 1.54 |
-| 2 | 2 | 0.77 |  | 22 | 9 | 3.47 |  | 42 | 2 | 0.77 |
-| 3 | 5 | 1.93 |  | 23 | 2 | 0.77 |  | 43 | 7 | 2.7 |
-| 4 | 2 | 0.77 |  | 24 | 2 | 0.77 |  | 44 | 4 | 1.54 |
-| 5 | 5 | 1.93 |  | 25 | 6 | 2.32 |  | 45 | 4 | 1.54 |
-| 6 | 1 | 0.39 |  | 26 | 11 | 4.25 |  | 46 | 5 | 1.93 |
-| 7 | 11 | 4.25 |  | 27 | 3 | 1.16 |  | 47 | 5 | 1.93 |
-| 8 | 4 | 1.54 |  | 28 | 4 | 1.54 |  | 48 | 3 | 1.16 |
-| 9 | 7 | 2.7 |  | 29 | 8 | 3.09 |  | 49 | 1 | 0.39 |
-| 10 | 4 | 1.54 |  | 30 | 6 | 2.32 |  | 50 | 5 | 1.93 |
-| 11 | 1 | 0.39 |  | 31 | 5 | 1.93 |  | 51 | 7 | 2.7 |
-| 12 | 4 | 1.54 |  | 32 | 7 | 2.7 |  | 52 | 6 | 2.32 |
-| 13 | 8 | 3.09 |  | 33 | 3 | 1.16 |  | 53 | 9 | 3.47 |
-| 14 | 1 | 0.39 |  | 34 | 4 | 1.54 |  | 54 | 6 | 2.32 |
-| 15 | 5 | 1.93 |  | 35 | 3 | 1.16 |  | 55 | 6 | 2.32 |
-| 16 | 8 | 3.09 |  | 36 | 5 | 1.93 |  |  |  |  |
-| 17 | 4 | 1.54 |  | 37 | 2 | 0.77 |  |  |  |  |
-| 18 | 2 | 0.77 |  | 38 | 5 | 1.93 |  |  |  |  |
-| 19 | 3 | 1.16 |  | 39 | 6 | 2.32 |  |  |  |  |
-| 20 | 3 | 1.16 |  | 40 | 3 | 1.16 |  |  |  |  |
+| 1 | 8 | 2.93 |  | 21 | 5 | 1.83 |  | 41 | 7 | 2.56 |
+| 2 | 7 | 2.56 |  | 22 | 4 | 1.47 |  | 42 | 6 | 2.2 |
+| 3 | 4 | 1.47 |  | 23 | 6 | 2.2 |  | 43 | 3 | 1.1 |
+| 4 | 3 | 1.1 |  | 24 | 6 | 2.2 |  | 44 | 6 | 2.2 |
+| 5 | 9 | 3.3 |  | 25 | 3 | 1.1 |  | 45 | 8 | 2.93 |
+| 6 | 2 | 0.73 |  | 26 | 2 | 0.73 |  | 46 | 6 | 2.2 |
+| 7 | 5 | 1.83 |  | 27 | 5 | 1.83 |  | 47 | 6 | 2.2 |
+| 8 | 10 | 3.66 |  | 28 | 4 | 1.47 |  | 48 | 6 | 2.2 |
+| 9 | 7 | 2.56 |  | 29 | 4 | 1.47 |  | 49 | 6 | 2.2 |
+| 10 | 4 | 1.47 |  | 30 | 4 | 1.47 |  | 50 | 3 | 1.1 |
+| 11 | 6 | 2.2 |  | 31 | 6 | 2.2 |  | 51 | 4 | 1.47 |
+| 12 | 1 | 0.37 |  | 32 | 3 | 1.1 |  | 52 | 2 | 0.73 |
+| 13 | 5 | 1.83 |  | 33 | 8 | 2.93 |  | 53 | 2 | 0.73 |
+| 14 | 7 | 2.56 |  | 34 | 3 | 1.1 |  | 54 | 3 | 1.1 |
+| 15 | 4 | 1.47 |  | 35 | 4 | 1.47 |  | 55 | 6 | 2.2 |
+| 16 | 6 | 2.2 |  | 36 | 4 | 1.47 |  |  |  |  |
+| 17 | 4 | 1.47 |  | 37 | 2 | 0.73 |  |  |  |  |
+| 18 | 7 | 2.56 |  | 38 | 5 | 1.83 |  |  |  |  |
+| 19 | 4 | 1.47 |  | 39 | 5 | 1.83 |  |  |  |  |
+| 20 | 5 | 1.83 |  | 40 | 8 | 2.93 |  |  |  |  |
 
-### ⏳ Top 10 số lâu chưa xuất hiện (Top 10 Numbers by Days Since Last Appearance)
+### Top 10 Numbers by Days Since Last Appearance
 | result | last_date | days_since |
 | --- | --- | --- |
-| 14 | 2026-03-05 | 58 |
-| 27 | 2026-03-14 | 49 |
-| 6 | 2026-03-21 | 42 |
-| 45 | 2026-03-24 | 39 |
-| 12 | 2026-03-24 | 39 |
-| 3 | 2026-03-26 | 37 |
-| 42 | 2026-03-28 | 35 |
-| 48 | 2026-03-31 | 32 |
-| 11 | 2026-03-31 | 32 |
-| 54 | 2026-04-04 | 28 |
+| 52 | 2026-06-27 | 70 |
+| 6 | 2026-07-07 | 60 |
+| 4 | 2026-07-07 | 60 |
+| 53 | 2026-07-16 | 51 |
+| 32 | 2026-07-21 | 46 |
+| 22 | 2026-07-28 | 39 |
+| 12 | 2026-07-30 | 37 |
+| 43 | 2026-07-30 | 37 |
+| 28 | 2026-07-30 | 37 |
+| 54 | 2026-08-04 | 32 |
 
-### 📆 Số ngày từ lần xuất hiện cuối cùng (Days Since Last Appearance - All Numbers)
+### Days Since Last Appearance - All Numbers
 | result | last_date | days_since |
 | --- | --- | --- |
-| 1 | 2026-04-07 | 25 |
-| 2 | 2026-04-16 | 16 |
-| 3 | 2026-03-26 | 37 |
-| 4 | 2026-04-25 | 7 |
-| 5 | 2026-04-23 | 9 |
-| 6 | 2026-03-21 | 42 |
-| 7 | 2026-04-25 | 7 |
-| 8 | 2026-04-21 | 11 |
-| 9 | 2026-05-02 | 0 |
-| 10 | 2026-04-25 | 7 |
-| 11 | 2026-03-31 | 32 |
-| 12 | 2026-03-24 | 39 |
-| 13 | 2026-04-11 | 21 |
-| 14 | 2026-03-05 | 58 |
-| 15 | 2026-04-30 | 2 |
-| 16 | 2026-04-30 | 2 |
-| 17 | 2026-05-02 | 0 |
-| 18 | 2026-04-09 | 23 |
-| 19 | 2026-04-18 | 14 |
-| 20 | 2026-04-18 | 14 |
-| 21 | 2026-05-02 | 0 |
-| 22 | 2026-05-02 | 0 |
-| 23 | 2026-04-07 | 25 |
-| 24 | 2026-04-28 | 4 |
-| 25 | 2026-04-30 | 2 |
-| 26 | 2026-05-02 | 0 |
-| 27 | 2026-03-14 | 49 |
-| 28 | 2026-04-18 | 14 |
-| 29 | 2026-04-30 | 2 |
-| 30 | 2026-04-21 | 11 |
-| 31 | 2026-04-07 | 25 |
-| 32 | 2026-04-07 | 25 |
-| 33 | 2026-05-02 | 0 |
-| 34 | 2026-04-28 | 4 |
-| 35 | 2026-04-28 | 4 |
-| 36 | 2026-04-21 | 11 |
-| 37 | 2026-04-18 | 14 |
-| 38 | 2026-04-11 | 21 |
-| 39 | 2026-04-21 | 11 |
-| 40 | 2026-04-04 | 28 |
-| 41 | 2026-04-25 | 7 |
-| 42 | 2026-03-28 | 35 |
-| 43 | 2026-04-25 | 7 |
-| 44 | 2026-04-07 | 25 |
-| 45 | 2026-03-24 | 39 |
-| 46 | 2026-04-25 | 7 |
-| 47 | 2026-04-16 | 16 |
-| 48 | 2026-03-31 | 32 |
-| 49 | 2026-04-11 | 21 |
-| 50 | 2026-04-30 | 2 |
-| 51 | 2026-05-02 | 0 |
-| 52 | 2026-04-28 | 4 |
-| 53 | 2026-04-28 | 4 |
-| 54 | 2026-04-04 | 28 |
-| 55 | 2026-04-23 | 9 |
+| 1 | 2026-09-01 | 4 |
+| 2 | 2026-08-20 | 16 |
+| 3 | 2026-08-27 | 9 |
+| 4 | 2026-07-07 | 60 |
+| 5 | 2026-08-29 | 7 |
+| 6 | 2026-07-07 | 60 |
+| 7 | 2026-08-25 | 11 |
+| 8 | 2026-09-03 | 2 |
+| 9 | 2026-09-05 | 0 |
+| 10 | 2026-08-29 | 7 |
+| 11 | 2026-09-05 | 0 |
+| 12 | 2026-07-30 | 37 |
+| 13 | 2026-08-25 | 11 |
+| 14 | 2026-08-25 | 11 |
+| 15 | 2026-08-29 | 7 |
+| 16 | 2026-09-03 | 2 |
+| 17 | 2026-09-01 | 4 |
+| 18 | 2026-08-25 | 11 |
+| 19 | 2026-08-22 | 14 |
+| 20 | 2026-08-15 | 21 |
+| 21 | 2026-09-05 | 0 |
+| 22 | 2026-07-28 | 39 |
+| 23 | 2026-08-06 | 30 |
+| 24 | 2026-09-05 | 0 |
+| 25 | 2026-08-22 | 14 |
+| 26 | 2026-08-27 | 9 |
+| 27 | 2026-08-15 | 21 |
+| 28 | 2026-07-30 | 37 |
+| 29 | 2026-08-29 | 7 |
+| 30 | 2026-08-18 | 18 |
+| 31 | 2026-09-05 | 0 |
+| 32 | 2026-07-21 | 46 |
+| 33 | 2026-09-05 | 0 |
+| 34 | 2026-08-29 | 7 |
+| 35 | 2026-08-06 | 30 |
+| 36 | 2026-08-22 | 14 |
+| 37 | 2026-08-08 | 28 |
+| 38 | 2026-08-20 | 16 |
+| 39 | 2026-08-20 | 16 |
+| 40 | 2026-08-25 | 11 |
+| 41 | 2026-09-01 | 4 |
+| 42 | 2026-09-03 | 2 |
+| 43 | 2026-07-30 | 37 |
+| 44 | 2026-09-01 | 4 |
+| 45 | 2026-09-01 | 4 |
+| 46 | 2026-09-03 | 2 |
+| 47 | 2026-09-05 | 0 |
+| 48 | 2026-08-18 | 18 |
+| 49 | 2026-09-01 | 4 |
+| 50 | 2026-08-15 | 21 |
+| 51 | 2026-08-20 | 16 |
+| 52 | 2026-06-27 | 70 |
+| 53 | 2026-07-16 | 51 |
+| 54 | 2026-08-04 | 32 |
+| 55 | 2026-09-01 | 4 |
 
 
 
-## ⚙️ How It Works
+## How It Works
 
-### 🤖 Automated Data Collection
+Vietlott blocks non-Vietnam IPs ([issue #13](https://github.com/vietvudanh/vietlott-data/issues/13)), so crawling runs on a scheduled local runner (`bin/github_data.sh`) and commits updated data back to GitHub.
 
-This project runs completely automatically using **GitHub Actions** - no server required!
-
-- **⏰ Schedule**: Runs daily via [GitHub Actions workflow](.github/workflows/crawl.yaml)
-- **🔄 Process**: Fetches latest results → Processes data → Commits to repository
-- **📊 Analysis**: Generates statistics and updates README automatically
-
-### 🕵️ Data Crawling Method
-
-The data collection works by:
-1. **🔍 Network Analysis**: Inspecting browser-server communication
-2. **🐍 Python Replication**: Recreating the data fetch logic in Python
-3. **📋 Structured Storage**: Saving results in JSONL format for easy analysis
-4. **🔄 Continuous Updates**: Daily automated runs ensure fresh data
-
-> **Note**: This is purely for educational and research purposes. No gambling advice is provided.
+For architecture and runner setup, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 
-## 🚀 Installation & Usage
+## Installation & Usage
 
-### 📦 Install via pip
+### CLI Usage (using uv)
 
 ```bash
-pip install -i vietlott-data
+# Crawl latest data
+uv run vietlott-crawl keno
+
+# Backfill missing data
+uv run vietlott-missing power_655
+
+# Available products: power_655, power_645, power_535, keno, 3d, 3d_pro, bingo18
 ```
 
-### 💻 Command Line Interface
-
-#### 🔍 Crawl Data
+### Development Setup
 
 ```bash
-vietlott-crawl [OPTIONS] PRODUCT
-
-# Options:
-#   --run-date TEXT       Specific date to crawl (default: current date)
-#   --index-from INTEGER  Starting page index (default: 0)
-#   --index-to INTEGER    Ending page index (default: None)
-#   --help               Show help message
-```
-
-#### 🔧 Backfill Missing Data
-
-```bash
-vietlott-missing [OPTIONS] PRODUCT
-
-# Options:
-#   --limit INTEGER  Number of pages to process (default: 20)
-#   --help          Show help message
-```
-
-> **Available Products**: power_655, power_645, power_535, keno, 3d, 3d_pro, bingo18
-
-### 🛠️ Development Setup
-
-```bash
-# Clone the repository
-git clone https://github.com/vietvudanh/vietlott-data.git ; cd vietlott-data
-
-# Install dependencies (recommend using uv and virtual environment)
+git clone https://github.com/vietvudanh/vietlott-data.git
+cd vietlott-data
 uv sync --dev
-
-# Run tests
 uv run pytest
 ```
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see [LICENSE](LICENSE).
 
 ---
 
 <div align="center">
-  <strong>⭐ If you find this project useful, please consider giving it a star!</strong>
+  <strong>If you find this project useful, please consider giving it a star!</strong>
 </div>
 

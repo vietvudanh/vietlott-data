@@ -139,14 +139,13 @@ class PredictionSummaryGenerator:
 
         rows.sort(key=lambda x: x[4], reverse=True)
 
-        medals = ["🥇", "🥈", "🥉"] + ["  "] * len(rows)
         header = "| Rank | Strategy | Total Cost (VND) | Total Gain (VND) | Net Profit (VND) | ROI |"
         sep = "|------|----------|-----------------|-----------------|-----------------|-----|"
         lines = [header, sep]
         for i, (name, cost, gain, profit, roi) in enumerate(rows):
-            lines.append(f"| {medals[i]} {i + 1} | {name} | {cost:,} | {gain:,} | {profit:,} | {roi:.2f}% |")
+            lines.append(f"| {i + 1} | {name} | {cost:,} | {gain:,} | {profit:,} | {roi:.2f}% |")
 
-        return f"""## 📊 Strategy Performance Comparison
+        return f"""## Strategy Performance Comparison
 
 > Sorted by ROI (best → worst).  All strategies backtested with **{strategies[0][1]} tickets/draw**.
 > Note: All ROIs are deeply negative — lottery odds make profit impossible at scale.
@@ -202,7 +201,7 @@ class PredictionSummaryGenerator:
         date_min = df_eval["date"].min()
         date_max = df_eval["date"].max()
 
-        return f"""### 🎲 {strategy_name}
+        return f"""### {strategy_name}
 
 #### Configuration
 | Parameter | Value |
@@ -240,9 +239,9 @@ class PredictionSummaryGenerator:
     def _generate_predictions_section(self, strategies: List[_StrategyEntry]) -> str:
         """Generate per-strategy detailed reports from pre-run strategy list."""
         reports = [self._generate_strategy_report(model, name, tpd) for name, tpd, model in strategies]
-        return f"""## 🔮 Prediction Models
+        return f"""## Prediction Models
 
-> ⚠️ **Disclaimer**: These are experimental models for educational purposes only. Lottery outcomes are random and cannot be predicted reliably.
+> **Disclaimer**: These are experimental models for educational purposes only. Lottery outcomes are random and cannot be predicted reliably.
 
 {"".join(reports)}
 """
@@ -359,7 +358,7 @@ class PredictionSummaryGenerator:
 
     def _strategy_docs_section(self) -> str:
         """Return a markdown section documenting every strategy."""
-        lines = ["## 📚 Strategy Descriptions\n"]
+        lines = ["## Strategy Descriptions\n"]
         for name, description in self._STRATEGY_DOCS.items():
             lines.append(f"### {name}\n\n{description}\n")
         return "\n".join(lines)
@@ -371,7 +370,7 @@ class PredictionSummaryGenerator:
     @staticmethod
     def _demo_section() -> str:
         """Return a markdown section with code examples for each strategy."""
-        return """## 💻 Usage Examples
+        return """## Usage Examples
 
 The strategies can be used independently outside this generator script.
 Below are minimal runnable examples using Power 6/55 data.
@@ -488,7 +487,7 @@ for name, model in strategies.items():
         demo = self._demo_section()
         predictions = self._generate_predictions_section(strategies)
 
-        return f"""# 🔮 Vietlott Power 655 Prediction Summary
+        return f"""# Vietlott Power 655 Prediction Summary
 
 > **Generated**: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
 >
@@ -505,7 +504,7 @@ for name, model in strategies.items():
 
 ---
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 This prediction summary is for educational and research purposes only. Lottery outcomes are random and cannot be reliably predicted. Never gamble more than you can afford to lose.
 """

@@ -1,29 +1,21 @@
-# Vietlott-data architecture
+# Vietlott-data Architecture
 
-The project is quite simple with all sources are in `/src`
+All source code is located in `/src`. CLI entry points are in `/src/vietlott/cli`.
 
-You can start with `/src/cli` to check what are available and start there
+## Product Configuration
 
-## product config
-
-I tried to make the process of adding new product as easy as possible via config first approach.
-
-The base config is at `vietlott.config.products.ProductConfig`, with settings mostly works for all products of Vietlott.
+Adding new products uses a config-first approach centered on `vietlott.config.products.ProductConfig`.
 
 Key points:
-- cookies used to needed to crawl but not anymore (disabled for all products)
-- data on website are in [pages](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-655) so the fetching are designed around that mechanism (also the detect missing and back-filled mechanism at [missing.py](https://github.com/vietvudanh/vietlott-data/blob/89c6aaa632011c6ef248e43178f38e05daeee1b9/src/vietlott/cli/missing.py#L22))  
+- Cookies are no longer required for crawling.
+- Vietlott serves data across paginated endpoints. The crawler and backfill mechanism (`missing.py`) are designed around page-based fetching.
 
-## runner
+## Runner
 
-The project uses Github Actions with [config](https://github.com/vietvudanh/vietlott-data/blob/master/.github/workflows/crawl.yaml) 
-to schedule the run daily to crawl & push to itself. So no server required.
+The crawler runs via scheduled execution on local/on-premise hardware (see `bin/github_data.sh` and `Procfile`) and commits updated data back to GitHub. GitHub Actions is no longer used for data crawling because the Vietlott website blocks non-Vietnam IP addresses (see [issue #13](https://github.com/vietvudanh/vietlott-data/issues/13) and [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)).
 
-To make it easier (for me) to dev, the [binary file](https://github.com/vietvudanh/vietlott-data/blob/master/.github/workflows/crawl.yaml)
-set `PYTHONPATH` to `/src`, but it can and should be using installed cli:
-
-```toml
-[project.scripts]
-vietlott-crawl = "vietlott.cli.crawl:crawl"
-vietlott-missing = "vietlott.cli.crawl:detect_missing_data"
-```
+Available CLI commands:
+- `vietlott-crawl`: Crawl latest draw results.
+- `vietlott-missing`: Detect and backfill missing draws.
+- `vietlott-render-readme`: Update repository README with current data statistics.
+- `vietlott-render-docs`: Update docs/index.html with current data statistics.
