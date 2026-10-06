@@ -6,7 +6,7 @@ LOGURU_LEVEL := INFO
 export
 
 all: lint test
-.PHONY: all requirements-dev test lint build pypi run-crawl run-missing
+.PHONY: all requirements-dev test lint build pypi run-crawl run-missing build-crawler build-arm-pi
 
 .venv:
 	@echo "Initializing virtual environment..."
@@ -29,6 +29,12 @@ lint: .venv
 build: lint test
 	@echo "Building..."
 	$(UV) run python -m build
+
+build-crawler:
+	cd crawler && go build -o ../bin/vietlott-crawler ./cmd/vietlott
+
+build-arm-pi:
+	cd crawler && GOOS=linux GOARCH=arm64 GOARM=7 go build -ldflags="-s -w" -o ../bin/vietlott-crawler-arm64 ./cmd/vietlott
 
 pypi: build
 	@echo "Publishing..."
