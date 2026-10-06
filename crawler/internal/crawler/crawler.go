@@ -7,16 +7,16 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"sync"
 
 	"github.com/vietvudanh/vietlott-data/crawler/internal/model"
 	"github.com/vietvudanh/vietlott-data/crawler/internal/storage"
 )
 
-// ProductAdapter retrieves the latest draw number and individual draws.
+// ProductAdapter retrieves the latest draw number and newest-first result
+// pages. Pages start at 0; each page lists draws in no guaranteed order.
 type ProductAdapter interface {
 	Latest(context.Context) (int, error)
-	Fetch(context.Context, int) (model.Draw, error)
+	FetchPage(context.Context, int) ([]model.Draw, error)
 }
 
 // SyncReport describes the result of synchronizing one product.
@@ -47,13 +47,8 @@ func MissingIDs(existing map[int]struct{}, minID, latestID, maxDraws int) []int 
 	return missing
 }
 
-type fetchResult struct {
-	id   int
-	draw model.Draw
-	err  error
-}
-
-// Sync downloads missing draws and atomically appends successful results.
+// Sync downloads missing draws by scanning newest-first result pages and
+// atomically appends successful results.
 func Sync(ctx context.Context, repoRoot string, product model.Product, adapter ProductAdapter, maxDraws int) (SyncReport, error) {
 	report := SyncReport{Product: product.Name}
 	if adapter == nil {
@@ -88,75 +83,88 @@ func Sync(ctx context.Context, repoRoot string, product model.Product, adapter P
 		return report, nil
 	}
 
-	workerCount := len(ids)
-	if workerCount > 4 {
-		workerCount = 4
+	pages := product.MaxPages
+	if pages < 1 {
+		pages = 1
 	}
-	if workerCount < 2 {
-		workerCount = 2
+	wanted := make(map[int]struct{}, len(ids))
+	for _, id := range ids {
+		wanted[id] = struct{}{}
 	}
-	workerCtx, cancel := context.WithCancel(ctx)
-	defer cancel()
-	jobs := make(chan int)
-	results := make(chan fetchResult, len(ids))
-	var workers sync.WaitGroup
-	for i := 0; i < workerCount; i++ {
-		workers.Add(1)
-		go func() {
-			defer workers.Done()
-			for {
-				select {
-				case <-workerCtx.Done():
-					return
-				case id, ok := <-jobs:
-					if !ok {
-						return
-					}
-					draw, fetchErr := adapter.Fetch(workerCtx, id)
-					if fetchErr == nil && draw == nil {
-						fetchErr = errors.New("adapter returned nil draw")
-					}
-					results <- fetchResult{id: id, draw: draw, err: fetchErr}
+	// ids is ascending, so ids[0] is the oldest missing draw. Result pages
+	// are newest-first, so once a page's highest ID falls below it, deeper
+	// pages cannot contain anything we want.
+	oldestWanted := ids[0]
+	found := make(map[int]model.Draw, len(ids))
+	var pageErr error
+	var failedPage int
+	canceled := false
+
+pages:
+	for page := 0; page < pages && len(found) < len(wanted); page++ {
+		if ctx.Err() != nil {
+			canceled = true
+			break pages
+		}
+		draws, err := adapter.FetchPage(ctx, page)
+		if err != nil {
+			if ctx.Err() != nil {
+				canceled = true
+				break pages
+			}
+			pageErr = err
+			failedPage = page
+			break pages
+		}
+		if len(draws) == 0 {
+			break pages
+		}
+		pageMax := -1
+		for _, draw := range draws {
+			if draw == nil {
+				continue
+			}
+			id, err := model.NormalizeID(draw.GetID())
+			if err != nil {
+				pageErr = fmt.Errorf("page %d %s: %w", page, product.Name, err)
+				failedPage = page
+				break pages
+			}
+			if id.Number > pageMax {
+				pageMax = id.Number
+			}
+			if _, ok := wanted[id.Number]; ok {
+				if _, dup := found[id.Number]; !dup {
+					found[id.Number] = draw
 				}
 			}
-		}()
+		}
+		if pageMax >= 0 && pageMax < oldestWanted {
+			break pages
+		}
 	}
 
-send:
+	draws := make([]model.Draw, 0, len(found))
+	for _, draw := range found {
+		draws = append(draws, draw)
+	}
 	for _, id := range ids {
-		select {
-		case <-workerCtx.Done():
-			break send
-		case jobs <- id:
+		if _, ok := found[id]; !ok {
+			report.FailedIDs = append(report.FailedIDs, id)
 		}
-	}
-	close(jobs)
-	workers.Wait()
-	close(results)
-
-	draws := make([]model.Draw, 0, len(ids))
-	for result := range results {
-		if result.err != nil {
-			report.FailedIDs = append(report.FailedIDs, result.id)
-			continue
-		}
-		draws = append(draws, result.draw)
 	}
 	sort.Ints(report.FailedIDs)
-	if err := ctx.Err(); err != nil {
-		if len(draws) > 0 {
-			if writeErr := storage.AppendDrawsAtomic(path, draws); writeErr != nil {
-				return report, fmt.Errorf("write %s: %w (context canceled: %v)", product.Name, writeErr, err)
-			}
-			report.Written = len(draws)
-		}
-		return report, err
-	}
 	if len(draws) > 0 {
 		if err := storage.AppendDrawsAtomic(path, draws); err != nil {
 			return report, fmt.Errorf("write %s: %w", product.Name, err)
 		}
 		report.Written = len(draws)
+	}
+	if canceled {
+		return report, ctx.Err()
+	}
+	if pageErr != nil {
+		return report, fmt.Errorf("%s page %d: %w", product.Name, failedPage, pageErr)
 	}
 	if len(report.FailedIDs) > 0 {
 		return report, fmt.Errorf("%s: failed to fetch draw IDs %v", product.Name, report.FailedIDs)

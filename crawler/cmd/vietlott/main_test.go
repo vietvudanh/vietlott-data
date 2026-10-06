@@ -71,9 +71,9 @@ func TestSyncProductHonorsMaxDraws(t *testing.T) {
 	var out strings.Builder
 	code := run(context.Background(), []string{"--root", root, "sync", "--product", "power655", "--max-draws", "1"},
 		&out, &out, func(model.ProductName) (crawler.ProductAdapter, error) {
-			return fakeAdapter{latest: product.MinID + 2}, nil
+			return fakeAdapter{latest: product.MinID + 1}, nil
 		})
-	if code != 0 || !strings.Contains(out.String(), "power655 existing=0 latest=3 missing=1 written=1 failed=0") {
+	if code != 0 || !strings.Contains(out.String(), "power655 existing=0 latest=2 missing=1 written=1 failed=0") {
 		t.Fatalf("code=%d output=%q", code, out.String())
 	}
 }
@@ -190,8 +190,11 @@ type fakeAdapter struct {
 }
 
 func (f fakeAdapter) Latest(context.Context) (int, error) { return f.latest, nil }
-func (f fakeAdapter) Fetch(_ context.Context, id int) (model.Draw, error) {
-	return fakeDraw{ID: strconv.Itoa(id)}, nil
+func (f fakeAdapter) FetchPage(_ context.Context, page int) ([]model.Draw, error) {
+	if page > 0 {
+		return nil, nil
+	}
+	return []model.Draw{fakeDraw{ID: strconv.Itoa(f.latest - 1)}, fakeDraw{ID: strconv.Itoa(f.latest)}}, nil
 }
 
 type fakeDraw struct {

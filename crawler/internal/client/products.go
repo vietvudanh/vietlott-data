@@ -14,10 +14,12 @@ import (
 	"github.com/vietvudanh/vietlott-data/crawler/internal/model"
 )
 
-// ProductAdapter retrieves and parses one product's AJAX result pages.
+// ProductAdapter retrieves pages of draws for one product. The Vietlott
+// AJAX endpoints only serve newest-first result pages; they do not support
+// fetching an individual draw by identifier.
 type ProductAdapter interface {
 	Latest(context.Context) (int, error)
-	Fetch(context.Context, int) (model.Draw, error)
+	FetchPage(context.Context, int) ([]model.Draw, error)
 }
 
 type productAdapter struct {
@@ -57,9 +59,12 @@ func NewProductAdapter(c *Client, name model.ProductName) (ProductAdapter, error
 }
 
 func (a *productAdapter) Latest(ctx context.Context) (int, error) {
-	draws, err := a.fetchAll(ctx, 0)
+	draws, err := a.FetchPage(ctx, 0)
 	if err != nil {
 		return 0, err
+	}
+	if len(draws) == 0 {
+		return 0, fmt.Errorf("%s latest: no result rows", a.product.Name)
 	}
 	max := 0
 	for _, draw := range draws {
@@ -74,40 +79,42 @@ func (a *productAdapter) Latest(ctx context.Context) (int, error) {
 	return max, nil
 }
 
-func (a *productAdapter) Fetch(ctx context.Context, numericID int) (model.Draw, error) {
-	draws, err := a.fetchAll(ctx, numericID)
-	if err != nil {
-		return nil, err
-	}
-	for _, draw := range draws {
-		id, _ := model.NormalizeID(draw.GetID())
-		if id.Number == numericID {
-			return draw, nil
-		}
-	}
-	return nil, fmt.Errorf("%s fetch %d: returned normalized ID does not match requested ID", a.product.Name, numericID)
-}
-
-func (a *productAdapter) fetchAll(ctx context.Context, numericID int) ([]model.Draw, error) {
+// FetchPage returns the parsed draws from one newest-first result page.
+// Page 0 holds the most recent draws, matching the Python crawler which
+// crawls PageIndex values from 0 upward with an empty draw identifier.
+func (a *productAdapter) FetchPage(ctx context.Context, page int) ([]model.Draw, error) {
 	l := layouts[a.product.Name]
-	body := requestBody(a.product.Name, l, numericID)
+	body := requestBody(a.product.Name, l, page)
 	raw, err := a.c.post(ctx, a.product.Endpoint, body)
 	if err != nil {
-		return nil, fmt.Errorf("%s fetch %d: %w", a.product.Name, numericID, err)
+		return nil, fmt.Errorf("%s page %d: %w", a.product.Name, page, err)
 	}
 	var envelope struct {
 		Value json.RawMessage `json:"value"`
+		Error bool            `json:"Error"`
 	}
 	if err := json.Unmarshal([]byte(raw), &envelope); err != nil {
 		return nil, fmt.Errorf("%s response JSON: %w", a.product.Name, err)
 	}
+	if envelope.Error {
+		return nil, fmt.Errorf("%s page %d: AJAX response reported Error=true", a.product.Name, page)
+	}
 	var value struct {
 		HtmlContent string `json:"HtmlContent"`
+		Error       bool   `json:"Error"`
+		InfoMessage string `json:"InfoMessage"`
 	}
 	if err := json.Unmarshal(envelope.Value, &value); err != nil {
 		if err2 := json.Unmarshal(envelope.Value, &value.HtmlContent); err2 != nil {
 			return nil, fmt.Errorf("%s response value: %w", a.product.Name, err)
 		}
+	}
+	if value.Error {
+		message := strings.TrimSpace(value.InfoMessage)
+		if message == "" {
+			message = "AJAX response reported Error=true"
+		}
+		return nil, fmt.Errorf("%s page %d: %s", a.product.Name, page, message)
 	}
 	if value.HtmlContent == "" {
 		return nil, fmt.Errorf("%s response has no HTML content", a.product.Name)
@@ -116,13 +123,12 @@ func (a *productAdapter) fetchAll(ctx context.Context, numericID int) ([]model.D
 	if err != nil {
 		return nil, fmt.Errorf("%s parse: %w", a.product.Name, err)
 	}
-	if len(draws) == 0 {
-		return nil, fmt.Errorf("%s parse: no result rows", a.product.Name)
-	}
 	return draws, nil
 }
 
-func requestBody(name model.ProductName, l struct{ gameID, key string }, id int) map[string]any {
+// requestBody builds a page-listing request with an empty draw identifier,
+// mirroring the Python product org_body payloads. Page 0 is the newest page.
+func requestBody(name model.ProductName, l struct{ gameID, key string }, page int) map[string]any {
 	ri := map[string]any{"SiteId": "main.frontend.vi", "SiteAlias": "main.vi", "UserSessionId": "", "SiteLang": "vi", "IsPageDesign": false, "ExtraParam1": "", "ExtraParam2": "", "ExtraParam3": "", "SiteURL": "", "WebPage": nil, "SiteName": "Vietlott", "OrgPageAlias": nil, "PageAlias": nil, "RefKey": nil, "FullPageAlias": nil}
 	switch name {
 	case model.Power655, model.Power645, model.Power535:
@@ -132,20 +138,21 @@ func requestBody(name model.ProductName, l struct{ gameID, key string }, id int)
 			rows = 6
 		}
 		if name == model.Power535 {
-			cols = 15
+			// The live 5/35 endpoint indexes the search grid as 35 columns,
+			// matching the Python RequestPower535 ArrayNumbers dimensions.
+			cols = 35
 		}
 		arr := make([][]string, rows)
 		for i := range arr {
 			arr[i] = make([]string, cols)
 		}
-		body := map[string]any{"ORenderInfo": ri, "Key": l.key, "GameDrawId": fmt.Sprintf("%d", id), "ArrayNumbers": arr, "CheckMulti": false, "PageIndex": 0}
-		return body
+		return map[string]any{"ORenderInfo": ri, "Key": l.key, "GameDrawId": "", "ArrayNumbers": arr, "CheckMulti": false, "PageIndex": page}
 	case model.Keno:
-		return map[string]any{"DrawDate": "", "GameDrawNo": fmt.Sprintf("#%d", id), "GameId": l.gameID, "ORenderInfo": ri, "OddEven": 2, "PageIndex": 1, "ProcessType": 0, "TotalRow": 112453, "UpperLower": 2, "number": ""}
+		return map[string]any{"DrawDate": "", "GameDrawNo": "", "GameId": l.gameID, "ORenderInfo": ri, "OddEven": 2, "PageIndex": page, "ProcessType": 0, "TotalRow": 112453, "UpperLower": 2, "number": ""}
 	case model.Bingo18:
-		return map[string]any{"ORenderInfo": ri, "GameId": l.gameID, "GameDrawNo": fmt.Sprintf("%d", id), "number": "", "DrawDate": "", "PageIndex": 1, "TotalRow": 43569}
+		return map[string]any{"ORenderInfo": ri, "GameId": l.gameID, "GameDrawNo": "", "number": "", "DrawDate": "", "PageIndex": page, "TotalRow": 43569}
 	case model.Max3D, model.Max3DPro:
-		return map[string]any{"CheckMulti": 0, "GameDrawId": fmt.Sprintf("%d", id), "GameId": l.gameID, "ORenderInfo": ri, "PageIndex": 1, "number01": "123", "number02": "321"}
+		return map[string]any{"CheckMulti": 0, "GameDrawId": "", "GameId": l.gameID, "ORenderInfo": ri, "PageIndex": page, "number01": "123", "number02": "321"}
 	}
 	return nil
 }
