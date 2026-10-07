@@ -6,7 +6,7 @@ LOGURU_LEVEL := INFO
 export
 
 all: lint test
-.PHONY: all requirements-dev test lint build pypi run-crawl run-missing build-crawler build-arm-pi
+.PHONY: all requirements-dev test lint build pypi run-crawl run-missing build-crawler build-arm-pi sync-data
 
 .venv:
 	@echo "Initializing virtual environment..."
@@ -50,3 +50,17 @@ run-missing: .venv
 	@echo "Running missing scripts..."
 	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py keno
 	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py power_535
+
+# Scheduled data update using the Go crawler (mirrors bin/github_data.sh,
+# which still drives the Python crawler via cron). MAX_DRAWS bounds each
+# product's gap fill; 0 means no limit.
+MAX_DRAWS ?= 0
+
+sync-data: build-crawler
+	@echo "Syncing lottery data with Go crawler..."
+	./bin/vietlott-crawler sync --all --max-draws $(MAX_DRAWS) || true
+	$(UV) run python src/render_readme.py
+	$(UV) run python src/render_docs.py
+	git add data readme.md docs/index.html
+	git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`" || echo "nothing to commit"
+	git push origin main
