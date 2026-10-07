@@ -1,6 +1,6 @@
 module github.com/vietvudanh/vietlott-data/crawler
 
-go 1.22
+go 1.27
 
 require github.com/PuerkitoBio/goquery v1.9.2
 
