@@ -59,8 +59,8 @@ MAX_DRAWS ?= 0
 sync-data: build-crawler
 	@echo "Syncing lottery data with Go crawler..."
 	./bin/vietlott-crawler sync --all --max-draws $(MAX_DRAWS) || true
-	$(UV) run python src/render_readme.py
-	$(UV) run python src/render_docs.py
+	./bin/vietlott-crawler render-readme
+	./bin/vietlott-crawler render-docs
 	git add data readme.md docs/index.html
 	git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`" || echo "nothing to commit"
 	git push origin main

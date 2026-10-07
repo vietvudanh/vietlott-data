@@ -9,10 +9,12 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/vietvudanh/vietlott-data/crawler/internal/client"
 	"github.com/vietvudanh/vietlott-data/crawler/internal/crawler"
 	"github.com/vietvudanh/vietlott-data/crawler/internal/model"
+	"github.com/vietvudanh/vietlott-data/crawler/internal/render"
 	"github.com/vietvudanh/vietlott-data/crawler/internal/storage"
 )
 
@@ -59,8 +61,12 @@ func run(ctx context.Context, args []string, stdout, stderr io.Writer, factory a
 		return missing(ctx, root, opts, stdout, stderr, factory)
 	case "sync":
 		return syncProducts(ctx, root, opts, stdout, stderr, factory)
+	case "render-readme":
+		return renderReadme(root, stdout, stderr)
+	case "render-docs":
+		return renderDocs(root, stdout, stderr)
 	default:
-		fmt.Fprintln(stderr, "error: command is required (status, missing, or sync)")
+		fmt.Fprintln(stderr, "error: command is required (status, missing, sync, render-readme, or render-docs)")
 		return 2
 	}
 }
@@ -90,7 +96,8 @@ func parseArgs(args []string) (options, error) {
 		return opts, errors.New("command is required (status, missing, or sync)")
 	}
 	opts.command = clean[0]
-	if opts.command != "status" && opts.command != "missing" && opts.command != "sync" {
+	if opts.command != "status" && opts.command != "missing" && opts.command != "sync" &&
+		opts.command != "render-readme" && opts.command != "render-docs" {
 		return opts, fmt.Errorf("unknown command %q", opts.command)
 	}
 	fs := flag.NewFlagSet(opts.command, flag.ContinueOnError)
@@ -111,6 +118,12 @@ func parseArgs(args []string) (options, error) {
 	if opts.command == "status" {
 		if opts.product != "" || opts.all || opts.maxDraws != 0 {
 			return opts, errors.New("status does not accept product, all, or max-draws")
+		}
+		return opts, nil
+	}
+	if opts.command == "render-readme" || opts.command == "render-docs" {
+		if opts.product != "" || opts.all || opts.maxDraws != 0 {
+			return opts, fmt.Errorf("%s does not accept product, all, or max-draws", opts.command)
 		}
 		return opts, nil
 	}
@@ -265,4 +278,22 @@ func joinIDs(ids []int) string {
 		values[i] = fmt.Sprint(id)
 	}
 	return strings.Join(values, ",")
+}
+
+func renderReadme(root string, out, errOut io.Writer) int {
+	if err := render.WriteReadme(root, time.Now()); err != nil {
+		fmt.Fprintln(errOut, "error:", err)
+		return 1
+	}
+	fmt.Fprintln(out, "readme.md written")
+	return 0
+}
+
+func renderDocs(root string, out, errOut io.Writer) int {
+	if err := render.UpdateDocsHTML(root); err != nil {
+		fmt.Fprintln(errOut, "error:", err)
+		return 1
+	}
+	fmt.Fprintln(out, "docs/index.html updated")
+	return 0
 }

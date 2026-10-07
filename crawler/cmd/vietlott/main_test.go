@@ -205,3 +205,44 @@ func (d fakeDraw) GetID() string                  { return d.ID }
 func (d fakeDraw) GetDate() string                { return "" }
 func (d fakeDraw) ProductName() model.ProductName { return model.Power655 }
 func (d fakeDraw) MarshalJSON() ([]byte, error)   { type plain fakeDraw; return json.Marshal(plain(d)) }
+
+func TestRenderReadmeWritesFile(t *testing.T) {
+	root := testRoot(t)
+	var out strings.Builder
+	code := run(context.Background(), []string{"--root", root, "render-readme"}, &out, &out, nil)
+	if code != 0 {
+		t.Fatalf("code=%d output=%q", code, out.String())
+	}
+	raw, err := os.ReadFile(filepath.Join(root, "readme.md"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"# Vietlott Data", "No data available"} {
+		if !strings.Contains(string(raw), want) {
+			t.Fatalf("readme.md missing %q", want)
+		}
+	}
+}
+
+func TestRenderDocsUpdatesHTML(t *testing.T) {
+	root := testRoot(t)
+	if err := os.Mkdir(filepath.Join(root, "docs"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	html := `<html><body><table><tbody><tr><td>old</td></tr></tbody></table><!-- BEGIN_DAYS_SINCE_SECTION -->old<!-- END_DAYS_SINCE_SECTION --></body></html>`
+	if err := os.WriteFile(filepath.Join(root, "docs", "index.html"), []byte(html), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	var out strings.Builder
+	code := run(context.Background(), []string{"--root", root, "render-docs"}, &out, &out, nil)
+	if code != 0 {
+		t.Fatalf("code=%d output=%q", code, out.String())
+	}
+	raw, err := os.ReadFile(filepath.Join(root, "docs", "index.html"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(raw), "<td>old</td>") {
+		t.Fatalf("tbody not replaced: %s", raw)
+	}
+}
