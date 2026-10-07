@@ -317,3 +317,7 @@ pyrightconfig.json
 **/.DS_Store
 
 .worktrees/
+
+# Go crawler build artifacts (rebuild via make build-crawler / build-arm-pi)
+bin/vietlott-crawler
+bin/vietlott-crawler-arm64
