@@ -1314,3 +1314,9 @@ td:nth-child(5) {
         page-break-inside: avoid;
     }
 }
+
+/* FAQ (GEO) */
+.faq-item { border-top: 1px solid var(--border, rgba(127, 127, 127, 0.25)); padding: 0.75rem 0; }
+.faq-item:first-of-type { border-top: 0; }
+.faq-item summary { cursor: pointer; font-weight: 600; }
+.faq-item p { margin: 0.5rem 0 0; line-height: 1.6; }
