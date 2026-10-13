@@ -88,7 +88,24 @@ For architecture and runner setup, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
         """Get installation section."""
         return """## Installation & Usage
 
-### CLI Usage (using uv)
+### Go crawler (recommended)
+
+Requires Go 1.27+. Vietlott only answers Vietnamese IPs, so run it from Vietnam.
+
+```bash
+make build-crawler                       # builds bin/vietlott-crawler
+./bin/vietlott-crawler status            # existing vs latest draw per product
+./bin/vietlott-crawler sync --all        # fetch latest draws and backfill gaps
+./bin/vietlott-crawler sync --product keno --max-draws 100
+./bin/vietlott-crawler render-readme     # regenerate readme.md
+./bin/vietlott-crawler render-docs       # regenerate docs/index.html
+
+# Products: power655, power645, power535, keno, bingo18, 3d, 3d_pro
+```
+
+### Python CLI (legacy, deprecated)
+
+The Python crawler stays available through the PyPI package and will be removed in a future release.
 
 ```bash
 # Crawl latest data

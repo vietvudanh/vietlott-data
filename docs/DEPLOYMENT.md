@@ -12,23 +12,15 @@ The Vietlott web endpoints block HTTP requests originating from IP addresses out
 
 ## Prerequisites
 
-- Python 3.11+
-- [uv](https://github.com/astral-sh/uv) (package and project manager)
+- Go 1.27+
 - Git configured with commit and push permissions to the repository
 
-Install uv:
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
-
 ## Local Setup
-
-Clone the repository and install dependencies using uv:
 
 ```bash
 git clone https://github.com/vietvudanh/vietlott-data.git
 cd vietlott-data
-uv sync --dev
+make build-crawler
 ```
 
 ## Local Runner Pipeline
@@ -41,19 +33,19 @@ The automated crawler runs via `bin/github_data.sh`.
    ```bash
    git pull --rebase --autostash origin main
    ```
-2. Runs the crawler and missing-data detector for all supported products:
+2. Builds the Go crawler into `bin/vietlott-crawler`.
+3. Fetches the latest draws and backfills missing ones for every product (`MAX_DRAWS` bounds each product's gap fill, `0` means no limit):
    ```bash
-   for product in keno power_655 power_645 power_535 3d 3d_pro bingo18; do
-     uv run python src/vietlott/cli/crawl.py "$product"
-     uv run python src/vietlott/cli/missing.py "$product"
-   done
+   ./bin/vietlott-crawler sync --all --max-draws "$MAX_DRAWS"
    ```
-3. Regenerates repository documentation and web statistics:
+4. Regenerates repository documentation and web statistics:
    ```bash
-   uv run python src/render_readme.py
-   uv run python src/render_docs.py
+   ./bin/vietlott-crawler render-readme
+   ./bin/vietlott-crawler render-docs
    ```
-4. Commits changed data files and documentation, then pushes to `origin main`.
+5. Commits changed data files and documentation, then pushes to `origin main`.
+
+A product that fails to sync does not stop the run; the other products are still rendered and committed.
 
 ### Scheduling
 
@@ -66,39 +58,33 @@ The runner can be scheduled via cron or a task runner (see `Procfile`):
 On macOS, you can alternatively use `launchd` or a cron entry via `crontab -e`.
 On Linux, a systemd timer or cron job can execute the script at your desired interval.
 
-## Manual Execution with uv
+For a Raspberry Pi, cross-compile with `make build-arm-pi` and copy `bin/vietlott-crawler-arm64`.
 
-To run tasks manually using uv:
+## Manual Execution
 
-### Crawl Latest Draws
 ```bash
-uv run vietlott-crawl keno
-uv run vietlott-crawl power_655
-uv run vietlott-crawl power_645
+./bin/vietlott-crawler status                      # existing vs latest draw per product
+./bin/vietlott-crawler sync --product keno         # latest draws + backfill for one product
+./bin/vietlott-crawler missing --product power655  # backfill missing draws only
+./bin/vietlott-crawler render-readme
+./bin/vietlott-crawler render-docs
 ```
 
-### Backfill Missing Draws
+Product names: `power655`, `power645`, `power535`, `keno`, `bingo18`, `3d`, `3d_pro`.
+
+### Run Tests
 ```bash
-uv run vietlott-missing power_655 --limit 50
+cd crawler && go vet ./... && go test ./...
 ```
 
-### Update Documentation
-```bash
-# Update repository README with current data statistics
-uv run vietlott-render-readme
+## Legacy Python Crawler (deprecated)
 
-# Update docs/index.html with current data statistics
-uv run vietlott-render-docs
-```
+The Python crawler (`uv run vietlott-crawl <product>`, `vietlott-missing`, `vietlott-render-*`) is kept for the PyPI package and will be removed in a future release. Tests and linting for it:
 
-### Run Tests and Linter
 ```bash
-# Run test suite
+uv sync --dev
 uv run pytest
-
-# Lint and format
-uv run ruff check --select I --fix ./src
-uv run ruff format ./src
+uv run ruff check --select I --fix ./src && uv run ruff format ./src
 ```
 
 ## Other Deployments

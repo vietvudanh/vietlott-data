@@ -1,51 +1,34 @@
 #!/usr/bin/env bash
-# commit to csv_data
+# crawl with the Go crawler, render readme/docs and commit to github
 
 set -euo pipefail
 
-URL=https://github.com/vietvudanh/vietlott-data.git
-FOLDER=vietlott-data
 DATA_FOLDER=data
 USER="Viet VU"
 EMAIl="vietvudanh@gmail.com"
-VENV=".venv"
+MAX_DRAWS="${MAX_DRAWS:-0}"
 
-# Activate virtual environment if it exists
-if [ -n "$VENV" ]; then
-  source "$VENV/bin/activate"
-fi
+cd "$(dirname "$0")/.."
 
 git pull --rebase --autostash origin main
 
-# generate data file
 echo "pwd $(pwd)"
 
-export PYTHONPATH="src"
-export LOGURU_LEVEL="INFO"
+(cd crawler && go build -o ../bin/vietlott-crawler ./cmd/vietlott)
 
-for product in keno power_655 power_645 power_535 3d 3d_pro bingo18; do
-  python src/vietlott/cli/crawl.py "$product"
-  python src/vietlott/cli/missing.py "$product"
-done
+# sync fetches the latest draws and backfills missing ones for every product;
+# a failing product must not block rendering and committing the others
+./bin/vietlott-crawler sync --all --max-draws "$MAX_DRAWS" || echo "sync reported failures"
 
-python src/render_readme.py
-python src/render_docs.py
-
-#if [[ ! -d "$FOLDER" ]] ; then
-#  git clone $URL $FOLDER
-#fi
-
-#cp -r $DATA_FOLDER $FOLDER/
-
-#cd $FOLDER
-#git pull
+./bin/vietlott-crawler render-readme
+./bin/vietlott-crawler render-docs
 
 # commit and push
-git config user.name "\'$USER\'"
-git config user.email "\'$EMAIl\'"
+git config user.name "$USER"
+git config user.email "$EMAIl"
 git status
 git add $DATA_FOLDER
 git add readme.md
 git add docs/index.html
-git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`"
+git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`" || { echo "nothing to commit"; exit 0; }
 git push origin main

@@ -52,7 +52,7 @@ run-missing: .venv
 	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py power_535
 
 # Scheduled data update using the Go crawler (mirrors bin/github_data.sh,
-# which still drives the Python crawler via cron). MAX_DRAWS bounds each
+# which now drives the same Go crawler via cron). MAX_DRAWS bounds each
 # product's gap fill; 0 means no limit.
 MAX_DRAWS ?= 0
 
