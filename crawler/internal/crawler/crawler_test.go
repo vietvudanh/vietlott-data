@@ -276,3 +276,39 @@ func TestSyncHonorsMaxDrawsPrioritizingNewest(t *testing.T) {
 	}
 }
 
+func TestSyncFlushesInBatchesAndInvokesProgress(t *testing.T) {
+	root := t.TempDir()
+	if err := os.Mkdir(filepath.Join(root, "data"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	product := model.Product{Name: model.Power655, FileName: "power655.jsonl", MinID: 1, MaxPages: 5}
+	adapter := &fakeAdapter{
+		latest: 4,
+		pages: map[int][]model.Draw{
+			0: {testDraw("4"), testDraw("3")},
+			1: {testDraw("2"), testDraw("1")},
+		},
+	}
+	var progressUpdates []Progress
+	opts := SyncOptions{
+		BatchSize: 2,
+		OnProgress: func(p Progress) {
+			progressUpdates = append(progressUpdates, p)
+		},
+	}
+	report, err := SyncWithOptions(context.Background(), root, product, adapter, opts)
+	if err != nil {
+		t.Fatalf("SyncWithOptions() error = %v", err)
+	}
+	if report.Written != 4 || report.Missing != 4 {
+		t.Fatalf("report = %#v, want written=4, missing=4", report)
+	}
+	if len(progressUpdates) != 2 {
+		t.Fatalf("progress updates count = %d, want 2", len(progressUpdates))
+	}
+	if progressUpdates[0].Found != 2 || progressUpdates[1].Found != 4 {
+		t.Fatalf("progress found counts = [%d, %d], want [2, 4]", progressUpdates[0].Found, progressUpdates[1].Found)
+	}
+}
+
+

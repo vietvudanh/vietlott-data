@@ -19,11 +19,12 @@ import (
 )
 
 type options struct {
-	command  string
-	root     string
-	product  string
-	all      bool
-	maxDraws int
+	command   string
+	root      string
+	product   string
+	all       bool
+	maxDraws  int
+	batchSize int
 }
 
 type adapterFactory func(model.ProductName) (crawler.ProductAdapter, error)
@@ -105,30 +106,34 @@ func parseArgs(args []string) (options, error) {
 	product := fs.String("product", "", "product name")
 	all := fs.Bool("all", false, "all products")
 	maxDraws := fs.Int("max-draws", 0, "maximum missing draws")
+	batchSize := fs.Int("batch-size", 50, "batch size for flushing draws to disk")
 	if err := fs.Parse(clean[1:]); err != nil {
 		return opts, err
 	}
 	if fs.NArg() != 0 {
 		return opts, fmt.Errorf("unexpected argument %q", fs.Arg(0))
 	}
-	opts.product, opts.all, opts.maxDraws = *product, *all, *maxDraws
+	opts.product, opts.all, opts.maxDraws, opts.batchSize = *product, *all, *maxDraws, *batchSize
 	if opts.maxDraws < 0 {
 		return opts, errors.New("max-draws must be nonnegative")
 	}
+	if opts.batchSize < 0 {
+		return opts, errors.New("batch-size must be nonnegative")
+	}
 	if opts.command == "status" {
-		if opts.product != "" || opts.all || opts.maxDraws != 0 {
-			return opts, errors.New("status does not accept product, all, or max-draws")
+		if opts.product != "" || opts.all || opts.maxDraws != 0 || opts.batchSize != 50 {
+			return opts, errors.New("status does not accept product, all, max-draws, or batch-size")
 		}
 		return opts, nil
 	}
 	if opts.command == "render-readme" || opts.command == "render-docs" {
-		if opts.product != "" || opts.all || opts.maxDraws != 0 {
-			return opts, fmt.Errorf("%s does not accept product, all, or max-draws", opts.command)
+		if opts.product != "" || opts.all || opts.maxDraws != 0 || opts.batchSize != 50 {
+			return opts, fmt.Errorf("%s does not accept product, all, max-draws, or batch-size", opts.command)
 		}
 		return opts, nil
 	}
-	if opts.command == "missing" && opts.maxDraws != 0 {
-		return opts, errors.New("missing does not accept max-draws")
+	if opts.command == "missing" && (opts.maxDraws != 0 || opts.batchSize != 50) {
+		return opts, errors.New("missing does not accept max-draws or batch-size")
 	}
 	if opts.product != "" {
 		if _, err := model.Lookup(opts.product); err != nil {
@@ -249,7 +254,17 @@ func syncProducts(ctx context.Context, root string, opts options, out, errOut io
 			exitCode = 1
 			continue
 		}
-		report, syncErr := crawler.Sync(ctx, root, product, adapter, opts.maxDraws)
+		progressFn := func(p crawler.Progress) {
+			if p.Total > 0 {
+				fmt.Fprintf(out, "[progress] %s: page %d/%d, found %d/%d missing draws\n",
+					p.Product, p.Page, p.MaxPages, p.Found, p.Total)
+			}
+		}
+		report, syncErr := crawler.SyncWithOptions(ctx, root, product, adapter, crawler.SyncOptions{
+			MaxDraws:   opts.maxDraws,
+			BatchSize:  opts.batchSize,
+			OnProgress: progressFn,
+		})
 		fmt.Fprintf(out, "%s existing=%d latest=%d missing=%d written=%d failed=%d\n",
 			report.Product, report.Existing, report.Latest, report.Missing, report.Written, len(report.FailedIDs))
 		if syncErr != nil {

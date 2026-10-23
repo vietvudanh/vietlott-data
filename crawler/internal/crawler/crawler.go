@@ -47,9 +47,34 @@ func MissingIDs(existing map[int]struct{}, minID, latestID, maxDraws int) []int 
 	return missing
 }
 
+// Progress reports crawling progress for long-running synchronization.
+type Progress struct {
+	Product   model.ProductName
+	Page      int
+	MaxPages  int
+	Found     int
+	Total     int
+	BatchSize int // newly found draws in this page/batch
+}
+
+// ProgressFunc receives progress updates during synchronization.
+type ProgressFunc func(Progress)
+
+// SyncOptions configures synchronization behavior.
+type SyncOptions struct {
+	MaxDraws   int
+	BatchSize  int // when > 0, flush discovered draws to disk in batches
+	OnProgress ProgressFunc
+}
+
 // Sync downloads missing draws by scanning newest-first result pages and
 // atomically appends successful results.
 func Sync(ctx context.Context, repoRoot string, product model.Product, adapter ProductAdapter, maxDraws int) (SyncReport, error) {
+	return SyncWithOptions(ctx, repoRoot, product, adapter, SyncOptions{MaxDraws: maxDraws})
+}
+
+// SyncWithOptions downloads missing draws with progress reporting and optional batching.
+func SyncWithOptions(ctx context.Context, repoRoot string, product model.Product, adapter ProductAdapter, opts SyncOptions) (SyncReport, error) {
 	report := SyncReport{Product: product.Name}
 	if adapter == nil {
 		return report, errors.New("product adapter is nil")
@@ -88,8 +113,8 @@ func Sync(ctx context.Context, repoRoot string, product model.Product, adapter P
 	}
 
 	allMissing := MissingIDs(existing, minID, latest, 0)
-	if maxDraws > 0 && len(allMissing) > maxDraws {
-		allMissing = allMissing[len(allMissing)-maxDraws:]
+	if opts.MaxDraws > 0 && len(allMissing) > opts.MaxDraws {
+		allMissing = allMissing[len(allMissing)-opts.MaxDraws:]
 	}
 	ids := allMissing
 	report.Missing = len(ids)
@@ -105,9 +130,22 @@ func Sync(ctx context.Context, repoRoot string, product model.Product, adapter P
 	// pages cannot contain anything we want.
 	oldestWanted := ids[0]
 	found := make(map[int]model.Draw, len(ids))
+	unflushed := make([]model.Draw, 0)
 	var pageErr error
 	var failedPage int
 	canceled := false
+
+	flushBatch := func() error {
+		if len(unflushed) == 0 {
+			return nil
+		}
+		if err := storage.AppendDrawsAtomic(path, unflushed); err != nil {
+			return fmt.Errorf("write %s batch: %w", product.Name, err)
+		}
+		report.Written += len(unflushed)
+		unflushed = unflushed[:0]
+		return nil
+	}
 
 pages:
 	for page := 0; page < pages && len(found) < len(wanted); page++ {
@@ -130,6 +168,7 @@ pages:
 		}
 		pageMax := -1
 		pageMin := -1
+		pageNewFound := 0
 		for _, draw := range draws {
 			if draw == nil {
 				continue
@@ -149,9 +188,29 @@ pages:
 			if _, ok := wanted[id.Number]; ok {
 				if _, dup := found[id.Number]; !dup {
 					found[id.Number] = draw
+					unflushed = append(unflushed, draw)
+					pageNewFound++
 				}
 			}
 		}
+
+		if opts.OnProgress != nil {
+			opts.OnProgress(Progress{
+				Product:   product.Name,
+				Page:      page + 1,
+				MaxPages:  pages,
+				Found:     len(found),
+				Total:     len(wanted),
+				BatchSize: pageNewFound,
+			})
+		}
+
+		if opts.BatchSize > 0 && len(unflushed) >= opts.BatchSize {
+			if err := flushBatch(); err != nil {
+				return report, err
+			}
+		}
+
 		if pageMax >= 0 && pageMax < oldestWanted {
 			break pages
 		}
@@ -170,22 +229,19 @@ pages:
 		}
 	}
 
-	draws := make([]model.Draw, 0, len(found))
-	for _, draw := range found {
-		draws = append(draws, draw)
-	}
 	for _, id := range ids {
 		if _, ok := found[id]; !ok {
 			report.FailedIDs = append(report.FailedIDs, id)
 		}
 	}
 	sort.Ints(report.FailedIDs)
-	if len(draws) > 0 {
-		if err := storage.AppendDrawsAtomic(path, draws); err != nil {
-			return report, fmt.Errorf("write %s: %w", product.Name, err)
+
+	if len(unflushed) > 0 {
+		if err := flushBatch(); err != nil {
+			return report, err
 		}
-		report.Written = len(draws)
 	}
+
 	if canceled {
 		return report, ctx.Err()
 	}
