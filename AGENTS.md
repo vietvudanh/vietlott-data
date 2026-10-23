@@ -22,7 +22,7 @@ Key points:
 - Data is fetched by pages, with missing-data detection and backfilling handled in `missing.py`.
 
 ### Runner
-The crawler runs via a scheduled local runner (`bin/github_data.sh` / `Procfile`) and commits new data to GitHub. GitHub Actions is no longer used for crawling due to Vietlott IP geo-blocking. See `docs/DEPLOYMENT.md` for full deployment details.
+The Go crawler (`/crawler`, built with `make build-crawler`) is the production crawler and renderer. It runs via a scheduled local runner (`bin/github_data.sh` / `Procfile`) and commits new data to GitHub. The Python crawler under `/src` is legacy (kept for the PyPI package) and deprecated. GitHub Actions is no longer used for crawling due to Vietlott IP geo-blocking. See `docs/DEPLOYMENT.md` for full deployment details.
 
 ## Development Setup
 1.  **Clone the repository:**
@@ -109,4 +109,5 @@ To publish a new version to PyPI:
 - **Modular design**: Separate concerns with crawler, model, and CLI modules
 - **Configuration**: Centralized configuration system in `src/vietlott/config`
 - **Crawling Logic**: Core logic in `src/vietlott/crawler`
-- **Automation**: Scheduled local crawler via `bin/github_data.sh` and `Procfile`
+- **Go crawler tests**: `cd crawler && go vet ./... && go test ./...`
+- **Automation**: Scheduled local Go crawler via `bin/github_data.sh` and `Procfile`

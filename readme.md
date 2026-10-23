@@ -58,7 +58,7 @@ For background on these models, see the [Machine Learning README](./src/machine_
 | --- | --- | --- | --- | --- | --- | --- |
 | Power 655 | 1414 | 2017-08-01 | 2026-10-22 | 1414 | 00001 | 01414 |
 | Power 645 | 1381 | 2017-10-25 | 2026-10-21 | 1381 | 00198 | 01578 |
-| Power 535 | 445 | 2025-06-29 | 2026-10-22 | 888 | 00001 | 00962 |
+| Power 535 | 482 | 2025-06-29 | 2026-10-23 | 963 | 00001 | 00963 |
 | Keno | 715 | 2022-12-04 | 2026-10-23 | 89195 | #0110271 | #0300265 |
 | 3D | 1144 | 2019-04-22 | 2026-10-21 | 1144 | 00001 | 01148 |
 | 3D Pro | 791 | 2021-09-14 | 2026-10-22 | 791 | 00001 | 00795 |
@@ -186,8 +186,8 @@ For background on these models, see the [Machine Learning README](./src/machine_
 | 33 | 2026-09-05 | 47 |
 | 8 | 2026-09-08 | 44 |
 | 43 | 2026-09-12 | 40 |
-| 47 | 2026-09-15 | 37 |
 | 32 | 2026-09-15 | 37 |
+| 47 | 2026-09-15 | 37 |
 | 22 | 2026-09-19 | 33 |
 | 3 | 2026-09-22 | 30 |
 | 9 | 2026-09-22 | 30 |
@@ -262,7 +262,24 @@ For architecture and runner setup, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
 ## Installation & Usage
 
-### CLI Usage (using uv)
+### Go crawler (recommended)
+
+Requires Go 1.27+. Vietlott only answers Vietnamese IPs, so run it from Vietnam.
+
+```bash
+make build-crawler                       # builds bin/vietlott-crawler
+./bin/vietlott-crawler status            # existing vs latest draw per product
+./bin/vietlott-crawler sync --all        # fetch latest draws and backfill gaps
+./bin/vietlott-crawler sync --product keno --max-draws 100
+./bin/vietlott-crawler render-readme     # regenerate readme.md
+./bin/vietlott-crawler render-docs       # regenerate docs/index.html
+
+# Products: power655, power645, power535, keno, bingo18, 3d, 3d_pro
+```
+
+### Python CLI (legacy, deprecated)
+
+The Python crawler stays available through the PyPI package and will be removed in a future release.
 
 ```bash
 # Crawl latest data

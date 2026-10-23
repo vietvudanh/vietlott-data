@@ -1,0 +1,38 @@
+name: Go crawler
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "crawler/**"
+      - ".github/workflows/go-crawler.yml"
+  pull_request:
+    paths:
+      - "crawler/**"
+      - ".github/workflows/go-crawler.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: crawler
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: crawler/go.mod
+          cache-dependency-path: crawler/go.sum
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./...
+
+      - name: Build
+        run: go build -o /dev/null ./cmd/vietlott
