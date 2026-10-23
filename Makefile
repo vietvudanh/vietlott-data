@@ -19,7 +19,7 @@ requirements-dev: .venv
 	$(UV) run pip install -e .
 
 test:
-	$(UV) run pytest src/vietlott/tests
+	$(UV) run pytest
 
 lint: .venv
 	@echo "Linting..."
@@ -43,13 +43,22 @@ pypi: build
 run-crawl: .venv
 	@echo "Running crawl scripts..."
 	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/crawl.py keno
-	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/crawl.py power_535
 	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/crawl.py power_655
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/crawl.py power_645
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/crawl.py power_535
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/crawl.py 3d
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/crawl.py 3d_pro
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/crawl.py bingo18
 
 run-missing: .venv
 	@echo "Running missing scripts..."
 	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py keno
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py power_655
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py power_645
 	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py power_535
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py 3d
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py 3d_pro
+	LOGURU_LEVEL=$(LOGURU_LEVEL) PYTHONPATH=src $(UV) run python src/vietlott/cli/missing.py bingo18
 
 # Scheduled data update using the Go crawler (mirrors bin/github_data.sh,
 # which now drives the same Go crawler via cron). MAX_DRAWS bounds each
@@ -58,7 +67,7 @@ MAX_DRAWS ?= 0
 
 sync-data: build-crawler
 	@echo "Syncing lottery data with Go crawler..."
-	./bin/vietlott-crawler sync --all --max-draws $(MAX_DRAWS) || true
+	./bin/vietlott-crawler sync --all --max-draws $(MAX_DRAWS)
 	./bin/vietlott-crawler render-readme
 	./bin/vietlott-crawler render-docs
 	git add data readme.md docs/index.html

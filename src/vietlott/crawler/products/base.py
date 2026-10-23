@@ -117,7 +117,7 @@ class BaseProduct:
         if len(list_data) == 0:
             logger.info("No results")
             return False
-        df_crawled = pl.DataFrame(list_data)
+        df_crawled = pl.DataFrame(list_data).unique(subset=["id"], keep="last")
         df_crawled = df_crawled.with_columns(pl.col("id").cast(pl.Utf8))
         logger.info(
             f"crawled data date: min={df_crawled['date'].min()}, max={df_crawled['date'].max()}"
@@ -139,13 +139,10 @@ class BaseProduct:
             # Use set-based filtering to avoid deprecation warning
             existing_ids = set(current_data["id"].to_list())
             df_take = df_crawled.filter(~pl.col("id").is_in(existing_ids))
-            df_final = pl.concat([current_data, df_take])
+            df_final = pl.concat([current_data, df_take]).unique(subset=["id"], keep="last")
         else:
             df_final = df_crawled
 
-        # Sort the final dataframe
-        assert isinstance(df_final, pl.DataFrame), "df_final should be a DataFrame"
-        df_final = df_final.sort(["date", "id"])
         # Convert date column to date type if it's not already
         if df_final["date"].dtype != pl.Date:
             from datetime import datetime
@@ -158,6 +155,10 @@ class BaseProduct:
                     return_dtype=pl.Date,
                 )
             )
+
+        # Sort the final dataframe
+        assert isinstance(df_final, pl.DataFrame), "df_final should be a DataFrame"
+        df_final = df_final.sort(["date", "id"])
 
         logger.info(
             f"final data min_date={df_final['date'].min()}, max_date={df_final['date'].max()}"

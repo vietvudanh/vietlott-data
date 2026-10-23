@@ -34,6 +34,7 @@ def detect_missing_data(ctx, product, limit):
     # Handle both string and numeric IDs
     if df["id"].dtype == pl.String:
         df = df.with_columns(pl.col("id").str.replace("#", "").cast(pl.Int64))
+    df = df.sort("id")
     df = df.with_columns(pl.col("id").shift(-1).alias("id_next"))
     df = df.with_columns((pl.col("id_next") - pl.col("id")).alias("diff"))
 
@@ -43,33 +44,47 @@ def detect_missing_data(ctx, product, limit):
         ((last_id - pl.col("id")) / product_cfg.page_size).alias("index"),
         ((last_id - pl.col("id_next")) / product_cfg.page_size).alias("index_next"),
     )
-    df_missing_process = df_missing.reverse().slice(1, limit)
+    df_missing_process = df_missing.reverse().head(limit)
 
     df_display = df_missing_process.select(["date", "id", "id_next", "diff", "index", "index_next"])
     logger.info("\n" + tabulate(df_display.iter_rows(), headers=df_display.columns, tablefmt="github"))
 
+    max_backfill_page = 100
     run_date = pendulum.now(tz="Asia/Ho_Chi_Minh").to_date_string()
     product_obj: BaseProduct = map_class_name[product]()
     for row in df_missing_process.iter_rows(named=True):
-        if (row["index"] - row["index_next"]) > 50:
+        start_page = int(math.floor(row["index_next"]))
+        end_page = min(int(math.ceil(row["index"])), max_backfill_page)
+        if start_page >= max_backfill_page:
+            logger.info(
+                f"Skipping gap id {row['id']}->{row['id_next']} at page {start_page}: beyond Vietlott retention limit ({max_backfill_page} pages)."
+            )
+            continue
+
+        if (end_page - start_page) > 50:
             step = 20
-            for i in range(int(math.floor(row["index_next"])), int(math.ceil(row["index"])), step):
+            for i in range(start_page, end_page, step):
+                chunk_end = min(i + step, end_page)
                 has_results = product_obj.crawl(
                     run_date_str=run_date,
                     index_from=i,
-                    index_to=i + step,
+                    index_to=chunk_end,
                 )
                 if not has_results:
                     logger.info(
-                        f"Stop backfill for this range at index {i}->{i + step} because crawler returned no results."
+                        f"Stop backfill for this range at index {i}->{chunk_end} because crawler returned no results."
                     )
                     break
         else:
-            product_obj.crawl(
+            has_results = product_obj.crawl(
                 run_date_str=run_date,
-                index_from=int(math.floor(row["index_next"])),
-                index_to=int(math.ceil(row["index"])),
+                index_from=start_page,
+                index_to=end_page,
             )
+            if not has_results:
+                logger.info(
+                    f"Stop backfill for this range at index {start_page}->{end_page} because crawler returned no results."
+                )
 
 
 if __name__ == "__main__":

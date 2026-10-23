@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -206,3 +207,72 @@ func TestSyncRejectsProductFilePathTraversal(t *testing.T) {
 		t.Fatal("Sync() created a file outside the data directory")
 	}
 }
+
+func TestSyncIgnoresUnreachableAncientGapsBeyondMaxPages(t *testing.T) {
+	root := t.TempDir()
+	if err := os.Mkdir(filepath.Join(root, "data"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	product := model.Product{Name: model.Keno, FileName: "keno.jsonl", MinID: 100, MaxPages: 2}
+	// Existing data has draw 100, then an ancient gap until draw 961..1000.
+	// MaxPages=2 can only reach back 40 draws (draw 961..1001).
+	var existing strings.Builder
+	existing.WriteString(`{"id":"100","date":"2026-01-01","result":[1]}` + "\n")
+	for id := 961; id <= 1000; id++ {
+		existing.WriteString(`{"id":"` + strconv.Itoa(id) + `","date":"2026-01-02","result":[1]}` + "\n")
+	}
+	if err := os.WriteFile(filepath.Join(root, "data", product.FileName), []byte(existing.String()), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	// Latest is 1001. Draw 1001 is missing and reachable on page 0.
+	adapter := &fakeAdapter{
+		latest: 1001,
+		pages: map[int][]model.Draw{
+			0: {testDraw("1001")},
+		},
+	}
+	report, err := Sync(context.Background(), root, product, adapter, 0)
+	if err != nil {
+		t.Fatalf("Sync() error = %v, want success ignoring ancient gap", err)
+	}
+	if report.Written != 1 || len(report.FailedIDs) != 0 {
+		t.Fatalf("report = %#v, want written=1, failed=0", report)
+	}
+}
+
+func TestSyncHonorsMaxDrawsPrioritizingNewest(t *testing.T) {
+	root := t.TempDir()
+	if err := os.Mkdir(filepath.Join(root, "data"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	product := model.Product{Name: model.Power655, FileName: "power655.jsonl", MinID: 1, MaxPages: 5}
+	// Draws 1..3 exist. Draws 4 and 5 are missing.
+	existingContent := `{"id":"1","date":"2026-01-01","result":[1]}` + "\n" +
+		`{"id":"2","date":"2026-01-01","result":[1]}` + "\n" +
+		`{"id":"3","date":"2026-01-01","result":[1]}` + "\n"
+	if err := os.WriteFile(filepath.Join(root, "data", product.FileName), []byte(existingContent), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	// Latest is 5. maxDraws = 1 should select draw 5 (newest missing).
+	adapter := &fakeAdapter{
+		latest: 5,
+		pages: map[int][]model.Draw{
+			0: {testDraw("5"), testDraw("4")},
+		},
+	}
+	report, err := Sync(context.Background(), root, product, adapter, 1)
+	if err != nil {
+		t.Fatalf("Sync() error = %v", err)
+	}
+	if report.Written != 1 || report.Missing != 1 || len(report.FailedIDs) != 0 {
+		t.Fatalf("report = %#v, want written=1, missing=1, failed=0", report)
+	}
+	ids, _, _, err := storage.LoadExistingDrawIDs(filepath.Join(root, "data", product.FileName))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, ok := ids[5]; !ok {
+		t.Fatalf("expected draw 5 to be written, stored: %v", ids)
+	}
+}
+

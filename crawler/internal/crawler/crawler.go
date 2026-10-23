@@ -77,15 +77,24 @@ func Sync(ctx context.Context, repoRoot string, product model.Product, adapter P
 		return report, fmt.Errorf("latest draw %d is before minimum ID %d", latest, product.MinID)
 	}
 
-	ids := MissingIDs(existing, product.MinID, latest, maxDraws)
-	report.Missing = len(ids)
-	if len(ids) == 0 {
-		return report, nil
-	}
-
 	pages := product.MaxPages
 	if pages < 1 {
 		pages = 1
+	}
+
+	minID := product.MinID
+	if reachable := latest - pages*20; reachable > minID {
+		minID = reachable
+	}
+
+	allMissing := MissingIDs(existing, minID, latest, 0)
+	if maxDraws > 0 && len(allMissing) > maxDraws {
+		allMissing = allMissing[len(allMissing)-maxDraws:]
+	}
+	ids := allMissing
+	report.Missing = len(ids)
+	if len(ids) == 0 {
+		return report, nil
 	}
 	wanted := make(map[int]struct{}, len(ids))
 	for _, id := range ids {
@@ -120,6 +129,7 @@ pages:
 			break pages
 		}
 		pageMax := -1
+		pageMin := -1
 		for _, draw := range draws {
 			if draw == nil {
 				continue
@@ -133,6 +143,9 @@ pages:
 			if id.Number > pageMax {
 				pageMax = id.Number
 			}
+			if pageMin == -1 || id.Number < pageMin {
+				pageMin = id.Number
+			}
 			if _, ok := wanted[id.Number]; ok {
 				if _, dup := found[id.Number]; !dup {
 					found[id.Number] = draw
@@ -141,6 +154,19 @@ pages:
 		}
 		if pageMax >= 0 && pageMax < oldestWanted {
 			break pages
+		}
+		if pageMin >= 0 {
+			nextWanted := -1
+			for id := range wanted {
+				if _, ok := found[id]; !ok && id < pageMin && id > nextWanted {
+					nextWanted = id
+				}
+			}
+			remainingPages := pages - 1 - page
+			maxRemainingDraws := remainingPages * 20
+			if nextWanted >= 0 && pageMin-nextWanted > maxRemainingDraws {
+				break pages
+			}
 		}
 	}
 

@@ -42,26 +42,37 @@ class P3D(BaseProduct):
         data = []
         for i, tr in enumerate(soup.select("table tr")):
             tds = tr.find_all("td")
-            row = {}
+            if not tds:
+                continue
 
-            #
             divs = tr.find_all("div")
-            div_0 = divs[0]
-            div_0_text = div_0.get_text()
+            if not divs:
+                continue
+            div_0_text = divs[0].get_text()
 
-            # Extract the date after "Ngày:"
-            date_str = div_0_text.split("Ngày: ")[1]
-            row["date"] = pendulum.from_format(date_str, "DD/MM/YYYY").to_date_string()
-
-            # if row["date"] != run_date_str:
-            #     logger.error("wrong date instance %s != %s", row["date"], run_date_str)
-            #     continue
+            if "Ngày: " not in div_0_text:
+                continue
+            date_str = div_0_text.split("Ngày: ")[1].strip()
+            try:
+                date_val = pendulum.from_format(date_str, "DD/MM/YYYY").to_date_string()
+            except Exception:
+                continue
 
             td_a = tds[0].find_all("a")
-            row["id"] = td_a[0].text
+            if not td_a:
+                continue
 
-            # Find all sections that contain the results
-            results = {}
+            div_result = tr.find("div", class_="tong_day_so_ket_qua")
+            if not div_result:
+                continue
+            all_spans = div_result.find_all("span", class_="bong_tron")
+            if len(all_spans) < 60:
+                continue
+
+            row = {
+                "date": date_val,
+                "id": td_a[0].text.strip(),
+            }
 
             prizes = [
                 {"name": "Giải Đặc biệt", "count": 6},
@@ -71,11 +82,6 @@ class P3D(BaseProduct):
             ]
 
             results = {}
-
-            div_result = tr.find("div", class_="tong_day_so_ket_qua")
-            all_spans = div_result.find_all("span", class_="bong_tron")
-
-            # Loop through each prize and extract corresponding numbers
             cur_idx = 0
             for prize in prizes:
                 results[prize["name"]] = [

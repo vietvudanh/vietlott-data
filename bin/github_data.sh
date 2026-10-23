@@ -5,7 +5,7 @@ set -euo pipefail
 
 DATA_FOLDER=data
 USER="Viet VU"
-EMAIl="vietvudanh@gmail.com"
+EMAIL="vietvudanh@gmail.com"
 MAX_DRAWS="${MAX_DRAWS:-0}"
 
 cd "$(dirname "$0")/.."
@@ -25,7 +25,7 @@ echo "pwd $(pwd)"
 
 # commit and push
 git config user.name "$USER"
-git config user.email "$EMAIl"
+git config user.email "$EMAIL"
 git status
 git add $DATA_FOLDER
 git add readme.md
