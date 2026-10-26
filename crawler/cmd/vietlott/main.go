@@ -94,7 +94,7 @@ func parseArgs(args []string) (options, error) {
 		clean = append(clean, args[i])
 	}
 	if len(clean) == 0 {
-		return opts, errors.New("command is required (status, missing, or sync)")
+		return opts, errors.New("command is required (status, missing, sync, render-readme, or render-docs)")
 	}
 	opts.command = clean[0]
 	if opts.command != "status" && opts.command != "missing" && opts.command != "sync" &&
