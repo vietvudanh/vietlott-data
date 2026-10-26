@@ -14,8 +14,6 @@ git pull --rebase --autostash origin main
 
 echo "pwd $(pwd)"
 
-(cd crawler && go build -o ../bin/vietlott-crawler ./cmd/vietlott)
-
 # sync fetches the latest draws and backfills missing ones for every product;
 # a failing product must not block rendering and committing the others
 ./bin/vietlott-crawler sync --all --max-draws "$MAX_DRAWS" || echo "sync reported failures"

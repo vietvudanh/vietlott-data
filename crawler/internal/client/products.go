@@ -188,8 +188,8 @@ func parseHTML(name model.ProductName, content string) ([]model.Draw, error) {
 		return nil, err
 	}
 	var out []model.Draw
-	doc.Find("table tr").EachWithBreak(func(i int, tr *goquery.Selection) bool {
-		if i == 0 {
+	doc.Find("table tr").EachWithBreak(func(_ int, tr *goquery.Selection) bool {
+		if tr.Find("th").Length() > 0 {
 			return true
 		}
 		cells := tr.Find("td")

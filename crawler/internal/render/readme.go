@@ -39,6 +39,7 @@ const readmeHeader = `# Vietlott Data
 
 - [Website](https://vietvudanh.github.io/vietlott-data/) - Interactive data visualization
 - [Blog Post](https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the) - About this project
+- [Crawler Performance Benchmark](docs/BENCHMARK.md) - Speed & resource comparison: Go vs Python crawler
 
 ## Supported Lottery Products
 
@@ -74,7 +75,7 @@ const readmeHowItWorks = `## How It Works
 
 Vietlott blocks non-Vietnam IPs ([issue #13](https://github.com/vietvudanh/vietlott-data/issues/13)), so crawling runs on a scheduled local runner (` + "`bin/github_data.sh`" + `) and commits updated data back to GitHub.
 
-For architecture and runner setup, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+For architecture and runner setup, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). For performance and speed metrics comparing Go vs Python, see [docs/BENCHMARK.md](docs/BENCHMARK.md).
 `
 
 const readmeInstall = `## Installation & Usage

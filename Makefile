@@ -5,8 +5,12 @@ LINTER := ruff  # Replace this with the packages you need
 LOGURU_LEVEL := INFO
 export
 
+PI_HOST ?= pi
+DEPLOY_FOLDER ?= /home/pi/projects/vietlott-data
+BINARY_ARM := bin/vietlott-crawler-arm64
+
 all: lint test
-.PHONY: all requirements-dev test lint build pypi run-crawl run-missing build-crawler build-arm-pi sync-data
+.PHONY: all requirements-dev test lint build pypi run-crawl run-missing build-crawler build-arm-pi deploy deploy-arm-pi sync-data
 
 .venv:
 	@echo "Initializing virtual environment..."
@@ -34,7 +38,14 @@ build-crawler:
 	cd crawler && go build -o ../bin/vietlott-crawler ./cmd/vietlott
 
 build-arm-pi:
-	cd crawler && GOOS=linux GOARCH=arm64 GOARM=7 go build -ldflags="-s -w" -o ../bin/vietlott-crawler-arm64 ./cmd/vietlott
+	mkdir -p bin
+	cd crawler && GOOS=linux GOARCH=arm64 GOARM=7 go build -ldflags="-s -w" -o ../$(BINARY_ARM) ./cmd/vietlott
+
+deploy: build-arm-pi
+	@ssh "$(PI_HOST)" "mkdir -p $(DEPLOY_FOLDER)/bin"
+	@scp -C "$(BINARY_ARM)" "$(PI_HOST):$(DEPLOY_FOLDER)/bin/vietlott-crawler"
+
+deploy-arm-pi: deploy
 
 pypi: build
 	@echo "Publishing..."

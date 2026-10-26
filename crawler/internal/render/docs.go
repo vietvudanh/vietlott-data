@@ -24,6 +24,7 @@ const blogPostBadge = `
                     </a>`
 
 const mlReadmeURL = "https://github.com/vietvudanh/vietlott-data/blob/main/src/machine_learning"
+const benchmarkURL = "https://github.com/vietvudanh/vietlott-data/blob/main/docs/BENCHMARK.md"
 
 const mlSection = `<!-- BEGIN_MACHINE_LEARNING_SECTION -->
             <section class="section">
@@ -40,6 +41,27 @@ const mlSection = `<!-- BEGIN_MACHINE_LEARNING_SECTION -->
                         <div class="ml-card-text">
                             <h3 data-vi="Phân tích Machine Learning →" data-en="Machine Learning Analysis →">Phân tích Machine Learning →</h3>
                             <p data-vi="Khám phá các mô hình dự đoán và backtest dữ liệu xổ số Vietlott" data-en="Explore prediction models and backtesting for Vietlott lottery data">Khám phá các mô hình dự đoán và backtest dữ liệu xổ số Vietlott</p>
+                        </div>
+                    </div>
+                    <div class="ml-card-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                </a>
+
+                <a
+                    href="` + benchmarkURL + `"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="ml-card-banner"
+                    style="margin-top: 1rem;"
+                >
+                    <div class="ml-card-content">
+                        <div class="ml-card-icon" style="background-color: #059669;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        </div>
+                        <div class="ml-card-text">
+                            <h3 data-vi="So sánh Tốc độ Crawler (Go vs Python) →" data-en="Crawler Performance Benchmark (Go vs Python) →">So sánh Tốc độ Crawler (Go vs Python) →</h3>
+                            <p data-vi="Đánh giá chi tiết hiệu năng, độ trễ và tài nguyên RAM giữa bộ cào Go mới và Python legacy" data-en="Detailed latency, throughput, and memory comparison between the Go and legacy Python crawlers">Đánh giá chi tiết hiệu năng, độ trễ và tài nguyên RAM giữa bộ cào Go mới và Python legacy</p>
                         </div>
                     </div>
                     <div class="ml-card-arrow">

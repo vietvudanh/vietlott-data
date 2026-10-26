@@ -105,6 +105,15 @@ func TestMax3DSkipsMalformedRowAndParsesFollowingRow(t *testing.T) {
 	}
 }
 
+func TestMax3DParsesFirstRowWhenTableHasNoHeader(t *testing.T) {
+	valid := strings.Repeat(`<span class="bong_tron">1</span>`, 60)
+	html := `<table><tr><td>01/02/2024</td><td>979</td><td>` + valid + `</td></tr></table>`
+	draws, err := parseHTML(model.Max3D, html)
+	if err != nil || len(draws) != 1 || draws[0].GetID() != "979" {
+		t.Fatalf("draws = %#v, err = %v", draws, err)
+	}
+}
+
 func TestBingo18SkipsMalformedTotalAndParsesFollowingRow(t *testing.T) {
 	row := func(date, id, total string) string {
 		return `<tr><td><a>` + date + `</a><a>` + id + `</a></td><td><span>1</span><span>2</span><span>3</span></td><td>` + total + `</td><td>Small</td></tr>`
