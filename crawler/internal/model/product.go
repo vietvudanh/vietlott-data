@@ -33,6 +33,7 @@ type Product struct {
 	// protection for very stale datasets (Keno draws every few minutes, so
 	// its window is wider).
 	MaxPages int
+	PageSize int
 }
 
 type NormalizedID struct {
@@ -41,13 +42,13 @@ type NormalizedID struct {
 }
 
 var products = map[ProductName]Product{
-	Power655: {Power655, "power655.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.Game655CompareWebPart,Vietlott.PlugIn.WebParts.ashx", 5, "", 1, "number", 200},
-	Power645: {Power645, "power645.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.Game645CompareWebPart,Vietlott.PlugIn.WebParts.ashx", 5, "", 198, "number", 200},
-	Power535: {Power535, "power535.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.Game535CompareWebPart,Vietlott.PlugIn.WebParts.ashx", 5, "", 1, "number", 200},
-	Keno:     {Keno, "keno.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameKenoCompareWebPart,Vietlott.PlugIn.WebParts.ashx", 7, "#", 110271, "keno", 500},
-	Bingo18:  {Bingo18, "bingo18.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameBingoCompareWebPart,Vietlott.PlugIn.WebParts.ashx", 7, "", 83123, "bingo18", 200},
-	Max3D:    {Max3D, "3d.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameMax3DCompareWebPart,Vietlott.PlugIn.WebParts.ashx", 5, "", 1, "3d", 200},
-	Max3DPro: {Max3DPro, "3d_pro.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameMax3DProCompareWebPart,Vietlott.PlugIn.WebParts.ashx", 5, "", 1, "3d", 200},
+	Power655: {Power655, "power655.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.Game655CompareWebPart,Vietlott.PlugIn.WebParts.ashx", 5, "", 1, "number", 200, 8},
+	Power645: {Power645, "power645.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.Game645CompareWebPart,Vietlott.PlugIn.WebParts.ashx", 5, "", 198, "number", 200, 8},
+	Power535: {Power535, "power535.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.Game535CompareWebPart,Vietlott.PlugIn.WebParts.ashx", 5, "", 1, "number", 200, 8},
+	Keno:     {Keno, "keno.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameKenoCompareWebPart,Vietlott.PlugIn.WebParts.ashx", 7, "#", 110271, "keno", 500, 6},
+	Bingo18:  {Bingo18, "bingo18.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameBingoCompareWebPart,Vietlott.PlugIn.WebParts.ashx", 7, "", 83123, "bingo18", 200, 6},
+	Max3D:    {Max3D, "3d.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameMax3DCompareWebPart,Vietlott.PlugIn.WebParts.ashx", 5, "", 1, "3d", 200, 5},
+	Max3DPro: {Max3DPro, "3d_pro.jsonl", "https://vietlott.vn/ajaxpro/Vietlott.PlugIn.WebParts.GameMax3DProCompareWebPart,Vietlott.PlugIn.WebParts.ashx", 5, "", 1, "3d", 200, 5},
 }
 
 func Lookup(name string) (Product, error) {

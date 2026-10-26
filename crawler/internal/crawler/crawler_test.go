@@ -311,4 +311,58 @@ func TestSyncFlushesInBatchesAndInvokesProgress(t *testing.T) {
 	}
 }
 
+func TestTargetPagesCalculatesExactPagesAndSkipsUnwantedGaps(t *testing.T) {
+	// latest = 100, pageSize = 10.
+	// missing = [95, 94, 50]
+	// draw 95 -> (100-95)/10 = 0 (and adjacent 1)
+	// draw 50 -> (100-50)/10 = 5 (and adjacent 6)
+	// pages 2, 3, 4 should never be touched!
+	pages := TargetPages([]int{95, 94, 50}, 100, 10, 20)
+	expected := []int{0, 1, 5, 6}
+	if !reflect.DeepEqual(pages, expected) {
+		t.Fatalf("TargetPages() = %v, want %v", pages, expected)
+	}
+}
+
+func TestSyncJumpsDirectlyToTargetPages(t *testing.T) {
+	root := t.TempDir()
+	if err := os.Mkdir(filepath.Join(root, "data"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	product := model.Product{Name: model.Power655, FileName: "power655.jsonl", MinID: 1, MaxPages: 50, PageSize: 2}
+	// Missing draws: 5 and 6 (which is at page (10-6)/2 = 2)
+	// Draws 1..4 and 7..10 exist
+	var existing strings.Builder
+	for _, id := range []string{"1", "2", "3", "4", "7", "8", "9", "10"} {
+		existing.WriteString(`{"id":"` + id + `","date":"2026-01-01","result":[1]}` + "\n")
+	}
+	if err := os.WriteFile(filepath.Join(root, "data", product.FileName), []byte(existing.String()), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	var calls []int
+	adapter := &fakeAdapter{
+		latest: 10,
+		pages: map[int][]model.Draw{
+			0: {testDraw("10"), testDraw("9")},
+			1: {testDraw("8"), testDraw("7")},
+			2: {testDraw("6"), testDraw("5")},
+		},
+		calls: &calls,
+	}
+	report, err := Sync(context.Background(), root, product, adapter, 0)
+	if err != nil {
+		t.Fatalf("Sync() error = %v", err)
+	}
+	if report.Written != 2 || report.Missing != 2 {
+		t.Fatalf("report = %#v, want written=2, missing=2", report)
+	}
+	// Because draw 5 and 6 map to page 2 (and adjacent 3), pages 0 and 1 should never have been queried!
+	for _, p := range *adapter.calls {
+		if p < 2 {
+			t.Fatalf("adapter called page %d, expected pages >= 2 only: %v", p, *adapter.calls)
+		}
+	}
+}
+
+
 

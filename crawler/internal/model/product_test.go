@@ -13,14 +13,15 @@ func TestLookupProductRegistry(t *testing.T) {
 		prefix     string
 		minID      int
 		resultKind string
+		pageSize   int
 	}{
-		{"power655", "power655.jsonl", 5, "", 1, "number"},
-		{"power645", "power645.jsonl", 5, "", 198, "number"},
-		{"power535", "power535.jsonl", 5, "", 1, "number"},
-		{"keno", "keno.jsonl", 7, "#", 110271, "keno"},
-		{"bingo18", "bingo18.jsonl", 7, "", 83123, "bingo18"},
-		{"3d", "3d.jsonl", 5, "", 1, "3d"},
-		{"3d_pro", "3d_pro.jsonl", 5, "", 1, "3d"},
+		{"power655", "power655.jsonl", 5, "", 1, "number", 8},
+		{"power645", "power645.jsonl", 5, "", 198, "number", 8},
+		{"power535", "power535.jsonl", 5, "", 1, "number", 8},
+		{"keno", "keno.jsonl", 7, "#", 110271, "keno", 6},
+		{"bingo18", "bingo18.jsonl", 7, "", 83123, "bingo18", 6},
+		{"3d", "3d.jsonl", 5, "", 1, "3d", 5},
+		{"3d_pro", "3d_pro.jsonl", 5, "", 1, "3d", 5},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -28,7 +29,7 @@ func TestLookupProductRegistry(t *testing.T) {
 			if err != nil {
 				t.Fatalf("Lookup() error = %v", err)
 			}
-			if p.Name != ProductName(tt.name) || p.FileName != tt.file || p.IDWidth != tt.width || p.IDPrefix != tt.prefix || p.MinID != tt.minID || p.ResultKind != tt.resultKind {
+			if p.Name != ProductName(tt.name) || p.FileName != tt.file || p.IDWidth != tt.width || p.IDPrefix != tt.prefix || p.MinID != tt.minID || p.ResultKind != tt.resultKind || p.PageSize != tt.pageSize {
 				t.Fatalf("unexpected product: %#v", p)
 			}
 			if p.Endpoint == "" {

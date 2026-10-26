@@ -47,6 +47,48 @@ func MissingIDs(existing map[int]struct{}, minID, latestID, maxDraws int) []int 
 	return missing
 }
 
+// TargetPages calculates the exact newest-first page numbers (0-indexed)
+// needed to fetch the given missing draw IDs, based on latest draw ID and pageSize.
+// If pageSize <= 0, sequential scanning is assumed.
+func TargetPages(missingIDs []int, latestID, pageSize, maxPages int) []int {
+	if len(missingIDs) == 0 {
+		return nil
+	}
+	if pageSize <= 0 {
+		pages := maxPages
+		if pages < 1 {
+			pages = 1
+		}
+		res := make([]int, pages)
+		for i := 0; i < pages; i++ {
+			res[i] = i
+		}
+		return res
+	}
+
+	pageSet := make(map[int]struct{})
+	for _, id := range missingIDs {
+		if id > latestID {
+			continue
+		}
+		// Exact 0-indexed page where id is expected to be
+		p := (latestID - id) / pageSize
+		if p >= 0 && (maxPages <= 0 || p < maxPages) {
+			pageSet[p] = struct{}{}
+			// Also include adjacent page p+1 in case upstream skipped any draw numbers
+			if maxPages <= 0 || p+1 < maxPages {
+				pageSet[p+1] = struct{}{}
+			}
+		}
+	}
+	sorted := make([]int, 0, len(pageSet))
+	for p := range pageSet {
+		sorted = append(sorted, p)
+	}
+	sort.Ints(sorted)
+	return sorted
+}
+
 // Progress reports crawling progress for long-running synchronization.
 type Progress struct {
 	Product   model.ProductName
@@ -107,8 +149,13 @@ func SyncWithOptions(ctx context.Context, repoRoot string, product model.Product
 		pages = 1
 	}
 
+	pageSize := product.PageSize
+	if pageSize <= 0 {
+		pageSize = 20
+	}
+
 	minID := product.MinID
-	if reachable := latest - pages*20; reachable > minID {
+	if reachable := latest - pages*pageSize; reachable > minID {
 		minID = reachable
 	}
 
@@ -125,10 +172,9 @@ func SyncWithOptions(ctx context.Context, repoRoot string, product model.Product
 	for _, id := range ids {
 		wanted[id] = struct{}{}
 	}
-	// ids is ascending, so ids[0] is the oldest missing draw. Result pages
-	// are newest-first, so once a page's highest ID falls below it, deeper
-	// pages cannot contain anything we want.
 	oldestWanted := ids[0]
+	// Calculate the exact target pages to fetch
+	targetPages := TargetPages(ids, latest, product.PageSize, pages)
 	found := make(map[int]model.Draw, len(ids))
 	unflushed := make([]model.Draw, 0)
 	var pageErr error
@@ -148,7 +194,10 @@ func SyncWithOptions(ctx context.Context, repoRoot string, product model.Product
 	}
 
 pages:
-	for page := 0; page < pages && len(found) < len(wanted); page++ {
+	for pageIdx, page := range targetPages {
+		if len(found) >= len(wanted) {
+			break pages
+		}
 		if ctx.Err() != nil {
 			canceled = true
 			break pages
@@ -164,10 +213,9 @@ pages:
 			break pages
 		}
 		if len(draws) == 0 {
-			break pages
+			continue
 		}
 		pageMax := -1
-		pageMin := -1
 		pageNewFound := 0
 		for _, draw := range draws {
 			if draw == nil {
@@ -182,9 +230,6 @@ pages:
 			if id.Number > pageMax {
 				pageMax = id.Number
 			}
-			if pageMin == -1 || id.Number < pageMin {
-				pageMin = id.Number
-			}
 			if _, ok := wanted[id.Number]; ok {
 				if _, dup := found[id.Number]; !dup {
 					found[id.Number] = draw
@@ -197,8 +242,8 @@ pages:
 		if opts.OnProgress != nil {
 			opts.OnProgress(Progress{
 				Product:   product.Name,
-				Page:      page + 1,
-				MaxPages:  pages,
+				Page:      pageIdx + 1,
+				MaxPages:  len(targetPages),
 				Found:     len(found),
 				Total:     len(wanted),
 				BatchSize: pageNewFound,
@@ -211,21 +256,8 @@ pages:
 			}
 		}
 
-		if pageMax >= 0 && pageMax < oldestWanted {
+		if product.PageSize <= 0 && pageMax >= 0 && pageMax < oldestWanted {
 			break pages
-		}
-		if pageMin >= 0 {
-			nextWanted := -1
-			for id := range wanted {
-				if _, ok := found[id]; !ok && id < pageMin && id > nextWanted {
-					nextWanted = id
-				}
-			}
-			remainingPages := pages - 1 - page
-			maxRemainingDraws := remainingPages * 20
-			if nextWanted >= 0 && pageMin-nextWanted > maxRemainingDraws {
-				break pages
-			}
 		}
 	}
 
