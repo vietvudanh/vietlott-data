@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Analyze Vietlott Data with Python, Polars &amp; Pandas — Vietlott Data</title>
+        <meta name="description" content="Code examples for loading and analyzing Vietlott NDJSON lottery datasets using Python, Polars, Pandas, and DuckDB." />
+        <meta name="author" content="vietvudanh" />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+        <link rel="alternate" type="text/plain" href="https://vietvudanh.github.io/vietlott-data/llms.txt" title="LLM-readable summary" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://vietvudanh.github.io/vietlott-data/python-examples/" />
+        <meta property="og:title" content="Analyze Vietlott Data with Python, Polars &amp; Pandas — Vietlott Data" />
+        <meta property="og:description" content="Code examples for loading and analyzing Vietlott NDJSON lottery datasets using Python, Polars, Pandas, and DuckDB." />
+        <meta property="og:image" content="https://vietvudanh.github.io/vietlott-data/assets/screenshot.png" />
+        <meta property="og:locale" content="en_US" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Analyze Vietlott Data with Python, Polars &amp; Pandas — Vietlott Data" />
+        <meta name="twitter:description" content="Code examples for loading and analyzing Vietlott NDJSON lottery datasets using Python, Polars, Pandas, and DuckDB." />
+        <meta name="twitter:image" content="https://vietvudanh.github.io/vietlott-data/assets/screenshot.png" />
+        <link rel="canonical" href="https://vietvudanh.github.io/vietlott-data/python-examples/" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="../styles.css" />
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>V</text></svg>" />
+    </head>
+    <body>
+        <div class="ambient-glow" aria-hidden="true"></div>
+        <header class="top-nav-wrapper">
+            <div class="container">
+                <nav class="top-nav" aria-label="Main Navigation">
+                    <a href="../" class="brand-link">
+                        <div class="brand-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+                            </svg>
+                        </div>
+                        <span>Vietlott Data</span>
+                        <span class="brand-version">v0.3.0</span>
+                    </a>
+                    <ul class="nav-menu">
+                        <li><a href="../" class="nav-link">Home (VI)</a></li>
+                        <li><a href="../en/" class="nav-link">Home (EN)</a></li>
+                        <li><a href="../power-6-55/" class="nav-link">Power 6/55</a></li>
+                        <li><a href="../mega-6-45/" class="nav-link">Mega 6/45</a></li>
+                        <li><a href="../power-5-35/" class="nav-link">Power 5/35</a></li>
+                        <li><a href="../keno/" class="nav-link">Keno</a></li>
+                        <li><a href="../data-schema/" class="nav-link">Schema</a></li>
+                        <li><a href="../python-examples/" class="nav-link">Python</a></li>
+                    </ul>
+                    <div class="nav-actions">
+                        <button class="icon-btn theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle dark mode">
+                            <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                            <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+                        </button>
+                        <a href="https://github.com/vietvudanh/vietlott-data" target="_blank" rel="noreferrer" class="icon-btn" aria-label="GitHub Repository">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z" /></svg>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <main class="container">
+            <section class="hero-section">
+                <div class="hero-pill">
+                    <span class="status-dot"></span>
+                    <span>Developer Guide</span>
+                </div>
+                <h1 class="hero-title">Python, Polars &amp; Pandas Examples</h1>
+                <p class="hero-subtitle">Practical recipes for loading Vietlott NDJSON files, separating main vs. bonus numbers, streaming large Keno datasets, and detecting missing draw IDs.</p>
+            </section>
+
+            <section class="section">
+                <div class="card">
+                    <h2 class="section-title" style="margin-bottom: 0.75rem;">1. Load Power 6/55 &amp; Separate Main vs. Bonus Numbers (Polars)</h2>
+                    <p style="margin-bottom: 0.75rem;">In Power 6/55, <code>result</code> has 7 elements (6 main numbers + 1 bonus number). In Mega 6/45, all 6 elements are main numbers.</p>
+                    <div class="code-card" style="margin-bottom: 0;">
+                        <div class="code-card-header"><span class="code-card-title">python (polars)</span></div>
+                        <pre class="code-block"><code>import polars as pl
+
+df = pl.read_ndjson("https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power655.jsonl")
+df = df.with_columns([
+    pl.col("date").str.to_date(),
+    pl.col("result").list.slice(0, 6).alias("main_numbers"),
+    pl.col("result").list.get(6).alias("bonus_number"),
+])
+
+# Main number frequency (excluding the 7th bonus ball)
+main_freq = (
+    df.explode("main_numbers")
+    .group_by("main_numbers")
+    .len()
+    .sort("len", descending=True)
+)
+print(main_freq.head(10))</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="card">
+                    <h2 class="section-title" style="margin-bottom: 0.75rem;">2. Stream High-Volume Keno Data Without Memory Spikes</h2>
+                    <p style="margin-bottom: 0.75rem;">Keno has over 90,000 draws. Use Polars lazy scanning (<code>pl.scan_ndjson</code>) or DuckDB to filter and aggregate in streaming fashion:</p>
+                    <div class="code-card" style="margin-bottom: 0;">
+                        <div class="code-card-header"><span class="code-card-title">python (polars lazy scan)</span></div>
+                        <pre class="code-block"><code>import polars as pl
+
+keno_lazy = pl.scan_ndjson("data/keno.jsonl")
+recent_freq = (
+    keno_lazy
+    .filter(pl.col("date") &gt;= "2026-01-01")
+    .explode("result")
+    .group_by("result")
+    .len()
+    .sort("len", descending=True)
+    .collect()
+)
+print(recent_freq.head(10))</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="card">
+                    <h2 class="section-title" style="margin-bottom: 0.75rem;">3. Analyze Mega 6/45 with Pandas</h2>
+                    <div class="code-card" style="margin-bottom: 0;">
+                        <div class="code-card-header"><span class="code-card-title">python (pandas)</span></div>
+                        <pre class="code-block"><code>import pandas as pd
+
+url = "https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power645.jsonl"
+df = pd.read_json(url, lines=True)
+df["date"] = pd.to_datetime(df["date"])
+
+# Mega 6/45 has 6 main numbers and no bonus number
+freq = df.explode("result")["result"].value_counts()
+print(freq.head(10))</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="card">
+                    <h2 class="section-title" style="margin-bottom: 0.75rem;">4. Detect Missing Draw IDs</h2>
+                    <div class="code-card" style="margin-bottom: 0;">
+                        <div class="code-card-header"><span class="code-card-title">python</span></div>
+                        <pre class="code-block"><code>import polars as pl
+
+df = pl.read_ndjson("data/power655.jsonl")
+ids = set(df["id"].str.strip_chars("#").cast(pl.Int64).to_list())
+expected = set(range(min(ids), max(ids) + 1))
+missing = sorted(expected - ids)
+print(f"Missing draws: {missing}")</code></pre>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="footer">
+            <div class="container footer-content">
+                <div>
+                    <strong>Vietlott Data</strong> &copy; 2026. Open source under MIT License.
+                </div>
+                <div class="footer-links">
+                    <a href="../">Tiếng Việt</a>
+                    <a href="../en/">English</a>
+                    <a href="../data-schema/">Data Schema</a>
+                    <a href="../python-examples/">Python Examples</a>
+                    <a href="https://github.com/vietvudanh/vietlott-data" target="_blank" rel="noreferrer">GitHub</a>
+                    <a href="https://vietlott.vn" target="_blank" rel="noreferrer">vietlott.vn</a>
+                </div>
+            </div>
+        </footer>
+        <script>
+            function getPreferredTheme() {
+                const stored = localStorage.getItem("vietlott-theme");
+                if (stored) return stored;
+                return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            }
+            function setTheme(theme) {
+                document.documentElement.setAttribute("data-theme", theme);
+                localStorage.setItem("vietlott-theme", theme);
+            }
+            setTheme(getPreferredTheme());
+            const btn = document.getElementById("themeToggleBtn");
+            if (btn) {
+                btn.addEventListener("click", function () {
+                    const current = document.documentElement.getAttribute("data-theme") || "light";
+                    setTheme(current === "dark" ? "light" : "dark");
+                });
+            }
+        </script>
+    </body>
+</html>

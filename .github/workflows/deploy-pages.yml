@@ -1,6 +1,15 @@
 name: Deploy GitHub Pages
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - "data/**"
+      - "docs/**"
+      - "src/vietlott/render_docs.py"
+      - "crawler/internal/render/**"
+      - ".github/workflows/deploy-pages.yml"
   schedule:
     - cron: "0 0 * * *" # every day at 00:00 UTC
   workflow_dispatch:
@@ -36,8 +45,13 @@ jobs:
       - name: Install dependencies
         run: uv sync
 
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: "crawler/go.mod"
+
       - name: Generate docs
-        run: uv run python src/render_docs.py
+        run: cd crawler && go run ./cmd/vietlott render-docs && cd .. && uv run pytest src/vietlott/tests/test_freshness.py
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

@@ -27,6 +27,6 @@ git config user.email "$EMAIL"
 git status
 git add $DATA_FOLDER
 git add readme.md
-git add docs/index.html
+git add docs/
 git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`" || { echo "nothing to commit"; exit 0; }
 git push origin main

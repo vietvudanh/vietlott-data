@@ -16,7 +16,9 @@ type Draw struct {
 	Date        time.Time
 	ID          string
 	Result      []int
+	RawResult   string
 	ProcessTime string
+	RawLine     string
 }
 
 func toString(v any) string {
@@ -88,7 +90,7 @@ func LoadDraws(path string) ([]Draw, error) {
 		if err := json.Unmarshal([]byte(line), &raw); err != nil {
 			return nil, fmt.Errorf("parse %s: %w", path, err)
 		}
-		d := Draw{}
+		d := Draw{RawLine: line}
 		if v, ok := raw["date"]; ok {
 			d.Date = parseDate(v)
 		}
@@ -102,6 +104,9 @@ func LoadDraws(path string) ([]Draw, error) {
 						d.Result = append(d.Result, int(f))
 					}
 				}
+				d.RawResult = formatIntList(d.Result)
+			} else if b, err := json.Marshal(v); err == nil {
+				d.RawResult = string(b)
 			}
 		}
 		if v, ok := raw["process_time"]; ok {

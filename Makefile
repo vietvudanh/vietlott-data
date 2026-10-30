@@ -81,6 +81,6 @@ sync-data: build-crawler
 	./bin/vietlott-crawler sync --all --max-draws $(MAX_DRAWS)
 	./bin/vietlott-crawler render-readme
 	./bin/vietlott-crawler render-docs
-	git add data readme.md docs/index.html
+	git add data readme.md docs/
 	git commit -m "update data @ `date +%Y-%m-%d\ %H:%M:%S`" || echo "nothing to commit"
 	git push origin main

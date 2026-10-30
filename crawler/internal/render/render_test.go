@@ -162,12 +162,12 @@ func TestUpdateDocsHTMLReplacesStatsBody(t *testing.T) {
 	if err := os.MkdirAll(filepath.Join(root, "data"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	html := `<html><body><table><tbody><tr><td>old</td></tr></tbody></table><!-- BEGIN_DAYS_SINCE_SECTION -->old section<!-- END_DAYS_SINCE_SECTION --></body></html>`
+	html := `<html><head><script type="application/ld+json">{"dateModified": "2020-01-01", "temporalCoverage": "2017-08-01/2020-01-01"}</script></head><body><!-- BEGIN_DATA_FRESHNESS -->old<!-- END_DATA_FRESHNESS --><table><tbody><tr><td>old</td></tr></tbody></table><!-- BEGIN_DAYS_SINCE_SECTION -->old section<!-- END_DAYS_SINCE_SECTION --></body></html>`
 	if err := os.WriteFile(filepath.Join(root, "docs", "index.html"), []byte(html), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.WriteFile(filepath.Join(root, "data", "power655.jsonl"),
-		[]byte(`{"date":"2024-01-01","id":"1","result":[5]}`+"\n"), 0o644); err != nil {
+		[]byte(`{"date":"2024-01-01","id":"00001","result":[1,2,3,4,5,6,7]}`+"\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	if err := UpdateDocsHTML(root); err != nil {
@@ -180,5 +180,35 @@ func TestUpdateDocsHTMLReplacesStatsBody(t *testing.T) {
 	}
 	if !strings.Contains(out, "Power 655") || !strings.Contains(out, "BEGIN_DAYS_SINCE_SECTION") {
 		t.Fatalf("missing stats or days section: %s", out)
+	}
+	if !strings.Contains(out, `"dateModified": "2024-01-01"`) || !strings.Contains(out, `"temporalCoverage": "2017-08-01/2024-01-01"`) {
+		t.Fatalf("JSON-LD dates not updated: %s", out)
+	}
+	if !strings.Contains(out, "Data last updated: 2024-01-01") {
+		t.Fatalf("freshness badge not updated: %s", out)
+	}
+
+	// Verify generated subpages and sitemap.xml
+	for _, rel := range []string{
+		"en/index.html",
+		"power-6-55/index.html",
+		"mega-6-45/index.html",
+		"power-5-35/index.html",
+		"keno/index.html",
+		"max-3d/index.html",
+		"max-3d-pro/index.html",
+		"bingo18/index.html",
+		"data-schema/index.html",
+		"python-examples/index.html",
+		"sitemap.xml",
+	} {
+		if _, err := os.Stat(filepath.Join(root, "docs", rel)); err != nil {
+			t.Fatalf("expected generated file docs/%s: %v", rel, err)
+		}
+	}
+	sitemapRaw, _ := os.ReadFile(filepath.Join(root, "docs", "sitemap.xml"))
+	sitemap := string(sitemapRaw)
+	if strings.Contains(sitemap, "llms.txt") || !strings.Contains(sitemap, "<lastmod>2024-01-01</lastmod>") {
+		t.Fatalf("unexpected sitemap content: %s", sitemap)
 	}
 }

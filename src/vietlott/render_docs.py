@@ -244,12 +244,37 @@ class DocsRenderer:
             # Generate new table rows
             new_rows = self._generate_table_rows(stats)
 
-            # Find and replace the tbody content
-            # Look for <tbody> ... </tbody> pattern
+            # Find and replace the first tbody content (statistics overview table)
+            # Look for <tbody> ... </tbody> pattern (not <tbody class="static-rows">)
             pattern = r"(<tbody>).*?(</tbody>)"
             replacement = f"\\1\n{new_rows}\n                            \\2"
 
-            updated_html = re.sub(pattern, replacement, html_content, flags=re.DOTALL)
+            updated_html = re.sub(pattern, replacement, html_content, count=1, flags=re.DOTALL)
+
+            # Update freshness badge, dateModified, and temporalCoverage with latest draw date
+            latest_date = max((s["end_date"] for s in stats), default="")
+            if latest_date:
+                freshness_block = f"""<!-- BEGIN_DATA_FRESHNESS -->
+                    <span class="badge" id="data-freshness-badge">
+                        <span data-vi="Dữ liệu mới nhất: {latest_date}" data-en="Data last updated: {latest_date}">Dữ liệu mới nhất: {latest_date}</span>
+                    </span>
+                    <!-- END_DATA_FRESHNESS -->"""
+                updated_html = re.sub(
+                    r"<!-- BEGIN_DATA_FRESHNESS -->.*?<!-- END_DATA_FRESHNESS -->",
+                    freshness_block,
+                    updated_html,
+                    flags=re.DOTALL,
+                )
+                updated_html = re.sub(
+                    r'"dateModified":\s*"[^"]*"',
+                    f'"dateModified": "{latest_date}"',
+                    updated_html,
+                )
+                updated_html = re.sub(
+                    r'"temporalCoverage":\s*"2017-08-01/[^"]*"',
+                    f'"temporalCoverage": "2017-08-01/{latest_date}"',
+                    updated_html,
+                )
 
             # Update days-since-last-appearance section for Power 6/55
             logger.info("Generating days-since-last-appearance analysis for Power 6/55...")

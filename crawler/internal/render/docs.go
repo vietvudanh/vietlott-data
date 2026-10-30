@@ -251,7 +251,39 @@ func replaceWhole(html, pattern, newContent string) string {
 	return regexp.MustCompile(pattern).ReplaceAllString(html, newContent)
 }
 
-// UpdateDocsHTML regenerates the statistics inside docs/index.html.
+func renderSitemap(latestDate string) string {
+	pages := []struct {
+		loc      string
+		priority string
+	}{
+		{"https://vietvudanh.github.io/vietlott-data/", "1.0"},
+		{"https://vietvudanh.github.io/vietlott-data/en/", "0.9"},
+		{"https://vietvudanh.github.io/vietlott-data/power-6-55/", "0.8"},
+		{"https://vietvudanh.github.io/vietlott-data/mega-6-45/", "0.8"},
+		{"https://vietvudanh.github.io/vietlott-data/power-5-35/", "0.8"},
+		{"https://vietvudanh.github.io/vietlott-data/keno/", "0.8"},
+		{"https://vietvudanh.github.io/vietlott-data/max-3d/", "0.8"},
+		{"https://vietvudanh.github.io/vietlott-data/max-3d-pro/", "0.8"},
+		{"https://vietvudanh.github.io/vietlott-data/bingo18/", "0.8"},
+		{"https://vietvudanh.github.io/vietlott-data/data-schema/", "0.8"},
+		{"https://vietvudanh.github.io/vietlott-data/python-examples/", "0.8"},
+	}
+	var b strings.Builder
+	b.WriteString(`<?xml version="1.0" encoding="UTF-8"?>` + "\n")
+	b.WriteString(`<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">` + "\n")
+	for _, p := range pages {
+		if latestDate != "" {
+			b.WriteString(fmt.Sprintf("  <url><loc>%s</loc><lastmod>%s</lastmod><changefreq>daily</changefreq><priority>%s</priority></url>\n", p.loc, latestDate, p.priority))
+		} else {
+			b.WriteString(fmt.Sprintf("  <url><loc>%s</loc><changefreq>daily</changefreq><priority>%s</priority></url>\n", p.loc, p.priority))
+		}
+	}
+	b.WriteString(`</urlset>` + "\n")
+	return b.String()
+}
+
+// UpdateDocsHTML regenerates the statistics inside docs/index.html,
+// as well as the English homepage, product pages, developer pages, and sitemap.xml.
 func UpdateDocsHTML(root string) error {
 	dataDir := filepath.Join(root, "data")
 	htmlPath := filepath.Join(root, "docs", "index.html")
@@ -264,6 +296,37 @@ func UpdateDocsHTML(root string) error {
 	stats := dataStats(dataDir)
 	rows := statsTableRows(stats)
 	html = replaceInner(html, `(?s)(<tbody>)(.*?)(</tbody>)`, "\n"+rows+"\n                            ")
+
+	statByKey := map[string]productStat{}
+	for _, p := range products {
+		draws, err := LoadDraws(filepath.Join(dataDir, p.file))
+		if err != nil || len(draws) == 0 {
+			continue
+		}
+		for _, s := range stats {
+			if s.name == pythonTitle(p.key) {
+				statByKey[p.key] = s
+				break
+			}
+		}
+	}
+	var latestDate string
+	for _, s := range stats {
+		if s.endDate > latestDate {
+			latestDate = s.endDate
+		}
+	}
+
+	if latestDate != "" {
+		freshnessBlock := fmt.Sprintf(`<!-- BEGIN_DATA_FRESHNESS -->
+                    <span class="badge" id="data-freshness-badge">
+                        <span data-vi="Dữ liệu mới nhất: %s" data-en="Data last updated: %s">Dữ liệu mới nhất: %s</span>
+                    </span>
+                    <!-- END_DATA_FRESHNESS -->`, latestDate, latestDate, latestDate)
+		html = replaceWhole(html, `(?s)<!-- BEGIN_DATA_FRESHNESS -->.*?<!-- END_DATA_FRESHNESS -->`, freshnessBlock)
+		html = replaceWhole(html, `"dateModified":\s*"[^"]*"`, fmt.Sprintf(`"dateModified": "%s"`, latestDate))
+		html = replaceWhole(html, `"temporalCoverage":\s*"2017-08-01/[^"]*"`, fmt.Sprintf(`"temporalCoverage": "2017-08-01/%s"`, latestDate))
+	}
 
 	power655, err := LoadDraws(filepath.Join(dataDir, "power655.jsonl"))
 	if err != nil {
@@ -285,5 +348,30 @@ func UpdateDocsHTML(root string) error {
 		html = replaceWhole(html, `(?s)<!-- BEGIN_MACHINE_LEARNING_SECTION -->.*?<!-- END_MACHINE_LEARNING_SECTION -->`, mlSection)
 	}
 
-	return os.WriteFile(htmlPath, []byte(html), 0o644)
+	if err := os.WriteFile(htmlPath, []byte(html), 0o644); err != nil {
+		return err
+	}
+
+	// Render dedicated product pages, English version, developer pages, and sitemap
+	if err := writePageFile(root, "en", renderEnglishHomePage(stats, latestDate, power655)); err != nil {
+		return err
+	}
+	if err := writePageFile(root, "data-schema", renderDataSchemaPage()); err != nil {
+		return err
+	}
+	if err := writePageFile(root, "python-examples", renderPythonExamplesPage()); err != nil {
+		return err
+	}
+	for _, cfg := range productPageConfigs {
+		draws, _ := LoadDraws(filepath.Join(dataDir, cfg.file))
+		st := statByKey[cfg.key]
+		if st.name == "" {
+			st.name = pythonTitle(cfg.key)
+		}
+		if err := writePageFile(root, cfg.slug, renderProductPage(cfg, draws, st)); err != nil {
+			return err
+		}
+	}
+	sitemapPath := filepath.Join(root, "docs", "sitemap.xml")
+	return os.WriteFile(sitemapPath, []byte(renderSitemap(latestDate)), 0o644)
 }

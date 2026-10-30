@@ -1,20 +1,56 @@
 # Vietlott Data
 
-> Open, daily-updated dataset of every Vietlott (Vietnam) lottery draw result: Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D, Max 3D Pro and Bingo18. Crawled from the official vietlott.vn, stored as NDJSON, MIT licensed. Bộ dữ liệu mở kết quả xổ số Vietlott đầy đủ từ kỳ quay đầu tiên, cập nhật hàng ngày.
+> Open, daily-updated historical dataset of every Vietlott (Vietnam) lottery draw result: Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D, Max 3D Pro, and Bingo18. Crawled from the official vietlott.vn, stored as newline-delimited JSON (NDJSON), MIT licensed. Bộ dữ liệu mở kết quả xổ số Vietlott đầy đủ từ kỳ quay đầu tiên, cập nhật hàng ngày.
 
-Each line is one draw: `{"date":"2026-10-06","id":"01407","result":[6,7,18,20,24,27,1],"process_time":"..."}`. For Power 6/55 / Mega 6/45 / Power 5/35 the last number of `result` is the special/bonus number. Data is for education and statistics only; lottery draws are random and not predictable.
+## Scope & Interpretation
+- **Historical & Latest Draw Data**: Raw NDJSON files in `data/` record every verified historical draw from the official Vietlott results pages up to the most recent daily draw.
+- **Statistical Summaries**: The website and README publish descriptive historical statistics (draw counts, number frequencies, days since last appearance).
+- **Randomness Disclaimer**: Historical frequencies describe past draws only. Lottery outcomes are independent random events and cannot be predicted or forecast reliably. Data is provided strictly for education, data engineering, and statistical research.
+
+## Record Schemas by Product
+Each line in `data/*.jsonl` is a standalone JSON object representing one draw:
+
+- **Power 6/55** (`data/power655.jsonl`, since 2017-08-01):
+  `{"date":"2026-10-29","id":"01417","result":[9,29,33,38,45,46,53],"process_time":"2026-10-29T12:00:05Z"}`
+  `result` is an array of **7 integers**: the first 6 are the main winning numbers (1–55, sorted) and the 7th (last) number is the special/bonus number (Jackpot 2).
+- **Mega 6/45** (`data/power645.jsonl`, since 2017-10-25):
+  `{"date":"2026-10-28","id":"01581","result":[1,9,11,28,33,42],"process_time":"2026-10-28T12:00:07Z"}`
+  `result` is an array of **6 integers**: the 6 main winning numbers (1–45, sorted). **Mega 6/45 has NO bonus/special number.**
+- **Power 5/35** (`data/power535.jsonl`, since 2025-06-29):
+  `{"date":"2026-10-29","id":"00976","result":[5,13,22,26,35,3],"process_time":"2026-10-30T00:00:07Z"}`
+  `result` is an array of **6 integers**: the first 5 are main winning numbers (1–35, sorted) and the 6th (last) number is the special/bonus number.
+- **Keno** (`data/keno.jsonl`, since 2022-12-04):
+  `{"date":"2026-10-30","id":"#0301098","result":[1,4,5,6,8,13,18,20,23,24,25,29,34,41,42,49,57,75,79,80],"big_small":"Lẻ (11)","odd_even":"Nhỏ (13)"}`
+  `result` is an array of **20 integers** (drawn from 1–80), accompanied by `big_small` and `odd_even` summary fields (`id` is prefixed with `#`).
+- **Max 3D** (`data/3d.jsonl`, since 2019-04-22) & **Max 3D Pro** (`data/3d_pro.jsonl`, since 2021-09-14):
+  `{"date":"2026-10-28","id":"01151","result":{"Giải Đặc biệt":["692","005"],"Giải Nhất":["621","118","707","412"],"Giải Nhì":["335","265","268","222","917","484"],"Giải ba":["099","875","590","161","801","076","841","957"]}}`
+  `result` is a **JSON object** mapping the 4 Vietnamese prize tier names (`Giải Đặc biệt`, `Giải Nhất`, `Giải Nhì`, `Giải ba`) to arrays of 3-digit strings (20 triplets total per draw).
+- **Bingo18** (`data/bingo18.jsonl`, since 2024-12-03):
+  `{"date":"2026-10-30","id":"0193681","result":[3,5,5],"total":13,"large_small":"Lớn","process_time":"2026-10-30T00:00:28Z"}`
+  `result` is an array of **3 integers** (each 1–6), with `total` (sum 3–18), `large_small` (`Nhỏ` / `Hòa` / `Lớn`), and `process_time`.
 
 ## Data files (raw NDJSON)
-- [Power 6/55](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power655.jsonl): Vietlott Power 6/55 results since 2017-08-01
-- [Mega 6/45](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power645.jsonl): Vietlott Mega 6/45 results
-- [Power 5/35](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power535.jsonl): Vietlott Power 5/35 results
-- [Keno](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/keno.jsonl): Vietlott Keno results
-- [Max 3D](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/3d.jsonl): Vietlott Max 3D results
-- [Max 3D Pro](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/3d_pro.jsonl): Vietlott Max 3D Pro results
-- [Bingo18](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/bingo18.jsonl): Vietlott Bingo18 results
+- [Power 6/55](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power655.jsonl): Vietlott Power 6/55 results (6 main + 1 bonus number)
+- [Mega 6/45](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power645.jsonl): Vietlott Mega 6/45 results (6 winning numbers, no bonus number)
+- [Power 5/35](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power535.jsonl): Vietlott Power 5/35 results (5 main + 1 special number)
+- [Keno](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/keno.jsonl): Vietlott Keno results (20 numbers from 1–80 per draw)
+- [Max 3D](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/3d.jsonl): Vietlott Max 3D results (prize tier map of 3-digit strings)
+- [Max 3D Pro](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/3d_pro.jsonl): Vietlott Max 3D Pro results (prize tier map of 3-digit strings)
+- [Bingo18](https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/bingo18.jsonl): Vietlott Bingo18 results (3 numbers from 1–6, sum 3–18)
 
-## Docs
-- [Website with statistics, analysis and FAQ](https://vietvudanh.github.io/vietlott-data/): per-product draw counts, number-frequency analysis, install and CLI guide
-- [GitHub repository and README](https://github.com/vietvudanh/vietlott-data): source code, data, crawler (`vietlott-crawl`), PyPI package `vietlott-data`
-- [Architecture](https://github.com/vietvudanh/vietlott-data/blob/main/ARCHITECTURE.md)
-- [Author blog post](https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the)
+## Pages & Documentation
+- [Vietnamese Homepage](https://vietvudanh.github.io/vietlott-data/): Interactive statistics, analysis, downloads, and FAQ
+- [English Homepage](https://vietvudanh.github.io/vietlott-data/en/): Complete English version of the dataset portal
+- [Power 6/55 Dataset Page](https://vietvudanh.github.io/vietlott-data/power-6-55/): Historical Power 6/55 stats, recent draws, and number frequencies
+- [Mega 6/45 Dataset Page](https://vietvudanh.github.io/vietlott-data/mega-6-45/): Historical Mega 6/45 stats, recent draws, and number frequencies
+- [Power 5/35 Dataset Page](https://vietvudanh.github.io/vietlott-data/power-5-35/): Historical Power 5/35 stats, recent draws, and number frequencies
+- [Keno Dataset Page](https://vietvudanh.github.io/vietlott-data/keno/): High-frequency Keno dataset overview and processing guide
+- [Max 3D Dataset Page](https://vietvudanh.github.io/vietlott-data/max-3d/): Max 3D prize-tier dataset overview and recent draws
+- [Max 3D Pro Dataset Page](https://vietvudanh.github.io/vietlott-data/max-3d-pro/): Max 3D Pro dataset overview and recent draws
+- [Bingo18 Dataset Page](https://vietvudanh.github.io/vietlott-data/bingo18/): Bingo18 3-dice dataset overview and recent draws
+- [Data Schema Reference](https://vietvudanh.github.io/vietlott-data/data-schema/): Complete NDJSON field definitions and sample records for all 7 products
+- [Python & Polars Examples](https://vietvudanh.github.io/vietlott-data/python-examples/): Code examples for loading NDJSON with Polars, Pandas, DuckDB, and Go
+- [GitHub Repository](https://github.com/vietvudanh/vietlott-data): Source code, Go crawler (`bin/vietlott-crawler`, recommended), and Python package (`vietlott-data` on PyPI)
+- [Deployment & Architecture](https://github.com/vietvudanh/vietlott-data/blob/main/docs/DEPLOYMENT.md)
+- [Crawler Benchmark (Go vs Python)](https://github.com/vietvudanh/vietlott-data/blob/main/docs/BENCHMARK.md)
+- [Author Blog Post](https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the)

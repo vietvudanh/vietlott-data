@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vietlott Power 6/55 Historical Dataset &amp; Results (NDJSON) — Vietlott Data</title>
+        <meta name="description" content="Download complete historical Vietlott Power 6/55 lottery results in NDJSON format. Includes every draw since August 2017, 6 main numbers (1–55) plus 1 bonus number, frequency statistics, and Python examples." />
+        <meta name="author" content="vietvudanh" />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+        <link rel="alternate" type="text/plain" href="https://vietvudanh.github.io/vietlott-data/llms.txt" title="LLM-readable summary" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://vietvudanh.github.io/vietlott-data/power-6-55/" />
+        <meta property="og:title" content="Vietlott Power 6/55 Historical Dataset &amp; Results (NDJSON) — Vietlott Data" />
+        <meta property="og:description" content="Download complete historical Vietlott Power 6/55 lottery results in NDJSON format. Includes every draw since August 2017, 6 main numbers (1–55) plus 1 bonus number, frequency statistics, and Python examples." />
+        <meta property="og:image" content="https://vietvudanh.github.io/vietlott-data/assets/screenshot.png" />
+        <meta property="og:locale" content="en_US" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Vietlott Power 6/55 Historical Dataset &amp; Results (NDJSON) — Vietlott Data" />
+        <meta name="twitter:description" content="Download complete historical Vietlott Power 6/55 lottery results in NDJSON format. Includes every draw since August 2017, 6 main numbers (1–55) plus 1 bonus number, frequency statistics, and Python examples." />
+        <meta name="twitter:image" content="https://vietvudanh.github.io/vietlott-data/assets/screenshot.png" />
+        <link rel="canonical" href="https://vietvudanh.github.io/vietlott-data/power-6-55/" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="../styles.css" />
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>V</text></svg>" />
+    </head>
+    <body>
+        <div class="ambient-glow" aria-hidden="true"></div>
+        <header class="top-nav-wrapper">
+            <div class="container">
+                <nav class="top-nav" aria-label="Main Navigation">
+                    <a href="../" class="brand-link">
+                        <div class="brand-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+                            </svg>
+                        </div>
+                        <span>Vietlott Data</span>
+                        <span class="brand-version">v0.3.0</span>
+                    </a>
+                    <ul class="nav-menu">
+                        <li><a href="../" class="nav-link">Home (VI)</a></li>
+                        <li><a href="../en/" class="nav-link">Home (EN)</a></li>
+                        <li><a href="../power-6-55/" class="nav-link">Power 6/55</a></li>
+                        <li><a href="../mega-6-45/" class="nav-link">Mega 6/45</a></li>
+                        <li><a href="../power-5-35/" class="nav-link">Power 5/35</a></li>
+                        <li><a href="../keno/" class="nav-link">Keno</a></li>
+                        <li><a href="../data-schema/" class="nav-link">Schema</a></li>
+                        <li><a href="../python-examples/" class="nav-link">Python</a></li>
+                    </ul>
+                    <div class="nav-actions">
+                        <button class="icon-btn theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle dark mode">
+                            <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                            <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+                        </button>
+                        <a href="https://github.com/vietvudanh/vietlott-data" target="_blank" rel="noreferrer" class="icon-btn" aria-label="GitHub Repository">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z" /></svg>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <main class="container">
+            <section class="hero-section">
+                <div class="hero-pill">
+                    <span class="status-dot"></span>
+                    <span>Dataset &amp; Historical Statistics</span>
+                </div>
+                <h1 class="hero-title">Power 6/55 — Historical Results &amp; Dataset (NDJSON)</h1>
+                <p class="hero-subtitle">Complete Vietlott Power 6/55 draw history since 2017-08-01 (6 main numbers + 1 bonus number), updated daily.</p>
+                <div class="badges">
+                    <span class="badge badge-green"><span>Latest Draw: 2026-10-29 (ID 01417)</span></span>
+                    <span class="badge"><span>Total Draws: 1,417</span></span>
+                    <span class="badge"><span>Total Records: 1,417</span></span>
+                    <span class="badge"><span>Coverage: 2017-08-01 to 2026-10-29</span></span>
+                </div>
+                <div class="hero-actions">
+                    <a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power655.jsonl" class="btn btn-primary" target="_blank" rel="noreferrer">
+                        <span>Download power655.jsonl (Raw NDJSON)</span>
+                    </a>
+                    <a href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655" class="btn btn-secondary" target="_blank" rel="noreferrer">
+                        <span>Official Vietlott Page</span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="card">
+                    <h2 class="section-title" style="margin-bottom: 0.75rem;">Dataset Overview &amp; Record Schema</h2>
+                    <p style="margin-bottom: 0.75rem;"><strong>Draw Schedule:</strong> Tuesday, Thursday, Saturday (18:00–18:30 ICT)</p>
+                    <p style="margin-bottom: 0.75rem;"><strong>Result Schema:</strong> <code>result</code> is an array of <strong>7 integers</strong>: the first 6 integers (<code>result[0:6]</code>) are the sorted main winning numbers (drawn from 1 to 55), and the 7th integer (<code>result[6]</code>) is the special/bonus number (used for Jackpot 2).</p>
+                    <p style="margin-bottom: 1rem;"><strong>Technical Notes:</strong> Power 6/55 has two cumulative jackpot tiers: Jackpot 1 (matching all 6 main numbers) and Jackpot 2 (matching 5 main numbers plus the 7th special number). When computing main-number vs. bonus-number frequencies separately, slice <code>result[:6]</code> for main balls and <code>result[6]</code> for the special ball.</p>
+                    <div class="code-card" style="margin-bottom: 0;">
+                        <div class="code-card-header">
+                            <span class="code-card-title">Latest Sample Record (data/power655.jsonl)</span>
+                        </div>
+                        <pre class="code-block"><code>{&#34;date&#34;:&#34;2026-10-29&#34;,&#34;id&#34;:&#34;01417&#34;,&#34;result&#34;:[9,29,33,38,45,46,53],&#34;process_time&#34;:&#34;2026-10-29T12:00:05Z&#34;}</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="card">
+                    <h2 class="section-title" style="margin-bottom: 1rem;">Recent 10 Draws</h2>
+                    <div class="stats-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Draw Date</th>
+                                    <th>Draw ID</th>
+                                    <th>Winning Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2026-10-29</td>
+                                    <td><strong>01417</strong></td>
+                                    <td><code>[9, 29, 33, 38, 45, 46, 53]</code></td>
+                                </tr>
+                                <tr>
+                                    <td>2026-10-27</td>
+                                    <td><strong>01416</strong></td>
+                                    <td><code>[9, 18, 27, 28, 31, 35, 50]</code></td>
+                                </tr>
+                                <tr>
+                                    <td>2026-10-24</td>
+                                    <td><strong>01415</strong></td>
+                                    <td><code>[6, 7, 18, 41, 44, 50, 53]</code></td>
+                                </tr>
+                                <tr>
+                                    <td>2026-10-22</td>
+                                    <td><strong>01414</strong></td>
+                                    <td><code>[14, 19, 24, 31, 34, 42, 37]</code></td>
+                                </tr>
+                                <tr>
+                                    <td>2026-10-20</td>
+                                    <td><strong>01413</strong></td>
+                                    <td><code>[13, 20, 23, 30, 50, 55, 45]</code></td>
+                                </tr>
+                                <tr>
+                                    <td>2026-10-17</td>
+                                    <td><strong>01412</strong></td>
+                                    <td><code>[1, 10, 11, 12, 16, 37, 48]</code></td>
+                                </tr>
+                                <tr>
+                                    <td>2026-10-15</td>
+                                    <td><strong>01411</strong></td>
+                                    <td><code>[7, 23, 25, 42, 45, 51, 4]</code></td>
+                                </tr>
+                                <tr>
+                                    <td>2026-10-13</td>
+                                    <td><strong>01410</strong></td>
+                                    <td><code>[2, 14, 27, 40, 50, 53, 26]</code></td>
+                                </tr>
+                                <tr>
+                                    <td>2026-10-10</td>
+                                    <td><strong>01409</strong></td>
+                                    <td><code>[14, 17, 21, 23, 24, 39, 30]</code></td>
+                                </tr>
+                                <tr>
+                                    <td>2026-10-08</td>
+                                    <td><strong>01408</strong></td>
+                                    <td><code>[1, 7, 12, 27, 31, 52, 6]</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="card">
+                    <h2 class="section-title" style="margin-bottom: 1rem;">Top 10 Numbers by Days Since Last Appearance</h2>
+                    <div class="stats-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Number</th>
+                                    <th>Last Appearance</th>
+                                    <th>Days Since</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>8</strong></td>
+                                    <td>2026-09-08</td>
+                                    <td>51</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>43</strong></td>
+                                    <td>2026-09-12</td>
+                                    <td>47</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>32</strong></td>
+                                    <td>2026-09-15</td>
+                                    <td>44</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>47</strong></td>
+                                    <td>2026-09-15</td>
+                                    <td>44</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>22</strong></td>
+                                    <td>2026-09-19</td>
+                                    <td>40</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3</strong></td>
+                                    <td>2026-09-22</td>
+                                    <td>37</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>49</strong></td>
+                                    <td>2026-09-26</td>
+                                    <td>33</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>36</strong></td>
+                                    <td>2026-09-29</td>
+                                    <td>30</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5</strong></td>
+                                    <td>2026-10-01</td>
+                                    <td>28</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>15</strong></td>
+                                    <td>2026-10-01</td>
+                                    <td>28</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section class="section">
+                <div class="card">
+                    <h2 class="section-title" style="margin-bottom: 0.75rem;">Load in Python (Polars &amp; Pandas)</h2>
+                    <div class="code-card" style="margin-bottom: 0;">
+                        <div class="code-card-header">
+                            <span class="code-card-title">python</span>
+                        </div>
+                        <pre class="code-block"><code>import polars as pl
+
+url = "https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power655.jsonl"
+df = pl.read_ndjson(url)
+print(df.head(5))</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="card">
+                    <h2 class="section-title" style="margin-bottom: 0.75rem;">Explore Related Datasets &amp; Guides</h2>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.6rem;">
+                        <a href="../power-6-55/" class="btn btn-secondary btn-sm">Power 6/55</a>
+                        <a href="../mega-6-45/" class="btn btn-secondary btn-sm">Mega 6/45</a>
+                        <a href="../power-5-35/" class="btn btn-secondary btn-sm">Power 5/35</a>
+                        <a href="../keno/" class="btn btn-secondary btn-sm">Keno</a>
+                        <a href="../max-3d/" class="btn btn-secondary btn-sm">Max 3D</a>
+                        <a href="../max-3d-pro/" class="btn btn-secondary btn-sm">Max 3D Pro</a>
+                        <a href="../bingo18/" class="btn btn-secondary btn-sm">Bingo18</a>
+                        <a href="../data-schema/" class="btn btn-secondary btn-sm">Data Schema</a>
+                        <a href="../python-examples/" class="btn btn-secondary btn-sm">Python Examples</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="disclaimer">
+                    <div>
+                        <h4>Methodology &amp; Randomness Disclaimer</h4>
+                        <p>Data is collected automatically from official Vietlott results pages and verified by draw ID. Lottery draws are independent random events; past frequencies do not influence future draws. Provided strictly for educational and statistical research under the MIT License.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="footer">
+            <div class="container footer-content">
+                <div>
+                    <strong>Vietlott Data</strong> &copy; 2026. Open source under MIT License.
+                </div>
+                <div class="footer-links">
+                    <a href="../">Tiếng Việt</a>
+                    <a href="../en/">English</a>
+                    <a href="../data-schema/">Data Schema</a>
+                    <a href="../python-examples/">Python Examples</a>
+                    <a href="https://github.com/vietvudanh/vietlott-data" target="_blank" rel="noreferrer">GitHub</a>
+                    <a href="https://vietlott.vn" target="_blank" rel="noreferrer">vietlott.vn</a>
+                </div>
+            </div>
+        </footer>
+        <script>
+            function getPreferredTheme() {
+                const stored = localStorage.getItem("vietlott-theme");
+                if (stored) return stored;
+                return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            }
+            function setTheme(theme) {
+                document.documentElement.setAttribute("data-theme", theme);
+                localStorage.setItem("vietlott-theme", theme);
+            }
+            setTheme(getPreferredTheme());
+            const btn = document.getElementById("themeToggleBtn");
+            if (btn) {
+                btn.addEventListener("click", function () {
+                    const current = document.documentElement.getAttribute("data-theme") || "light";
+                    setTheme(current === "dark" ? "light" : "dark");
+                });
+            }
+        </script>
+    </body>
+</html>

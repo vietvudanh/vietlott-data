@@ -8,7 +8,7 @@ where = ["src"] # list of folders that contain the packages (["."] by default)
 [project]
 name = "vietlott-data"
 version = "0.3.0"
-description = "crawl & store vietlott data"
+description = "Open historical Vietlott lottery dataset — Power 6/55, Mega 6/45, Keno, Max 3D and more. Free NDJSON downloads, daily updates, statistics, and Python/Go tools."
 authors = [{ name = "Viet Vu", email = "vietvudanh@gmail.com" }]
 dependencies = [
     "bs4",

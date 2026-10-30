@@ -73,9 +73,24 @@
             content="https://vietvudanh.github.io/vietlott-data/assets/screenshot.png"
         />
 
-        <!-- Canonical URL -->
+        <!-- Canonical URL & Language Alternates -->
         <link
             rel="canonical"
+            href="https://vietvudanh.github.io/vietlott-data/"
+        />
+        <link
+            rel="alternate"
+            hreflang="vi"
+            href="https://vietvudanh.github.io/vietlott-data/"
+        />
+        <link
+            rel="alternate"
+            hreflang="en"
+            href="https://vietvudanh.github.io/vietlott-data/en/"
+        />
+        <link
+            rel="alternate"
+            hreflang="x-default"
             href="https://vietvudanh.github.io/vietlott-data/"
         />
 
@@ -96,6 +111,7 @@
                 {
                     "@type": "Dataset",
                     "@id": "https://vietvudanh.github.io/vietlott-data/#dataset",
+                    "identifier": "https://github.com/vietvudanh/vietlott-data",
                     "name": "Vietlott lottery results dataset (Kết quả xổ số Vietlott)",
                     "alternateName": "Dữ liệu lịch sử kết quả xổ số Vietlott",
                     "description": "Complete historical draw results of Vietnam's Vietlott lottery products - Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D, Max 3D Pro and Bingo18 - collected from vietlott.vn and updated daily. Each record holds the draw date, draw id and winning numbers in NDJSON. / Dữ liệu lịch sử đầy đủ kết quả quay số các sản phẩm Vietlott, thu thập từ vietlott.vn và cập nhật hàng ngày.",
@@ -105,8 +121,10 @@
                     "license": "https://opensource.org/licenses/MIT",
                     "isAccessibleForFree": true,
                     "inLanguage": ["vi", "en"],
+                    "datePublished": "2021-04-01",
+                    "dateModified": "2026-10-30",
                     "spatialCoverage": { "@type": "Country", "name": "Vietnam" },
-                    "temporalCoverage": "2017-08-01/..",
+                    "temporalCoverage": "2017-08-01/2026-10-30",
                     "creator": { "@type": "Person", "name": "vietvudanh", "url": "https://github.com/vietvudanh" },
                     "publisher": { "@type": "Person", "name": "vietvudanh", "url": "https://github.com/vietvudanh" },
                     "isBasedOn": "https://vietlott.vn/",
@@ -272,19 +290,29 @@
                     <span class="status-dot"></span>
                     <span data-vi="Nền tảng Dữ liệu Xổ số Mở" data-en="Open Lottery Data Platform">Nền tảng Dữ liệu Xổ số Mở</span>
                 </div>
-                <h1 class="hero-title">Vietlott Data</h1>
+                <!-- Hero Title & Subtitle -->
+                <h1
+                    class="hero-title"
+                    data-vi="Vietlott Data — Bộ dữ liệu Lịch sử Xổ số Mở"
+                    data-en="Vietlott Data — Open Historical Lottery Dataset"
+                >
+                    Vietlott Data — Bộ dữ liệu Lịch sử Xổ số Mở
+                </h1>
                 <p
                     class="hero-subtitle"
-                    data-vi="Thu thập, chuẩn hóa và phân tích dữ liệu xổ số Việt Nam tự động hàng ngày"
-                    data-en="Automated Vietnamese lottery data collection, normalization & analytics pipeline"
+                    data-vi="Tải miễn phí toàn bộ lịch sử kết quả Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D & Bingo18 dạng NDJSON chuẩn — thu thập tự động hàng ngày từ vietlott.vn"
+                    data-en="Free NDJSON downloads of complete historical results for Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D & Bingo18 — crawled and updated daily from vietlott.vn"
                 >
-                    Thu thập, chuẩn hóa và phân tích dữ liệu xổ số Việt Nam tự động hàng ngày
+                    Tải miễn phí toàn bộ lịch sử kết quả Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D & Bingo18 dạng NDJSON chuẩn — thu thập tự động hàng ngày từ vietlott.vn
                 </p>
 
                 <!-- Badges -->
                 <div class="badges">
+                    <a href="https://go.dev/" class="badge" target="_blank">
+                        <span>Go 1.27+ Crawler</span>
+                    </a>
                     <a href="https://www.python.org/downloads/" class="badge" target="_blank">
-                        <span>Python 3.11+</span>
+                        <span>Python 3.11+ Package</span>
                     </a>
                     <a
                         href="https://github.com/vietvudanh/vietlott-data/blob/main/LICENSE"
@@ -296,6 +324,11 @@
                     <span class="badge badge-green">
                         <span data-vi="Cập nhật hàng ngày" data-en="Daily Updated">Cập nhật hàng ngày</span>
                     </span>
+                    <!-- BEGIN_DATA_FRESHNESS -->
+                    <span class="badge" id="data-freshness-badge">
+                        <span data-vi="Dữ liệu mới nhất: 2026-10-30" data-en="Data last updated: 2026-10-30">Dữ liệu mới nhất: 2026-10-30</span>
+                    </span>
+                    <!-- END_DATA_FRESHNESS -->
                     <a
                         href="https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the"
                         class="badge"
@@ -303,9 +336,9 @@
                     >
                         <span data-vi="Bài viết Blog" data-en="Blog Post">Bài viết Blog</span>
                     </a>
-                    <span class="badge">
-                        <span>Polars Powered</span>
-                    </span>
+                    <a href="en/" class="badge" title="Complete English Version">
+                        <span>English Version (/en/) →</span>
+                    </a>
                 </div>
 
                 <!-- Hero Actions -->
@@ -443,13 +476,19 @@
                         </div>
                         <div class="product-footer">
                             <a
-                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655"
+                                href="power-6-55/"
                                 class="btn btn-primary btn-sm"
+                            >
+                                <span data-vi="Dữ liệu & Thống kê" data-en="Dataset & Stats">Dữ liệu & Thống kê</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655"
+                                class="btn btn-secondary btn-sm"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                <span data-vi="Trang chủ Vietlott" data-en="Official Site">Trang chủ Vietlott</span>
                             </a>
                         </div>
                     </div>
@@ -470,19 +509,25 @@
                                 </div>
                                 <span class="product-tag">6/45</span>
                             </div>
-                            <p data-vi="Chọn 6 số từ 1 đến 45 với Jackpot khởi điểm từ 12 tỷ đồng." data-en="Pick 6 numbers from 1 to 45 with Jackpot starting at 12 billion VND.">
-                                Chọn 6 số từ 1 đến 45 với Jackpot khởi điểm từ 12 tỷ đồng.
+                            <p data-vi="Chọn 6 số từ 1 đến 45 (không có số đặc biệt) với Jackpot khởi điểm từ 12 tỷ đồng." data-en="Pick 6 winning numbers from 1 to 45 (no bonus number) with Jackpot starting at 12 billion VND.">
+                                Chọn 6 số từ 1 đến 45 (không có số đặc biệt) với Jackpot khởi điểm từ 12 tỷ đồng.
                             </p>
                         </div>
                         <div class="product-footer">
                             <a
-                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645"
+                                href="mega-6-45/"
                                 class="btn btn-primary btn-sm"
+                            >
+                                <span data-vi="Dữ liệu & Thống kê" data-en="Dataset & Stats">Dữ liệu & Thống kê</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645"
+                                class="btn btn-secondary btn-sm"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                <span data-vi="Trang chủ Vietlott" data-en="Official Site">Trang chủ Vietlott</span>
                             </a>
                         </div>
                     </div>
@@ -503,19 +548,25 @@
                                 </div>
                                 <span class="product-tag">5/35</span>
                             </div>
-                            <p data-vi="Chọn 5 số từ 1 đến 35 với tần suất quay số hàng ngày nhanh chóng." data-en="Pick 5 numbers from 1 to 35 with daily rapid draw frequency.">
-                                Chọn 5 số từ 1 đến 35 với tần suất quay số hàng ngày nhanh chóng.
+                            <p data-vi="Chọn 5 số chính từ 1 đến 35 cộng 1 số đặc biệt với tần suất quay số hàng ngày." data-en="Pick 5 main numbers from 1 to 35 plus 1 special number with daily rapid draw frequency.">
+                                Chọn 5 số chính từ 1 đến 35 cộng 1 số đặc biệt với tần suất quay số hàng ngày.
                             </p>
                         </div>
                         <div class="product-footer">
                             <a
-                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535"
+                                href="power-5-35/"
                                 class="btn btn-primary btn-sm"
+                            >
+                                <span data-vi="Dữ liệu & Thống kê" data-en="Dataset & Stats">Dữ liệu & Thống kê</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535"
+                                class="btn btn-secondary btn-sm"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                <span data-vi="Trang chủ Vietlott" data-en="Official Site">Trang chủ Vietlott</span>
                             </a>
                         </div>
                     </div>
@@ -536,19 +587,25 @@
                                 </div>
                                 <span class="product-tag">Keno</span>
                             </div>
-                            <p data-vi="Xổ số quay nhanh 10 phút một lần, 96 kỳ mỗi ngày từ 06:00 đến 21:50." data-en="Fast-paced lottery drawn every 10 minutes, 96 draws daily from 06:00 to 21:50.">
-                                Xổ số quay nhanh 10 phút một lần, 96 kỳ mỗi ngày từ 06:00 đến 21:50.
+                            <p data-vi="Xổ số quay nhanh 10 phút một lần (20 số từ 1–80), 96 kỳ mỗi ngày từ 06:00 đến 21:50." data-en="Fast-paced lottery drawn every 10 minutes (20 numbers from 1–80), 96 draws daily from 06:00 to 21:50.">
+                                Xổ số quay nhanh 10 phút một lần (20 số từ 1–80), 96 kỳ mỗi ngày từ 06:00 đến 21:50.
                             </p>
                         </div>
                         <div class="product-footer">
                             <a
-                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno"
+                                href="keno/"
                                 class="btn btn-primary btn-sm"
+                            >
+                                <span data-vi="Dữ liệu & Thống kê" data-en="Dataset & Stats">Dữ liệu & Thống kê</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno"
+                                class="btn btn-secondary btn-sm"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                <span data-vi="Trang chủ Vietlott" data-en="Official Site">Trang chủ Vietlott</span>
                             </a>
                         </div>
                     </div>
@@ -569,19 +626,25 @@
                                 </div>
                                 <span class="product-tag">3D</span>
                             </div>
-                            <p data-vi="Trò chơi xổ số 3 chữ số quen thuộc với nhiều hạng giải thưởng hấp dẫn." data-en="Classic 3-digit lottery game with multiple exciting prize tiers.">
-                                Trò chơi xổ số 3 chữ số quen thuộc với nhiều hạng giải thưởng hấp dẫn.
+                            <p data-vi="Trò chơi xổ số 3 chữ số với 20 bộ số chia theo 4 hạng giải thưởng (Đặc biệt, Nhất, Nhì, Ba)." data-en="Classic 3-digit lottery game with 20 triplets grouped into 4 prize tiers.">
+                                Trò chơi xổ số 3 chữ số với 20 bộ số chia theo 4 hạng giải thưởng (Đặc biệt, Nhất, Nhì, Ba).
                             </p>
                         </div>
                         <div class="product-footer">
                             <a
-                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d"
+                                href="max-3d/"
                                 class="btn btn-primary btn-sm"
+                            >
+                                <span data-vi="Dữ liệu & Thống kê" data-en="Dataset & Stats">Dữ liệu & Thống kê</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d"
+                                class="btn btn-secondary btn-sm"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                <span data-vi="Trang chủ Vietlott" data-en="Official Site">Trang chủ Vietlott</span>
                             </a>
                         </div>
                     </div>
@@ -602,19 +665,25 @@
                                 </div>
                                 <span class="product-tag">3D Pro</span>
                             </div>
-                            <p data-vi="Phiên bản nâng cấp của Max 3D với cơ hội trúng giải đặc biệt lên tới hàng tỷ đồng." data-en="Enhanced Max 3D edition with special prize potential up to billions of VND.">
-                                Phiên bản nâng cấp của Max 3D với cơ hội trúng giải đặc biệt lên tới hàng tỷ đồng.
+                            <p data-vi="Phiên bản nâng cấp kết hợp hai bộ 3 chữ số với cơ hội trúng giải Đặc biệt hàng tỷ đồng." data-en="Enhanced Max 3D edition combining two 3-digit triplets with multibillion-VND Special Prizes.">
+                                Phiên bản nâng cấp kết hợp hai bộ 3 chữ số với cơ hội trúng giải Đặc biệt hàng tỷ đồng.
                             </p>
                         </div>
                         <div class="product-footer">
                             <a
-                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro"
+                                href="max-3d-pro/"
                                 class="btn btn-primary btn-sm"
+                            >
+                                <span data-vi="Dữ liệu & Thống kê" data-en="Dataset & Stats">Dữ liệu & Thống kê</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro"
+                                class="btn btn-secondary btn-sm"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                <span data-vi="Trang chủ Vietlott" data-en="Official Site">Trang chủ Vietlott</span>
                             </a>
                         </div>
                     </div>
@@ -635,19 +704,25 @@
                                 </div>
                                 <span class="product-tag">Bingo18</span>
                             </div>
-                            <p data-vi="Trò chơi số nhanh dựa trên 3 số từ 1 đến 6 với xác suất trúng thưởng cao." data-en="Fast number game drawn from 1 to 6 with frequent prize opportunities.">
-                                Trò chơi số nhanh dựa trên 3 số từ 1 đến 6 với xác suất trúng thưởng cao.
+                            <p data-vi="Trò chơi số nhanh dựa trên 3 số từ 1 đến 6 (tổng từ 3 đến 18) với xác suất trúng thưởng cao." data-en="Fast number game drawn from 3 numbers (1 to 6, sum 3 to 18) with frequent prize opportunities.">
+                                Trò chơi số nhanh dựa trên 3 số từ 1 đến 6 (tổng từ 3 đến 18) với xác suất trúng thưởng cao.
                             </p>
                         </div>
                         <div class="product-footer">
                             <a
-                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18"
+                                href="bingo18/"
                                 class="btn btn-primary btn-sm"
+                            >
+                                <span data-vi="Dữ liệu & Thống kê" data-en="Dataset & Stats">Dữ liệu & Thống kê</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </a>
+                            <a
+                                href="https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18"
+                                class="btn btn-secondary btn-sm"
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                <span data-vi="Xem Kết quả" data-en="View Results">Xem Kết quả</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                <span data-vi="Trang chủ Vietlott" data-en="Official Site">Trang chủ Vietlott</span>
                             </a>
                         </div>
                     </div>
@@ -1060,6 +1135,27 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </div>
                 </a>
+
+                <a
+                    href="https://github.com/vietvudanh/vietlott-data/blob/main/docs/BENCHMARK.md"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="ml-card-banner"
+                    style="margin-top: 1rem;"
+                >
+                    <div class="ml-card-content">
+                        <div class="ml-card-icon" style="background-color: #059669;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                        </div>
+                        <div class="ml-card-text">
+                            <h3 data-vi="So sánh Tốc độ Crawler (Go vs Python) →" data-en="Crawler Performance Benchmark (Go vs Python) →">So sánh Tốc độ Crawler (Go vs Python) →</h3>
+                            <p data-vi="Đánh giá chi tiết hiệu năng, độ trễ và tài nguyên RAM giữa bộ cào Go mới và Python legacy" data-en="Detailed latency, throughput, and memory comparison between the Go and legacy Python crawlers">Đánh giá chi tiết hiệu năng, độ trễ và tài nguyên RAM giữa bộ cào Go mới và Python legacy</p>
+                        </div>
+                    </div>
+                    <div class="ml-card-arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </div>
+                </a>
             </section>
             <!-- END_MACHINE_LEARNING_SECTION -->
 
@@ -1107,13 +1203,13 @@
             <section class="section" id="cli">
                 <div class="section-header">
                     <span class="section-eyebrow" data-vi="Hướng dẫn Sử dụng" data-en="Usage Guide">Hướng dẫn Sử dụng</span>
-                    <h2 class="section-title" data-vi="Cài đặt & Giao diện Dòng lệnh" data-en="Installation & CLI Guide">Cài đặt & Giao diện Dòng lệnh</h2>
-                    <p class="section-description" data-vi="Tích hợp vào project Python hoặc chạy trực tiếp bằng công cụ dòng lệnh" data-en="Integrate into your Python pipeline or run standalone CLI tools">Tích hợp vào project Python hoặc chạy trực tiếp bằng công cụ dòng lệnh</p>
+                    <h2 class="section-title" data-vi="Cài đặt & Giao diện Dòng lệnh (Go & Python)" data-en="Installation & CLI Guide (Go & Python)">Cài đặt & Giao diện Dòng lệnh (Go & Python)</h2>
+                    <p class="section-description" data-vi="Bộ cào Go tốc độ cao (khuyến nghị) hoặc gói Python PyPI cho phân tích dữ liệu" data-en="Recommended high-performance Go crawler or PyPI Python package for data analysis">Bộ cào Go tốc độ cao (khuyến nghị) hoặc gói Python PyPI cho phân tích dữ liệu</p>
                 </div>
 
                 <div class="card">
-                    <h3 data-vi="Cài đặt thư viện" data-en="Package Installation" style="margin-bottom: 0.5rem;">Cài đặt thư viện</h3>
-                    <p data-vi="Cài đặt thông qua uv (khuyến nghị) hoặc pip:" data-en="Install using uv (recommended) or pip:">Cài đặt thông qua uv (khuyến nghị) hoặc pip:</p>
+                    <h3 data-vi="1. Bộ thu thập Go (Khuyến nghị cho thu thập dữ liệu)" data-en="1. Go Crawler (Recommended for Data Collection)" style="margin-bottom: 0.5rem;">1. Bộ thu thập Go (Khuyến nghị cho thu thập dữ liệu)</h3>
+                    <p data-vi="Bộ cào Go chính thức (Go 1.27+) chạy nhanh hơn ~1.7× và tiêu tốn <2MB RAM. Do Vietlott chặn IP nước ngoài, hãy chạy từ IP tại Việt Nam:" data-en="The production Go crawler (Go 1.27+) runs ~1.7× faster with <2MB RAM. Because Vietlott geo-blocks foreign IPs, run from a Vietnam IP:">Bộ cào Go chính thức (Go 1.27+) chạy nhanh hơn ~1.7× và tiêu tốn <2MB RAM. Do Vietlott chặn IP nước ngoài, hãy chạy từ IP tại Việt Nam:</p>
 
                     <div class="code-card">
                         <div class="code-card-header">
@@ -1122,21 +1218,27 @@
                                 <span class="code-dot dot-yellow"></span>
                                 <span class="code-dot dot-green"></span>
                             </div>
-                            <span class="code-card-title">bash</span>
-                            <button class="copy-btn" onclick="copyCode(this, code-install)">
+                            <span class="code-card-title">bash (Go CLI)</span>
+                            <button class="copy-btn" onclick="copyCode(this, 'code-go-cli')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                                 <span>Copy</span>
                             </button>
                         </div>
-                        <pre class="code-block"><code id="code-install"><span class="code-comment"># Khuyến nghị sử dụng uv</span>
-<span class="code-prompt">$</span><span class="code-cmd">uv add vietlott-data</span>
+                        <pre class="code-block"><code id="code-go-cli"><span class="code-comment"># Biên dịch binary bộ cào Go</span>
+<span class="code-prompt">$</span><span class="code-cmd">make build-crawler</span>
 
-<span class="code-comment"># Hoặc sử dụng pip thông thường</span>
-<span class="code-prompt">$</span><span class="code-cmd">pip install vietlott-data</span></code></pre>
+<span class="code-comment"># Kiểm tra trạng thái dữ liệu hiện có so với kỳ quay mới nhất</span>
+<span class="code-prompt">$</span><span class="code-cmd">./bin/vietlott-crawler status</span>
+
+<span class="code-comment"># Đồng bộ toàn bộ sản phẩm & bù đắp các kỳ bị thiếu</span>
+<span class="code-prompt">$</span><span class="code-cmd">./bin/vietlott-crawler sync --all</span>
+
+<span class="code-comment"># Cập nhật README và trang tài liệu HTML</span>
+<span class="code-prompt">$</span><span class="code-cmd">./bin/vietlott-crawler render-readme && ./bin/vietlott-crawler render-docs</span></code></pre>
                     </div>
 
-                    <h3 data-vi="Sử dụng CLI Crawler" data-en="CLI Crawler Usage" style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Sử dụng CLI Crawler</h3>
-                    <p data-vi="Thu thập dữ liệu các sản phẩm xổ số theo tên:" data-en="Crawl lottery data by product name:">Thu thập dữ liệu các sản phẩm xổ số theo tên:</p>
+                    <h3 data-vi="2. Gói Python PyPI (Tích hợp Python & CLI Legacy)" data-en="2. Python PyPI Package (Python Integration & Legacy CLI)" style="margin-top: 1.5rem; margin-bottom: 0.5rem;">2. Gói Python PyPI (Tích hợp Python & CLI Legacy)</h3>
+                    <p data-vi="Gói Python vietlott-data vẫn được duy trì trên PyPI để tích hợp vào quy trình phân tích dữ liệu (lưu ý: bộ cào CLI Python đang ở trạng thái legacy/deprecated, khuyến nghị dùng bộ cào Go ở trên):" data-en="The vietlott-data Python package remains available on PyPI for Python integration (note: the Python CLI crawler is legacy/deprecated in favor of the Go crawler above):">Gói Python vietlott-data vẫn được duy trì trên PyPI để tích hợp vào quy trình phân tích dữ liệu (lưu ý: bộ cào CLI Python đang ở trạng thái legacy/deprecated, khuyến nghị dùng bộ cào Go ở trên):</p>
 
                     <div class="code-card">
                         <div class="code-card-header">
@@ -1145,20 +1247,28 @@
                                 <span class="code-dot dot-yellow"></span>
                                 <span class="code-dot dot-green"></span>
                             </div>
-                            <span class="code-card-title">bash</span>
-                            <button class="copy-btn" onclick="copyCode(this, code-crawl)">
+                            <span class="code-card-title">bash (Python CLI)</span>
+                            <button class="copy-btn" onclick="copyCode(this, 'code-install')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
                                 <span>Copy</span>
                             </button>
                         </div>
-                        <pre class="code-block"><code id="code-crawl"><span class="code-comment"># Thu thập kỳ mới nhất cho Power 6/55</span>
+                        <pre class="code-block"><code id="code-install"><span class="code-comment"># Cài đặt gói Python qua uv hoặc pip</span>
+<span class="code-prompt">$</span><span class="code-cmd">uv add vietlott-data</span>
+<span class="code-prompt">$</span><span class="code-cmd">pip install vietlott-data</span>
+
+<span class="code-comment"># Lệnh CLI Python (legacy)</span>
 <span class="code-prompt">$</span><span class="code-cmd">vietlott-crawl power_655</span>
-
-<span class="code-comment"># Thu thập dữ liệu Keno</span>
-<span class="code-prompt">$</span><span class="code-cmd">vietlott-crawl keno</span>
-
-<span class="code-comment"># Tìm kiếm và bù đắp các kỳ mở thưởng còn thiếu</span>
 <span class="code-prompt">$</span><span class="code-cmd">vietlott-missing power_655</span></code></pre>
+                    </div>
+
+                    <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
+                        <a href="data-schema/" class="btn btn-secondary btn-sm">
+                            <span data-vi="Xem Cấu trúc Dữ liệu (Schema) →" data-en="View Data Schema Reference →">Xem Cấu trúc Dữ liệu (Schema) →</span>
+                        </a>
+                        <a href="python-examples/" class="btn btn-secondary btn-sm">
+                            <span data-vi="Ví dụ Phân tích bằng Python / Polars →" data-en="Python / Polars Examples →">Ví dụ Phân tích bằng Python / Polars →</span>
+                        </a>
                     </div>
                 </div>
             </section>
@@ -1169,19 +1279,41 @@
                     <div class="section-header" style="margin-bottom: 0.75rem;">
                         <h2 class="section-title" data-vi="Tải Dữ liệu Kết quả Xổ số Vietlott (NDJSON)" data-en="Download Vietlott Results Data (NDJSON)">Tải Dữ liệu Kết quả Xổ số Vietlott (NDJSON)</h2>
                     </div>
-                    <p data-vi="Mỗi dòng là một kỳ quay dạng JSON: date, id, result, process_time. Miễn phí, giấy phép MIT, cập nhật hàng ngày." data-en="One JSON object per draw: date, id, result, process_time. Free, MIT licensed, updated daily.">Mỗi dòng là một kỳ quay dạng JSON: date, id, result, process_time. Miễn phí, giấy phép MIT, cập nhật hàng ngày.</p>
+                    <p data-vi="Mỗi dòng là một kỳ quay dạng JSON (NDJSON). Miễn phí, giấy phép MIT, cập nhật hàng ngày. Xem chi tiết từng trường tại trang Cấu trúc Dữ liệu." data-en="One JSON object per draw (NDJSON). Free, MIT licensed, updated daily. See full field definitions on the Data Schema page.">Mỗi dòng là một kỳ quay dạng JSON (NDJSON). Miễn phí, giấy phép MIT, cập nhật hàng ngày. Xem chi tiết từng trường tại trang Cấu trúc Dữ liệu.</p>
                     <div class="stats-table"><table>
-                        <thead><tr><th>Sản phẩm / Product</th><th>Mô tả / Description</th><th>File</th></tr></thead>
+                        <thead><tr><th>Sản phẩm / Product</th><th>Cấu trúc Kết quả / Result Schema</th><th>Trang chi tiết / Page</th><th>File NDJSON</th></tr></thead>
                         <tbody class="static-rows">
-                            <tr><td><strong>Power 6/55</strong></td><td><span data-vi="Vietlott Power 6/55 (6 số + 1 số đặc biệt, quay thứ Ba/Năm/Bảy)" data-en="Vietlott Power 6/55 (6 numbers + bonus)">Vietlott Power 6/55 (6 số + 1 số đặc biệt, quay thứ Ba/Năm/Bảy)</span></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power655.jsonl" rel="noreferrer">power655.jsonl</a></td></tr>
-                            <tr><td><strong>Mega 6/45</strong></td><td><span data-vi="Vietlott Mega 6/45 (6 số, quay thứ Tư/Sáu/Chủ nhật)" data-en="Vietlott Mega 6/45 (6 numbers)">Vietlott Mega 6/45 (6 số, quay thứ Tư/Sáu/Chủ nhật)</span></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power645.jsonl" rel="noreferrer">power645.jsonl</a></td></tr>
-                            <tr><td><strong>Power 5/35</strong></td><td><span data-vi="Vietlott Power 5/35 (5 số + 1 số đặc biệt)" data-en="Vietlott Power 5/35 (5 numbers + bonus)">Vietlott Power 5/35 (5 số + 1 số đặc biệt)</span></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power535.jsonl" rel="noreferrer">power535.jsonl</a></td></tr>
-                            <tr><td><strong>Keno</strong></td><td><span data-vi="Vietlott Keno (quay liên tục, mỗi kỳ 20 số)" data-en="Vietlott Keno (continuous draws, 20 numbers each)">Vietlott Keno (quay liên tục, mỗi kỳ 20 số)</span></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/keno.jsonl" rel="noreferrer">keno.jsonl</a></td></tr>
-                            <tr><td><strong>Max 3D</strong></td><td><span data-vi="Vietlott Max 3D (bộ số 3 chữ số)" data-en="Vietlott Max 3D (3-digit numbers)">Vietlott Max 3D (bộ số 3 chữ số)</span></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/3d.jsonl" rel="noreferrer">3d.jsonl</a></td></tr>
-                            <tr><td><strong>Max 3D Pro</strong></td><td><span data-vi="Vietlott Max 3D Pro" data-en="Vietlott Max 3D Pro">Vietlott Max 3D Pro</span></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/3d_pro.jsonl" rel="noreferrer">3d_pro.jsonl</a></td></tr>
-                            <tr><td><strong>Bingo18</strong></td><td><span data-vi="Vietlott Bingo18 (3 viên xúc xắc, tổng 3-18)" data-en="Vietlott Bingo18 (3 dice, sum 3-18)">Vietlott Bingo18 (3 viên xúc xắc, tổng 3-18)</span></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/bingo18.jsonl" rel="noreferrer">bingo18.jsonl</a></td></tr>
+                            <tr><td><strong>Power 6/55</strong></td><td><span data-vi="Mảng 7 số nguyên: 6 số chính (1–55) + 1 số đặc biệt ở vị trí cuối" data-en="Array of 7 ints: 6 main numbers (1–55) + 1 bonus number (last element)">Mảng 7 số nguyên: 6 số chính (1–55) + 1 số đặc biệt ở vị trí cuối</span></td><td><a href="power-6-55/">/power-6-55/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power655.jsonl" rel="noreferrer">power655.jsonl</a></td></tr>
+                            <tr><td><strong>Mega 6/45</strong></td><td><span data-vi="Mảng 6 số nguyên: 6 số trúng thưởng (1–45), KHÔNG có số đặc biệt" data-en="Array of 6 ints: 6 winning numbers (1–45), NO bonus number">Mảng 6 số nguyên: 6 số trúng thưởng (1–45), KHÔNG có số đặc biệt</span></td><td><a href="mega-6-45/">/mega-6-45/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power645.jsonl" rel="noreferrer">power645.jsonl</a></td></tr>
+                            <tr><td><strong>Power 5/35</strong></td><td><span data-vi="Mảng 6 số nguyên: 5 số chính (1–35) + 1 số đặc biệt ở vị trí cuối" data-en="Array of 6 ints: 5 main numbers (1–35) + 1 special number (last element)">Mảng 6 số nguyên: 5 số chính (1–35) + 1 số đặc biệt ở vị trí cuối</span></td><td><a href="power-5-35/">/power-5-35/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power535.jsonl" rel="noreferrer">power535.jsonl</a></td></tr>
+                            <tr><td><strong>Keno</strong></td><td><span data-vi="Mảng 20 số nguyên (1–80), kèm trường big_small và odd_even" data-en="Array of 20 ints (1–80), plus big_small and odd_even fields">Mảng 20 số nguyên (1–80), kèm trường big_small và odd_even</span></td><td><a href="keno/">/keno/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/keno.jsonl" rel="noreferrer">keno.jsonl</a></td></tr>
+                            <tr><td><strong>Max 3D</strong></td><td><span data-vi="Object JSON ánh xạ 4 hạng giải (Đặc biệt, Nhất, Nhì, ba) tới 20 bộ 3 chữ số" data-en="JSON object mapping 4 prize tiers to 20 3-digit string triplets">Object JSON ánh xạ 4 hạng giải (Đặc biệt, Nhất, Nhì, ba) tới 20 bộ 3 chữ số</span></td><td><a href="max-3d/">/max-3d/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/3d.jsonl" rel="noreferrer">3d.jsonl</a></td></tr>
+                            <tr><td><strong>Max 3D Pro</strong></td><td><span data-vi="Object JSON ánh xạ 4 hạng giải tới 20 bộ 3 chữ số" data-en="JSON object mapping 4 prize tiers to 20 3-digit string triplets">Object JSON ánh xạ 4 hạng giải tới 20 bộ 3 chữ số</span></td><td><a href="max-3d-pro/">/max-3d-pro/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/3d_pro.jsonl" rel="noreferrer">3d_pro.jsonl</a></td></tr>
+                            <tr><td><strong>Bingo18</strong></td><td><span data-vi="Mảng 3 số nguyên (1–6), kèm trường total (3–18) và large_small" data-en="Array of 3 ints (1–6), plus total (3–18) and large_small fields">Mảng 3 số nguyên (1–6), kèm trường total (3–18) và large_small</span></td><td><a href="bingo18/">/bingo18/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/bingo18.jsonl" rel="noreferrer">bingo18.jsonl</a></td></tr>
                         </tbody>
                     </table></div>
+                </div>
+            </section>
+
+            <!-- Citation & Attribution Section -->
+            <section class="section" id="citation">
+                <div class="card">
+                    <div class="section-header" style="margin-bottom: 0.75rem;">
+                        <h2 class="section-title" data-vi="Trích dẫn & Giấy phép Bộ dữ liệu" data-en="Dataset Citation & Attribution">Trích dẫn & Giấy phép Bộ dữ liệu</h2>
+                    </div>
+                    <p data-vi="Bộ dữ liệu được phát hành theo giấy phép mở MIT. Nếu bạn sử dụng dữ liệu này trong nghiên cứu, bài viết hoặc ứng dụng, vui lòng trích dẫn như sau:" data-en="This dataset is published under the MIT License. If you use this dataset in research, articles, or applications, please cite it as follows:">Bộ dữ liệu được phát hành theo giấy phép mở MIT. Nếu bạn sử dụng dữ liệu này trong nghiên cứu, bài viết hoặc ứng dụng, vui lòng trích dẫn như sau:</p>
+                    <div class="code-card" style="margin-bottom: 0;">
+                        <div class="code-card-header">
+                            <span class="code-card-title">BibTeX / Attribution</span>
+                        </div>
+                        <pre class="code-block"><code>@misc{vietlott_data,
+  author       = {Viet Vu Danh},
+  title        = {Vietlott Data: Open Historical Vietnamese Lottery Dataset (NDJSON)},
+  year         = {2026},
+  url          = {https://github.com/vietvudanh/vietlott-data},
+  note         = {MIT License. Source data from vietlott.vn, updated daily.}
+}</code></pre>
+                    </div>
                 </div>
             </section>
 
@@ -1240,6 +1372,9 @@
                     <span data-vi="Mã nguồn mở theo giấy phép MIT." data-en="Open source under MIT License.">Mã nguồn mở theo giấy phép MIT.</span>
                 </div>
                 <div class="footer-links">
+                    <a href="en/">English</a>
+                    <a href="data-schema/">Schema</a>
+                    <a href="python-examples/">Python Examples</a>
                     <a href="https://github.com/vietvudanh/vietlott-data" target="_blank" rel="noreferrer">GitHub</a>
                     <a href="https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the" target="_blank" rel="noreferrer">Blog</a>
                     <a href="https://vietlott.vn" target="_blank" rel="noreferrer">vietlott.vn</a>

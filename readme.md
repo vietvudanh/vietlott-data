@@ -1,38 +1,42 @@
 # Vietlott Data
 
-[![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![Go](https://img.shields.io/badge/go-1.27%2B-00ADD8.svg)](https://go.dev/)
+[![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Data Updated](https://img.shields.io/badge/data-daily%20updated-brightgreen.svg)](https://github.com/vietvudanh/vietlott-data/commits/main)
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Deployed-blue)](https://vietvudanh.github.io/vietlott-data/)
 
-> **Automated Vietnamese Lottery Data Collection & Analysis**
+> **Open Historical Vietlott Lottery Dataset — Free NDJSON Downloads, Daily Updates, Statistics & Go/Python Tools**
 >
-> This project crawls and analyzes Vietnamese lottery data from [vietlott.vn](https://vietlott.vn/), providing statistics and insights for all major lottery products.
+> Complete draw history crawled daily from [vietlott.vn](https://vietlott.vn/) for all seven official Vietlott games: Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D, Max 3D Pro, and Bingo18.
 
-**Dữ liệu kết quả xổ số Vietlott đầy đủ, miễn phí, cập nhật hàng ngày** (Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D, Max 3D Pro, Bingo18) - open historical Vietlott draw results in NDJSON, from the first draw, MIT licensed. Raw files live in [data/](data/); each line has the fields date, id, result, process_time. See [llms.txt](https://vietvudanh.github.io/vietlott-data/llms.txt) for a machine-readable summary.
+**Dữ liệu kết quả xổ số Vietlott đầy đủ, miễn phí, cập nhật hàng ngày** (Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D, Max 3D Pro, Bingo18) - open historical Vietlott draw results in NDJSON, from the first draw, MIT licensed. Raw files live in [data/](data/); see [llms.txt](https://vietvudanh.github.io/vietlott-data/llms.txt) and [Data Schema](https://vietvudanh.github.io/vietlott-data/data-schema/) for machine-readable and developer references.
 
 ## Links
 
-- [Website](https://vietvudanh.github.io/vietlott-data/) - Interactive data visualization
+- [Website (Vietnamese)](https://vietvudanh.github.io/vietlott-data/) & [English Portal (/en/)](https://vietvudanh.github.io/vietlott-data/en/) - Interactive dataset portal & statistics
+- [Data Schema Reference](https://vietvudanh.github.io/vietlott-data/data-schema/) & [Python/Polars Examples](https://vietvudanh.github.io/vietlott-data/python-examples/)
 - [Blog Post](https://open.substack.com/pub/vietvudanh/p/minh-a-tao-repo-vietlott-data-the) - About this project
+- [Crawler Performance Benchmark](docs/BENCHMARK.md) - Speed & resource comparison: Go vs Python crawler
 
-## Supported Lottery Products
+## Supported Lottery Products & Data Schema
 
-| Product | Link | Description |
-|---------|------|-------------|
-| **Power 6/55** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | Choose 6 numbers from 1-55 |
-| **Power 6/45** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | Choose 6 numbers from 1-45 |
-| **Power 5/35** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535) | Choose 5 numbers from 1-35 |
-| **Keno** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | Fast-pace number game |
-| **Max 3D** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | 3-digit lottery game |
-| **Max 3D Pro** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | Enhanced 3D lottery |
-| **Bingo18** | [Results](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18) | 3 numbers from 0-9 game |
+| Product | Raw NDJSON File | Dedicated Page | Official Results | `result` Field Structure |
+|---------|-----------------|----------------|------------------|--------------------------|
+| **Power 6/55** | [data/power655.jsonl](data/power655.jsonl) | [/power-6-55/](https://vietvudanh.github.io/vietlott-data/power-6-55/) | [Vietlott 6/55](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/655) | `int[7]`: 6 main numbers (1–55) + **1 bonus number** (`result[6]`) |
+| **Mega 6/45** | [data/power645.jsonl](data/power645.jsonl) | [/mega-6-45/](https://vietvudanh.github.io/vietlott-data/mega-6-45/) | [Vietlott 6/45](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/645) | `int[6]`: 6 winning numbers (1–45), **NO bonus number** |
+| **Power 5/35** | [data/power535.jsonl](data/power535.jsonl) | [/power-5-35/](https://vietvudanh.github.io/vietlott-data/power-5-35/) | [Vietlott 5/35](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/535) | `int[6]`: 5 main numbers (1–35) + **1 special number** (`result[5]`) |
+| **Keno** | [data/keno.jsonl](data/keno.jsonl) | [/keno/](https://vietvudanh.github.io/vietlott-data/keno/) | [Vietlott Keno](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-keno) | `int[20]`: 20 numbers (1–80), plus `big_small` & `odd_even` |
+| **Max 3D** | [data/3d.jsonl](data/3d.jsonl) | [/max-3d/](https://vietvudanh.github.io/vietlott-data/max-3d/) | [Vietlott Max 3D](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3d) | `object`: 4 prize tiers (`Giải Đặc biệt`, `Nhất`, `Nhì`, `ba`) -> 20 3-digit strings |
+| **Max 3D Pro** | [data/3d_pro.jsonl](data/3d_pro.jsonl) | [/max-3d-pro/](https://vietvudanh.github.io/vietlott-data/max-3d-pro/) | [Vietlott Max 3D Pro](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/max-3dpro) | `object`: 4 prize tiers -> 20 3-digit strings |
+| **Bingo18** | [data/bingo18.jsonl](data/bingo18.jsonl) | [/bingo18/](https://vietvudanh.github.io/vietlott-data/bingo18/) | [Vietlott Bingo18](https://vietlott.vn/vi/trung-thuong/ket-qua-trung-thuong/winning-number-bingo18) | `int[3]`: 3 numbers (1–6), plus `total` (3–18) & `large_small` |
 
 
 ## Table of Contents
 
 - [Links](#links)
-- [Supported Lottery Products](#supported-lottery-products)
+- [Supported Lottery Products & Data Schema](#supported-lottery-products--data-schema)
+- [Quick Python Usage Example](#quick-python-usage-example)
 - [Predictions](#predictions)
 - [Data Statistics](#data-statistics)
 - [Power 6/55 Analysis](#power-655-analysis)
@@ -43,7 +47,23 @@
   - [Days Since Last Appearance - All Numbers](#days-since-last-appearance---all-numbers)
 - [How It Works](#how-it-works)
 - [Installation & Usage](#installation--usage)
+- [Citation & Attribution](#citation--attribution)
 - [License](#license)
+
+## Quick Python Usage Example
+
+```python
+import polars as pl
+
+# Load Power 6/55 directly from raw NDJSON
+df = pl.read_ndjson("https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power655.jsonl")
+df = df.with_columns([
+    pl.col("date").str.to_date(),
+    pl.col("result").list.slice(0, 6).alias("main_numbers"),
+    pl.col("result").list.get(6).alias("bonus_number"),
+])
+print(df.head(5))
+```
 
 
 ## Predictions
@@ -257,7 +277,7 @@ For background on these models, see the [Machine Learning README](./src/machine_
 
 Vietlott blocks non-Vietnam IPs ([issue #13](https://github.com/vietvudanh/vietlott-data/issues/13)), so crawling runs on a scheduled local runner (`bin/github_data.sh`) and commits updated data back to GitHub.
 
-For architecture and runner setup, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+For architecture and runner setup, see [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md). For performance and speed metrics comparing Go vs Python, see [docs/BENCHMARK.md](docs/BENCHMARK.md).
 
 
 ## Installation & Usage
@@ -300,6 +320,20 @@ uv sync --dev
 uv run pytest
 ```
 
+## Citation & Attribution
+
+If you use this dataset in research, articles, or applications, please cite it as:
+
+```bibtex
+@misc{vietlott_data,
+  author       = {Viet Vu Danh},
+  title        = {Vietlott Data: Open Historical Vietnamese Lottery Dataset (NDJSON)},
+  year         = {2026},
+  url          = {https://github.com/vietvudanh/vietlott-data},
+  note         = {MIT License. Source data from vietlott.vn, updated daily.}
+}
+```
+
 ## License
 
 This project is licensed under the MIT License - see [LICENSE](LICENSE).
@@ -309,4 +343,3 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE).
 <div align="center">
   <strong>If you find this project useful, please consider giving it a star!</strong>
 </div>
-

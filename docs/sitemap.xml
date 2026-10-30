@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://vietvudanh.github.io/vietlott-data/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://vietvudanh.github.io/vietlott-data/llms.txt</loc><changefreq>weekly</changefreq></url>
+  <url><loc>https://vietvudanh.github.io/vietlott-data/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://vietvudanh.github.io/vietlott-data/en/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://vietvudanh.github.io/vietlott-data/power-6-55/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vietvudanh.github.io/vietlott-data/mega-6-45/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vietvudanh.github.io/vietlott-data/power-5-35/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vietvudanh.github.io/vietlott-data/keno/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vietvudanh.github.io/vietlott-data/max-3d/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vietvudanh.github.io/vietlott-data/max-3d-pro/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vietvudanh.github.io/vietlott-data/bingo18/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vietvudanh.github.io/vietlott-data/data-schema/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://vietvudanh.github.io/vietlott-data/python-examples/</loc><lastmod>2026-10-30</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
 </urlset>

@@ -1,6 +1,13 @@
 User-agent: *
 Allow: /
 
+# Note on Robots Policy Scope:
+# Because this site is hosted on a GitHub Pages project subpath
+# (https://vietvudanh.github.io/vietlott-data/), standard RFC 9309 crawlers
+# look for robots.txt at the origin root (https://vietvudanh.github.io/robots.txt).
+# If a user/organization site exists at vietvudanh.github.io, mirror these rules
+# in its root robots.txt, or configure a custom domain so this file is served at /.
+
 # AI / generative-engine crawlers are welcome
 User-agent: GPTBot
 Allow: /

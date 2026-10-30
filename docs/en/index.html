@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vietlott Historical Lottery Dataset — Free NDJSON Downloads &amp; Statistics</title>
+        <meta name="description" content="Download historical Vietlott lottery results for Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D, Max 3D Pro and Bingo18. Free NDJSON data, daily updates, statistics and Python/Go tools." />
+        <meta name="author" content="vietvudanh" />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
+        <link rel="alternate" type="text/plain" href="https://vietvudanh.github.io/vietlott-data/llms.txt" title="LLM-readable summary" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://vietvudanh.github.io/vietlott-data/en/" />
+        <meta property="og:title" content="Vietlott Historical Lottery Dataset — Free NDJSON Downloads &amp; Statistics" />
+        <meta property="og:description" content="Download historical Vietlott lottery results for Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D, Max 3D Pro and Bingo18. Free NDJSON data, daily updates, statistics and Python/Go tools." />
+        <meta property="og:image" content="https://vietvudanh.github.io/vietlott-data/assets/screenshot.png" />
+        <meta property="og:locale" content="en_US" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Vietlott Historical Lottery Dataset — Free NDJSON Downloads &amp; Statistics" />
+        <meta name="twitter:description" content="Download historical Vietlott lottery results for Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D, Max 3D Pro and Bingo18. Free NDJSON data, daily updates, statistics and Python/Go tools." />
+        <meta name="twitter:image" content="https://vietvudanh.github.io/vietlott-data/assets/screenshot.png" />
+        <link rel="canonical" href="https://vietvudanh.github.io/vietlott-data/en/" />
+        <link rel="alternate" hreflang="vi" href="https://vietvudanh.github.io/vietlott-data/" />
+        <link rel="alternate" hreflang="en" href="https://vietvudanh.github.io/vietlott-data/en/" />
+        <link rel="alternate" hreflang="x-default" href="https://vietvudanh.github.io/vietlott-data/" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="../styles.css" />
+        <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>V</text></svg>" />
+    </head>
+    <body>
+        <div class="ambient-glow" aria-hidden="true"></div>
+        <header class="top-nav-wrapper">
+            <div class="container">
+                <nav class="top-nav" aria-label="Main Navigation">
+                    <a href="../" class="brand-link">
+                        <div class="brand-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+                            </svg>
+                        </div>
+                        <span>Vietlott Data</span>
+                        <span class="brand-version">v0.3.0</span>
+                    </a>
+                    <ul class="nav-menu">
+                        <li><a href="../" class="nav-link">Home (VI)</a></li>
+                        <li><a href="../en/" class="nav-link">Home (EN)</a></li>
+                        <li><a href="../power-6-55/" class="nav-link">Power 6/55</a></li>
+                        <li><a href="../mega-6-45/" class="nav-link">Mega 6/45</a></li>
+                        <li><a href="../power-5-35/" class="nav-link">Power 5/35</a></li>
+                        <li><a href="../keno/" class="nav-link">Keno</a></li>
+                        <li><a href="../data-schema/" class="nav-link">Schema</a></li>
+                        <li><a href="../python-examples/" class="nav-link">Python</a></li>
+                    </ul>
+                    <div class="nav-actions">
+                        <button class="icon-btn theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle dark mode">
+                            <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                            <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+                        </button>
+                        <a href="https://github.com/vietvudanh/vietlott-data" target="_blank" rel="noreferrer" class="icon-btn" aria-label="GitHub Repository">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12Z" /></svg>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <main class="container">
+            <section class="hero-section">
+                <div class="hero-pill">
+                    <span class="status-dot"></span>
+                    <span>Open Vietnamese Lottery Data Platform</span>
+                </div>
+                <h1 class="hero-title">Vietlott Historical Lottery Dataset</h1>
+                <p class="hero-subtitle">Free, daily-updated NDJSON datasets and statistical analysis for all seven official Vietlott games: Power 6/55, Mega 6/45, Power 5/35, Keno, Max 3D, Max 3D Pro, and Bingo18.</p>
+                <div class="badges">
+                    <span class="badge badge-green"><span>Data last updated: 2026-10-30</span></span>
+                    <a href="https://go.dev/" class="badge" target="_blank"><span>Go 1.27+ Crawler</span></a>
+                    <a href="https://pypi.org/project/vietlott-data/" class="badge" target="_blank"><span>Python 3.11+ Package</span></a>
+                    <a href="https://github.com/vietvudanh/vietlott-data/blob/main/LICENSE" class="badge" target="_blank"><span>MIT License</span></a>
+                    <a href="../" class="badge"><span>Tiếng Việt (Vietnamese) →</span></a>
+                </div>
+                <div class="hero-actions">
+                    <a href="#statistics" class="btn btn-primary"><span>Explore Dataset Statistics</span></a>
+                    <a href="../data-schema/" class="btn btn-secondary"><span>Data Schema Reference</span></a>
+                    <a href="../python-examples/" class="btn btn-secondary"><span>Python &amp; Polars Examples</span></a>
+                </div>
+            </section>
+
+            <section class="section" id="statistics">
+                <div class="section-header">
+                    <span class="section-eyebrow">Dataset Coverage</span>
+                    <h2 class="section-title">All 7 Vietlott Lottery Datasets</h2>
+                    <p class="section-description">Automatically synchronized with the repository NDJSON files in <code>data/*.jsonl</code></p>
+                </div>
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <div class="stats-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Total Draws (Days)</th>
+                                    <th>Start Date</th>
+                                    <th>Latest Date</th>
+                                    <th>Total Records</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Power 655</strong></td>
+                                    <td>1,417</td>
+                                    <td>2017-08-01</td>
+                                    <td>2026-10-29</td>
+                                    <td>1,417</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Power 645</strong></td>
+                                    <td>1,384</td>
+                                    <td>2017-10-25</td>
+                                    <td>2026-10-28</td>
+                                    <td>1,384</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Power 535</strong></td>
+                                    <td>488</td>
+                                    <td>2025-06-29</td>
+                                    <td>2026-10-29</td>
+                                    <td>976</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Keno</strong></td>
+                                    <td>722</td>
+                                    <td>2022-12-04</td>
+                                    <td>2026-10-30</td>
+                                    <td>90,087</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3D</strong></td>
+                                    <td>1,151</td>
+                                    <td>2019-04-22</td>
+                                    <td>2026-10-28</td>
+                                    <td>1,151</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3D Pro</strong></td>
+                                    <td>798</td>
+                                    <td>2021-09-14</td>
+                                    <td>2026-10-29</td>
+                                    <td>798</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Bingo18</strong></td>
+                                    <td>695</td>
+                                    <td>2024-12-03</td>
+                                    <td>2026-10-30</td>
+                                    <td>97,845</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="products">
+                <div class="section-header">
+                    <span class="section-eyebrow">Individual Product Pages</span>
+                    <h2 class="section-title">Dedicated Dataset Pages &amp; Raw Downloads</h2>
+                </div>
+                <div class="stats-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Result Structure</th>
+                                <th>Dedicated Page</th>
+                                <th>Raw NDJSON</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Power 6/55</strong></td><td>7 ints: 6 main numbers (1–55) + 1 bonus number (7th element)</td><td><a href="../power-6-55/">/power-6-55/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power655.jsonl">power655.jsonl</a></td></tr>
+                            <tr><td><strong>Mega 6/45</strong></td><td>6 ints: 6 winning numbers (1–45), <strong>no bonus number</strong></td><td><a href="../mega-6-45/">/mega-6-45/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power645.jsonl">power645.jsonl</a></td></tr>
+                            <tr><td><strong>Power 5/35</strong></td><td>6 ints: 5 main numbers (1–35) + 1 special number (6th element)</td><td><a href="../power-5-35/">/power-5-35/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/power535.jsonl">power535.jsonl</a></td></tr>
+                            <tr><td><strong>Keno</strong></td><td>20 ints (1–80), plus <code>big_small</code> and <code>odd_even</code></td><td><a href="../keno/">/keno/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/keno.jsonl">keno.jsonl</a></td></tr>
+                            <tr><td><strong>Max 3D</strong></td><td>JSON object mapping 4 prize tiers to 20 3-digit strings</td><td><a href="../max-3d/">/max-3d/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/3d.jsonl">3d.jsonl</a></td></tr>
+                            <tr><td><strong>Max 3D Pro</strong></td><td>JSON object mapping 4 prize tiers to 20 3-digit strings</td><td><a href="../max-3d-pro/">/max-3d-pro/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/3d_pro.jsonl">3d_pro.jsonl</a></td></tr>
+                            <tr><td><strong>Bingo18</strong></td><td>3 ints (1–6), plus <code>total</code> (3–18) and <code>large_small</code></td><td><a href="../bingo18/">/bingo18/</a></td><td><a href="https://raw.githubusercontent.com/vietvudanh/vietlott-data/main/data/bingo18.jsonl">bingo18.jsonl</a></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section" id="analysis">
+                <div class="section-header">
+                    <span class="section-eyebrow">Statistical Analysis</span>
+                    <h2 class="section-title">Power 6/55 — Top 10 Numbers by Days Since Last Appearance</h2>
+                </div>
+                <div class="card">
+                    <div class="stats-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Number</th>
+                                    <th>Last Appearance</th>
+                                    <th>Days Since</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>8</strong></td>
+                                    <td>2026-09-08</td>
+                                    <td>51</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>43</strong></td>
+                                    <td>2026-09-12</td>
+                                    <td>47</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>32</strong></td>
+                                    <td>2026-09-15</td>
+                                    <td>44</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>47</strong></td>
+                                    <td>2026-09-15</td>
+                                    <td>44</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>22</strong></td>
+                                    <td>2026-09-19</td>
+                                    <td>40</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3</strong></td>
+                                    <td>2026-09-22</td>
+                                    <td>37</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>49</strong></td>
+                                    <td>2026-09-26</td>
+                                    <td>33</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>36</strong></td>
+                                    <td>2026-09-29</td>
+                                    <td>30</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5</strong></td>
+                                    <td>2026-10-01</td>
+                                    <td>28</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>15</strong></td>
+                                    <td>2026-10-01</td>
+                                    <td>28</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section class="section" id="cli">
+                <div class="card">
+                    <h2 class="section-title" style="margin-bottom: 0.75rem;">Crawler &amp; Tooling: Go (Recommended) vs Python</h2>
+                    <p style="margin-bottom: 1rem;"><strong>Go Crawler (Recommended):</strong> Production crawling and rendering run on the standalone Go binary (<code>bin/vietlott-crawler</code>), which is ~1.7&times; faster and uses &lt;2 MB RAM. Because Vietlott geo-blocks non-Vietnam IP addresses, crawling runs on a local runner in Vietnam and commits daily updates to GitHub.</p>
+                    <p><strong>Python Package:</strong> The <code>vietlott-data</code> package on PyPI provides Python schemas and legacy CLI commands (<code>vietlott-crawl</code>, <code>vietlott-missing</code>) for Python workflows.</p>
+                </div>
+            </section>
+        </main>
+        <footer class="footer">
+            <div class="container footer-content">
+                <div>
+                    <strong>Vietlott Data</strong> &copy; 2026. Open source under MIT License.
+                </div>
+                <div class="footer-links">
+                    <a href="../">Tiếng Việt</a>
+                    <a href="../en/">English</a>
+                    <a href="../data-schema/">Data Schema</a>
+                    <a href="../python-examples/">Python Examples</a>
+                    <a href="https://github.com/vietvudanh/vietlott-data" target="_blank" rel="noreferrer">GitHub</a>
+                    <a href="https://vietlott.vn" target="_blank" rel="noreferrer">vietlott.vn</a>
+                </div>
+            </div>
+        </footer>
+        <script>
+            function getPreferredTheme() {
+                const stored = localStorage.getItem("vietlott-theme");
+                if (stored) return stored;
+                return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            }
+            function setTheme(theme) {
+                document.documentElement.setAttribute("data-theme", theme);
+                localStorage.setItem("vietlott-theme", theme);
+            }
+            setTheme(getPreferredTheme());
+            const btn = document.getElementById("themeToggleBtn");
+            if (btn) {
+                btn.addEventListener("click", function () {
+                    const current = document.documentElement.getAttribute("data-theme") || "light";
+                    setTheme(current === "dark" ? "light" : "dark");
+                });
+            }
+        </script>
+    </body>
+</html>
