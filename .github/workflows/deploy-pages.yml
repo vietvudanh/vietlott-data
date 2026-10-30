@@ -43,7 +43,7 @@ jobs:
         uses: astral-sh/setup-uv@v4
 
       - name: Install dependencies
-        run: uv sync --dev
+        run: uv sync --extra dev
 
       - name: Setup Go
         uses: actions/setup-go@v5
@@ -51,7 +51,7 @@ jobs:
           go-version-file: "crawler/go.mod"
 
       - name: Generate docs
-        run: cd crawler && go run ./cmd/vietlott render-docs && cd .. && uv run pytest src/vietlott/tests/test_freshness.py
+        run: cd crawler && go run ./cmd/vietlott render-docs && cd .. && uv run --extra dev pytest src/vietlott/tests/test_freshness.py
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
